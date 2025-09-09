@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 from typing import Any, Dict, List, Optional
 
 from pyadvtools import (
@@ -133,10 +134,11 @@ class PythonRunTex(BasicInput):
         # run latex
         if self.run_latex:
             os.chdir(path_output)
+            cmd = "latexmk -{} {}".format(self.pdflatex_xelatex, main_name)
             try:
-                os.system("latexmk -{} {}".format(self.pdflatex_xelatex, main_name))
-            except Exception as e:
-                print(e)
+                subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+            except subprocess.CalledProcessError as e:
+                print("Error in Run LaTex:", e.stderr)
 
         # delete cache
         if self.delete_run_latex_cache:

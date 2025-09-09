@@ -1,6 +1,7 @@
 import copy
 import os
 import re
+import subprocess
 import time
 from typing import Dict, List, Optional, Tuple
 
@@ -67,20 +68,20 @@ class PandocMdTo(BasicInput):
         if os.path.exists(self.full_csl_style_pandoc):
             cmd = (
                 f"pandoc {full_md_one} -t {self.markdown_citation} "
-                f'-o {full_md_two} -M reference-section-title="References" '
-                f"-C --bibliography={path_bib} --csl={self.full_csl_style_pandoc} --columns {self.columns_in_md}"
+                f"-o {full_md_two} -M reference-section-title='References' "
+                f"--citeproc --bibliography={path_bib} --csl={self.full_csl_style_pandoc} --columns {self.columns_in_md}"
             )
         else:
             cmd = (
                 f"pandoc {full_md_one} -t {self.markdown_citation} "
-                f'-o {full_md_two} -M reference-section-title="References" '
-                f"-C --bibliography={path_bib} --columns {self.columns_in_md}"
+                f"-o {full_md_two} -M reference-section-title='References' "
+                f"--citeproc --bibliography={path_bib} --columns {self.columns_in_md}"
             )
 
         try:
-            os.system(cmd)
-        except Exception as e:
-            print("pandoc md to md:", e)
+            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print("Pandoc error in pandoc md to md:", e.stderr)
 
         if not os.path.exists(full_md_two):
             print(f"- pandoc false from md to md: {os.path.basename(full_md_two)}\n")
@@ -114,13 +115,15 @@ class PandocMdTo(BasicInput):
         if not os.path.exists(path_tex := os.path.dirname(full_tex)):
             os.makedirs(path_tex)
 
+        if template_name.lower() == "beamer":
+            cmd = f"pandoc {full_md} -t beamer -o {full_tex} --from markdown "
+        else:
+            cmd = f"pandoc {full_md} -o {full_tex} --from markdown "
+
         try:
-            if template_name.lower() == "beamer":
-                os.system(f"pandoc {full_md} -t beamer -o {full_tex} --from markdown ")
-            else:
-                os.system(f"pandoc {full_md} -o {full_tex} --from markdown ")
-        except Exception as e:
-            print("pandoc md to tex:", e)
+            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print("Pandoc error in pandoc md to tex:", e.stderr)
 
         if not os.path.exists(full_tex):
             print(f"- pandoc false from md to tex: {os.path.basename(full_md)}\n")
@@ -152,9 +155,9 @@ class PandocMdTo(BasicInput):
         cmd = f"pandoc {full_md} -o {full_html} --from markdown "
 
         try:
-            os.system(cmd)
-        except Exception as e:
-            print("pandoc md to html:", e)
+            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print("Pandoc error in pandoc md to html:", e.stderr)
 
         if not os.path.exists(full_html):
             return f"- pandoc false from md to html: {os.path.basename(full_md)}\n"
@@ -189,9 +192,9 @@ class PandocMdTo(BasicInput):
             cmd = f"pandoc {full_md} -o {full_pdf} --from markdown  --listings --pdf-engine=xelatex"
 
         try:
-            os.system(cmd)
-        except Exception as e:
-            print("pandoc md to pdf:", e)
+            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print("Pandoc error in pandoc md to pdf:", e.stderr)
 
         if not os.path.exists(full_pdf):
             return f"- pandoc false from md to pdf: {os.path.basename(full_md)}\n"
