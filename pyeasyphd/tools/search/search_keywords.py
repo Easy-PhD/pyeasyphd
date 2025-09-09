@@ -1,6 +1,7 @@
 import copy
 import os
 import re
+from pathlib import Path
 from typing import Any, Dict, List
 
 from pyadvtools import (
@@ -214,11 +215,11 @@ class Searchkeywords(object):
             data_list.append(f"<td>{name}</td>\n")
 
             for f in data_dict[name]:
+                folders = Path(f).parts[1:]
                 if index == "combine":
-                    data_list.append(x.format(f, f.split("-")[0].split("/")[-1].title() + ":" + f.split(".")[-1]))
+                    data_list.append(x.format(f, folders[-1].split("-")[0].title() + ":" + f.split(".")[-1]))
                 elif index == "separate":
-                    data_list.append(x.format(f, f.split("/")[-2].split("-")[0].title() + ":" + f.split(".")[-1]))
-
+                    data_list.append(x.format(f, folders[-2].split("-")[0].title() + ":" + f.split(".")[-1]))
             data_list.append("</tr>\n")
         data_list.append("</tbody>\n")
 
