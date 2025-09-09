@@ -172,7 +172,7 @@ def generate_statistic_information(path_output: str) -> None:
             informations.append(flag + "\n")
 
         # Write information to CSV file
-        csv_path = f.replace(".bib", ".csv").replace("/bib/", "/url/")
+        csv_path = f.replace(".bib", ".csv").replace(f"{os.sep}bib{os.sep}", f"{os.sep}url{os.sep}")
         write_list(informations, csv_path, "w", None, False)
 
     return None

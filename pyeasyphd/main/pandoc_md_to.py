@@ -323,8 +323,8 @@ class PandocMdTo(BasicInput):
     def generate_tex_content(self, file_prefix: str, path_subsection: str, path_bib: str, path_combine: str) -> None:
         # for latex
         # add template for tex file
-        add_bib_name = "{}/{}-abbr.bib".format(os.path.basename(path_bib), file_prefix)
-        add_tex_name = "{}/{}.tex".format(os.path.basename(path_subsection), file_prefix)
+        add_bib_name = os.path.join(os.path.basename(path_bib), f"{file_prefix}-abbr.bib")
+        add_tex_name = os.path.join(os.path.basename(path_subsection), f"{file_prefix}.tex")
         insert_part_one, insert_part_two = self._generate_tex_content(file_prefix, add_tex_name, add_bib_name)
 
         # write tex
@@ -343,9 +343,9 @@ class PandocMdTo(BasicInput):
         part_one = [
             "\\date{" + "{}".format(time.strftime("%B %d, %Y")) + "}\n\n",
             "\\ifx \\fullpath \\undefined\n",
-            "    \\addbibresource{" + "../{}".format(add_bib_name) + "}\n",
+            "    \\addbibresource{" + os.path.join("..", add_bib_name) + "}\n",
             "\\else\n",
-            "    \\addbibresource{" + "\\fullpath/{}".format(add_bib_name) + "}\n",
+            "    \\addbibresource{" + os.path.join("\\fullpath", add_bib_name) + "}\n",
             "\\fi\n\n",
         ]
         part_two = [
@@ -353,9 +353,9 @@ class PandocMdTo(BasicInput):
             "% \\maketitle\n",
             "\\tableofcontents\n\n",
             "\\ifx \\fullpath \\undefined\n",
-            "    \\input{" + "../{}".format(add_tex_name) + "}\n",
+            "    \\input{" + os.path.join("..", add_tex_name) + "}\n",
             "\\else\n",
-            "    \\input{" + "\\fullpath/{}".format(add_tex_name) + "}\n",
+            "    \\input{" + os.path.join("\\fullpath", add_tex_name) + "}\n",
             "\\fi\n",
         ]
         return part_one, part_two

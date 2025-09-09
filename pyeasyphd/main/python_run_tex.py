@@ -48,8 +48,8 @@ class PythonRunTex(BasicInput):
         # for figures
         for i in range(len(data_list_body)):
             if re.search(r"\\includegraphics", data_list_body[i]):
-                data_list_body[i] = data_list_body[i].replace("./Figures/", f"./{figure_folder_name}/")
-                data_list_body[i] = data_list_body[i].replace("Figures/", f"{figure_folder_name}/")
+                data_list_body[i] = data_list_body[i].replace(f".{os.sep}Figures{os.sep}", f".{os.sep}{figure_folder_name}{os.sep}")
+                data_list_body[i] = data_list_body[i].replace(f"Figures{os.sep}", f"{figure_folder_name}{os.sep}")
         write_list(data_list_body, output_tex_name, "w", os.path.join(path_output, tex_folder_name), False)
 
         self._special_operate_tex(
@@ -105,15 +105,15 @@ class PythonRunTex(BasicInput):
                 data_list = insert_list_in_list(data_list, ["\n\\def\\cn{}\n"], r"\\documentclass", "after")
 
             # for bib
-            regex = re.compile(r"\\addbibresource{\./References/References\.bib}")
+            regex = re.compile(r"\\addbibresource{" + os.path.join(".", "References", "References.bib") + "}")
             for i in range(len(data_list)):
                 mch = regex.search(data_list[i])
                 if not mch:
                     continue
                 if bib_folder_name:
-                    data_list[i] = "\\addbibresource{" + f"./{bib_folder_name}/{bib_name}" + "}\n"
+                    data_list[i] = "\\addbibresource{" + os.path.join(".", bib_folder_name, bib_name) + "}\n"
                 else:
-                    data_list[i] = "\\addbibresource{" + f"./{bib_name}" + "}\n"
+                    data_list[i] = "\\addbibresource{" + os.path.join(".", bib_name) + "}\n"
 
             # body
             if len(data_list_body) != 0:

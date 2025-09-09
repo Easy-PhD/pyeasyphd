@@ -128,18 +128,18 @@ class BasicInput(object):
         csl_name = options.get("csl_name", "apa-no-ampersand")
         if len(csl_name) == 0:
             csl_name = "apa-no-ampersand"
-        self.full_csl_style_pandoc = os.path.join(self.path_templates, f"CSL/{csl_name}.csl")
-        self.full_tex_article_template_pandoc = os.path.join(self.path_templates, "TEX/eisvogel.tex")
+        self.full_csl_style_pandoc = os.path.join(self.path_templates, "CSL", f"{csl_name}.csl")
+        self.full_tex_article_template_pandoc = os.path.join(self.path_templates, "TEX", "eisvogel.tex")
 
-        self.article_template_tex = read_list(os.path.join(self.path_templates, "TEX/Article.tex"))
+        self.article_template_tex = read_list(os.path.join(self.path_templates, "TEX", "Article.tex"))
 
     def _initialize_python_run_tex(self, options: Dict[str, Any]) -> None:
-        self.article_template_header_tex = read_list(os.path.join(self.path_templates, "TEX/Article_Header.tex"))
-        self.article_template_tail_tex = read_list(os.path.join(self.path_templates, "TEX/Article_Tail.tex"))
-        self.beamer_template_header_tex = read_list(os.path.join(self.path_templates, "TEX/Beamer_Header.tex"))
-        self.beamer_template_tail_tex = read_list(os.path.join(self.path_templates, "TEX/Beamer_Tail.tex"))
-        self.math_commands_tex = read_list(os.path.join(self.path_templates, "TEX/math_commands.tex"))
-        self.usepackages_tex = read_list(os.path.join(self.path_templates, "TEX/Style.tex"))
+        self.article_template_header_tex = read_list(os.path.join(self.path_templates, "TEX", "Article_Header.tex"))
+        self.article_template_tail_tex = read_list(os.path.join(self.path_templates, "TEX", "Article_Tail.tex"))
+        self.beamer_template_header_tex = read_list(os.path.join(self.path_templates, "TEX", "Beamer_Header.tex"))
+        self.beamer_template_tail_tex = read_list(os.path.join(self.path_templates, "TEX", "Beamer_Tail.tex"))
+        self.math_commands_tex = read_list(os.path.join(self.path_templates, "TEX", "math_commands.tex"))
+        self.usepackages_tex = read_list(os.path.join(self.path_templates, "TEX", "Style.tex"))
 
         # handly preamble
         self.handly_preamble = options.get("handly_preamble", False)
