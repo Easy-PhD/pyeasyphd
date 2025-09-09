@@ -21,8 +21,8 @@ class FormatAllConferenceOrJournalPapers(object):
         for publisher in publisher_abbr_dict:
             for abbr_standard in publisher_abbr_dict[publisher]:
                 new_options = publisher_abbr_dict[publisher][abbr_standard]
-                path_storage = os.path.join(self.path_storage, f"{publisher.lower()}/{abbr_standard}")
-                path_output = os.path.join(self.path_output, f"{publisher.lower()}/{abbr_standard}")
+                path_storage = os.path.join(self.path_storage, publisher.lower(), f"{abbr_standard}")
+                path_output = os.path.join(self.path_output, publisher.lower(), f"{abbr_standard}")
 
                 print(f"Format and save `{publisher}-{abbr_standard}` ...")
                 format_entries_for_abbr_zotero_save(abbr_standard, path_output, path_storage, options=new_options)
@@ -42,6 +42,6 @@ if __name__ == "__main__":
 
     for i, j in zip(["Journals", "Conferences"], ["Journals", "Conferences"]):
         path_storage = os.path.join(local_paths["path_spidered_bibs"], f'{i}')
-        path_output = os.path.join(local_paths["path_output"], f'Save_all/{j}')
+        path_output = os.path.join(local_paths["path_output"], os.path.join("Save_all", j))
         FormatAllConferenceOrJournalPapers(path_storage, path_output).run(options)
     delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

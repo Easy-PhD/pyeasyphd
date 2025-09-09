@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     path_storage = os.path.join(local_paths["path_spidered_bibs"], "Conferences")
 
-    output_basename = "data/Yearly"
+    output_basename = os.path.join("data", "Yearly")
     cj = "Conferences"
     path_output = os.path.expanduser(os.path.join(local_paths["path_output"], output_basename, cj))
 

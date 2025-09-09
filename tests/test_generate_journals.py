@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
         if options.get("early_access", False):
             path_storage = os.path.join(local_paths["path_spidering_bibs"], "spider_j_e")
-            output_basename = "data/Weekly"
+            output_basename = os.path.join("data", "Weekly")
             path_output = os.path.expanduser(os.path.join(local_paths["path_output"], output_basename, cj))
             # "current_month"
             for flag in []:
@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 )
         else:
             path_storage = os.path.join(local_paths["path_spidering_bibs"], "spider_j")
-            output_basename = "data/Weekly"
+            output_basename = os.path.join("data", "Weekly")
             path_output = os.path.expanduser(os.path.join(local_paths["path_output"], output_basename, cj))
             # "current_issue", "current_month", "all_months"
             for flag in []:
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 )
 
             path_storage = os.path.join(local_paths["path_spidered_bibs"], "Journals")
-            output_basename = "data/Yearly"
+            output_basename = os.path.join("data", "Yearly")
             path_output = os.path.expanduser(os.path.join(local_paths["path_output"], output_basename, cj))
             # "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015"
             for year in []:
@@ -57,8 +57,8 @@ if __name__ == "__main__":
                     path_storage, path_output, output_basename, cj, gc, year, "all_months", options
                 )
 
-    generator.generate_ieee_early_access_links("data/Weekly")
-    generator.generate_weekly_links("data/Weekly")
-    generator.generate_yearly_links("Journals", "data/Yearly")
+    generator.generate_ieee_early_access_links(os.path.join("data", "Weekly"))
+    generator.generate_weekly_links(os.path.join("data", "Weekly"))
+    generator.generate_yearly_links("Journals", os.path.join("data", "Yearly"))
 
     delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

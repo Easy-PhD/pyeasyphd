@@ -35,12 +35,12 @@ if __name__ == "__main__":
 
     for i, j in zip(["Journals", "Conferences"], ["Journals", "Conferences"]):
         path_storage = os.path.join(local_paths["path_spidered_bibs"], f"{i}")
-        path_output = os.path.join(local_paths["path_output"], f"Search_spidered_bib/{j}")
+        path_output = os.path.join(local_paths["path_output"], "Search_spidered_bib", j)
         Searchkeywords(path_storage, path_output, options).run()
 
     for i, j in zip(["spider_j", "spider_j_e"], ["spider_j", "spider_j_e"]):
         path_storage = os.path.join(local_paths["path_spidering_bibs"], f"{i}")
-        path_output = os.path.join(local_paths["path_output"], f"Search_spidering_bib/{j}")
+        path_output = os.path.join(local_paths["path_output"], "Search_spidering_bib", j)
         Searchkeywords(path_storage, path_output, options).run()
 
     delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

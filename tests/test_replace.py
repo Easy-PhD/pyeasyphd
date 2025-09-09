@@ -12,8 +12,8 @@ if __name__ == "__main__":
 
     path_output = os.path.join(local_paths["path_output"], "replacement_new")
 
-    full_tex = os.path.join(local_paths["path_output"], "replacement_old/old.tex")
-    full_bib = os.path.join(local_paths["path_output"], "replacement_old/old.bib")
+    full_tex = os.path.join(local_paths["path_output"], os.path.join("replacement_old", "old.tex"))
+    full_bib = os.path.join(local_paths["path_output"], os.path.join("replacement_old", "old.bib"))
 
     replace_to_standard_cite_keys(full_tex, full_bib, path_output, options)
     delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
