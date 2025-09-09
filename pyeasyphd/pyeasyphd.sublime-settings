@@ -1,6 +1,7 @@
 {
     // config
     // config path
+    // Must be configured by the user.
     "path_config": "",
 
     // figures, templates, bibs
@@ -8,27 +9,27 @@
     "path_figures": "",
     "path_templates": "",
 
-    // pypapers/bib/core/convert_str_to_str.py
+    // pyeasyphd/bib/core/convert_str_to_str.py
     "default_additional_field_list": [],
 
-    // pypapers/bib/bibtexparser/middlewares_str_to_str.py
+    // pyeasyphd/bib/bibtexparser/middlewares_str_to_str.py
     "substitute_in_bib": true,
     "substitute_old_list": [],
     "substitute_new_list": [],
 
 
-    // pypapers/bib/core/convert_str_to_library.py
+    // pyeasyphd/bib/core/convert_str_to_library.py
     "is_standardize_bib": true,
 
-    // pypapers/bib/bibtexparser/middlewares_str_to_library.py
+    // pyeasyphd/bib/bibtexparser/middlewares_str_to_library.py
     "is_display_implicit_comments": true,
 
 
-    // pypapers/bib/core/convert_library_to_library.py
+    // pyeasyphd/bib/core/convert_library_to_library.py
     // "abbr", "zotero", or "save"
     "choose_abbr_zotero_save": "save",
 
-    // pypapers/bib/bibtexparser/middlewares_library_to_library.py
+    // pyeasyphd/bib/bibtexparser/middlewares_library_to_library.py
     "function_common_again": true,
     "function_common_again_abbr": true,
     "function_common_again_zotero": true,
@@ -134,13 +135,13 @@
     "delete_fields_list_for_save": [],
 
 
-    // pypapers/bib/core/convert_library_to_str.py
+    // pyeasyphd/bib/core/convert_library_to_str.py
     "is_standardize_library": false,
     "empty_entry_cite_keys": false,
     "add_index_to_entries": false,
     "entries_necessary": true,
 
-    // pypapers/bib/bibtexparser/middlewares_library_to_str.py
+    // pyeasyphd/bib/bibtexparser/middlewares_library_to_str.py
     "is_sort_entry_fields": true,
     "is_sort_blocks": true,
     "sort_entries_by_cite_keys": [],
@@ -148,7 +149,7 @@
     "sort_entries_by_field_keys_reverse": true,
 
 
-    // pypapers/main/pandoc_md_to.py
+    // pyeasyphd/main/pandoc_md_to.py
     // for pandoc
     "csl_name": "apa-no-ampersand",
     // the number of columns in md files
@@ -160,7 +161,7 @@
     "cite_flag_in_tex": "cite",
 
     // for bib file
-    // pypapers/main/python_writers.py
+    // pyeasyphd/main/python_writers.py
     // "abbr.bib", "zotero.bib", "save.bib"
     "bib_for_abbr_name": "abbr.bib",
     "bib_for_zotero_name": "zotero.bib",
@@ -174,7 +175,7 @@
     "bibtex_format_block_separator": "",
 
     // for md file
-    // pypapers/main/python_run_md.py
+    // pyeasyphd/main/python_run_md.py
     // default is ""
     "final_output_main_md_name": "",
     // true, false
@@ -191,7 +192,7 @@
     "display_basic_beauty_complex_references_in_md": "beauty",
 
     // for tex file
-    // pypapers/main/python_run_tex.py
+    // pyeasyphd/main/python_run_tex.py
     // handly preamble
     "handly_preamble": false,
 
@@ -208,7 +209,7 @@
         ".nav", ".snm", ".toc", ".xdv"
     ],
 
-    // pypapers/tools/python_run_latex_md.py
+    // pyeasyphd/tools/python_run_latex_md.py
     // true, false
     "generate_html": false,
 
@@ -229,7 +230,7 @@
     "delete_original_tex_in_output_folder": false,
     "delete_original_bib_in_output_folder": false,
 
-    // pypapers/pypapers.py
+    // pyeasyphd/pyeasyphd.py
     // default is the same with the active file
     "path_output": "",
 }
