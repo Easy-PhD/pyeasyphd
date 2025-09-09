@@ -73,7 +73,7 @@ class WriteInitialResult(object):
             _python_writer.write_to_file(data_list[i], file_name, "w", path_write)
 
         # pandoc md to generate md file
-        path_bib = f"{path_write}/{file_prefix}{mid_list[2]}.bib"  # bib_for_abbr
+        path_bib = os.path.join(path_write, f"{file_prefix}{mid_list[2]}.bib")  # bib_for_abbr
         data_list_pandoc_md = self._pandoc_md_to.pandoc_md_to_md(
             path_bib,
             path_write,

@@ -305,7 +305,7 @@ class SearchResultsCore(BasicInput):
 
         for d in delete_folder_list:
             for field in self.search_field_list:
-                path_delete = os.path.join(p_separate, rf"{keywords_type}/{field}-md-{d}")
+                path_delete = os.path.join(p_separate, keywords_type, rf"{field}-md-{d}")
                 if os.path.exists(path_delete):
                     shutil.rmtree(path_delete)
 
