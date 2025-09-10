@@ -45,13 +45,19 @@ class BasicInput(object):
         # Update
         path_config = standard_path(options.get("path_config", ""))
         if len(self.path_bibs) == 0:
-            for folder in ["bib", "bibs", "Bib", "Bibs", "BIB", "BIBS"]:
+            for folder in [
+                "bib", "bibs", "Bib", "Bibs", "BIB", "BIBS",
+                "reference", "references", "Reference", "References", "REFERENCE", "REFERENCES"
+            ]:
                 if os.path.exists(p := os.path.join(path_config, folder)):
                     self.path_bibs = p
                     break
 
         if len(self.path_figures) == 0:
-            for folder in ["figure", "figures", "Figure", "Figures", "FIGURE", "FIGURES"]:
+            for folder in [
+                "figure", "figures", "Figure", "Figures", "FIGURE", "FIGURES",
+                "fig", "figs", "Fig", "Figs", "FIG", "FIGS",
+            ]:
                 if os.path.exists(p := os.path.join(path_config, folder)):
                     self.path_figures = p
                     break
@@ -128,18 +134,26 @@ class BasicInput(object):
         csl_name = options.get("csl_name", "apa-no-ampersand")
         if len(csl_name) == 0:
             csl_name = "apa-no-ampersand"
-        self.full_csl_style_pandoc = os.path.join(self.path_templates, "CSL", f"{csl_name}.csl")
-        self.full_tex_article_template_pandoc = os.path.join(self.path_templates, "TEX", "eisvogel.tex")
 
-        self.article_template_tex = read_list(os.path.join(self.path_templates, "TEX", "Article.tex"))
+        full_csl_style_pandoc = os.path.join(self.path_templates, "CSL", f"{csl_name}.csl")
+        if (p := options.get("full_csl")) is not None:
+            full_csl_style_pandoc = p
+        self.full_csl_style_pandoc = full_csl_style_pandoc
+
+        full_tex_article_template_pandoc = os.path.join(self.path_templates, "TEX", "eisvogel.tex")
+        if (p := options.get("full_eisvogel")) is not None:
+            full_tex_article_template_pandoc = p
+        self.full_tex_article_template_pandoc = full_tex_article_template_pandoc
+
+        self.article_template_tex = self._try_read_list(options, "TEX", "Article.tex", "full_article")
 
     def _initialize_python_run_tex(self, options: Dict[str, Any]) -> None:
-        self.article_template_header_tex = read_list(os.path.join(self.path_templates, "TEX", "Article_Header.tex"))
-        self.article_template_tail_tex = read_list(os.path.join(self.path_templates, "TEX", "Article_Tail.tex"))
-        self.beamer_template_header_tex = read_list(os.path.join(self.path_templates, "TEX", "Beamer_Header.tex"))
-        self.beamer_template_tail_tex = read_list(os.path.join(self.path_templates, "TEX", "Beamer_Tail.tex"))
-        self.math_commands_tex = read_list(os.path.join(self.path_templates, "TEX", "math_commands.tex"))
-        self.usepackages_tex = read_list(os.path.join(self.path_templates, "TEX", "Style.tex"))
+        self.article_template_header_tex = self._try_read_list(options, "TEX", "Article_Header.tex", "full_article_header")
+        self.article_template_tail_tex = self._try_read_list(options, "TEX", "Article_Tail.tex", "full_article_tail")
+        self.beamer_template_header_tex = self._try_read_list(options, "TEX", "Beamer_Header.tex", "full_beamer_header")
+        self.beamer_template_tail_tex = self._try_read_list(options, "TEX", "Beamer_Tail.tex", "full_beamer_tail")
+        self.math_commands_tex = self._try_read_list(options, "TEX", "math_commands.tex", "full_math_commands")
+        self.usepackages_tex = self._try_read_list(options, "TEX", "Style.tex", "full_usepackages_tex")
 
         # handly preamble
         self.handly_preamble = options.get("handly_preamble", False)
@@ -147,3 +161,17 @@ class BasicInput(object):
             self.article_template_header_tex, self.article_template_tail_tex = [], []
             self.beamer_template_header_tex, self.beamer_template_tail_tex = [], []
             self.math_commands_tex, self.usepackages_tex = [], []
+
+    def _try_read_list(self, options: Dict[str, Any], folder_name: str, file_name: str, key: str):
+        path_file = os.path.join(self.path_templates, folder_name, file_name)
+        if (p := options.get(key)) is None:
+            return []
+        else:
+            path_file = p
+
+        try:
+            data_list = read_list(path_file)
+        except Exception as e:
+            print(e)
+            data_list = []
+        return data_list
