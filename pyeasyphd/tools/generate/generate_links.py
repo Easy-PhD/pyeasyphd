@@ -249,7 +249,6 @@ class PaperLinksGenerator:
 
         return None
 
-    #
     def generate_keywords_links_monthly(self, cj: str, folder_name=os.path.join("data", "Weekly")):
         flags = ["Current Issue", "Current Month", "All Months"]
         folder_flags = [f"current_year_{f.replace(' ', '_').lower()}" for f in flags]
@@ -298,7 +297,6 @@ class PaperLinksGenerator:
             # Pandoc
             self._convert_md_to_html_keyword(folder_name, cj, keyword)
 
-            # TODO
             ll = os.path.join(folder_name, f"{cj.title()}_Keywords", f"{keyword.replace(' ', '_')}.html")
             all_data_list.append(f"|{idx}|{keyword}|[Link]({ll})|\n")
 
