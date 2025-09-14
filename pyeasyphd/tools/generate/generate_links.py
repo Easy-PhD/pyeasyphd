@@ -3,7 +3,7 @@
 import json
 import os
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from pyadvtools import standard_path
 
@@ -15,7 +15,7 @@ class PaperLinksGenerator:
         self,
         json_base_path: str,
         data_base_path: str,
-        default_publication_keywords: Optional[List[str]] = None,
+        keywords_category_name: str = "",
         display_year_period: int = 10,
     ):
         """
@@ -28,18 +28,21 @@ class PaperLinksGenerator:
         self.json_base_path = standard_path(json_base_path)
         self.data_base_path = standard_path(data_base_path)
 
-        if (default_publication_keywords is None) or (len(default_publication_keywords) == 0):
-            x = self._load_json_data("keywords").get("default_keywords", [])
-            if isinstance(x, list):
-                default_publication_keywords = x
-            else:
-                default_publication_keywords = []
+        # Process keyword category name and load data
+        keywords_category_name = keywords_category_name.lower().strip() if keywords_category_name else ""
+        category_prefix = f"{keywords_category_name}_" if keywords_category_name else ""
+        keywords_list = self._load_json_data("keywords").get(f"{category_prefix}keywords", [])
 
-        self.default_publication_keywords: List[str] = default_publication_keywords
+        # Validate data availability
+        if not keywords_list or not keywords_category_name:
+            keywords_list, keywords_category_name = [], ""
+
+        self.keywords_category_name = keywords_category_name
+        self.keywords_list: List[str] = keywords_list
 
         self.display_year_period = display_year_period
 
-    def generate_yearly_links(self, cj: str, folder_name="data/Yearly") -> None:
+    def generate_yearly_links(self, cj: str, folder_name=os.path.join("data", "Yearly")) -> None:
         """
         Generate yearly markdown table with paper links.
 
@@ -51,7 +54,7 @@ class PaperLinksGenerator:
 
         self._generate_links(cj, flags, folder_flags, folder_name)
 
-    def generate_weekly_links(self, folder_name="data/Weekly") -> None:
+    def generate_weekly_links(self, folder_name=os.path.join("data", "Weekly")) -> None:
         """Generate weekly markdown table with journal paper links."""
         cj = "Journals"
 
@@ -94,7 +97,7 @@ class PaperLinksGenerator:
         except Exception as e:
             print(f"Pandoc conversion error: {e}")
 
-    def generate_ieee_early_access_links(self, folder_name="data/Weekly") -> None:
+    def generate_ieee_early_access_links(self, folder_name=os.path.join("data", "Weekly")) -> None:
         """Generate markdown for IEEE Early Access papers."""
         md_content = [
             "# Papers from Early Access\n\n",
@@ -171,7 +174,7 @@ class PaperLinksGenerator:
         cells = []
 
         for flag in folder_flags:
-            link_path = f"{period}/{cj}/{flag}/{publisher.lower()}/{publisher.lower()}_link.html"
+            link_path = os.path.join(period, cj, flag, publisher.lower(), f"{publisher.lower()}_link.html")
             full_path = os.path.join(self.data_base_path, link_path)
 
             if os.path.exists(full_path):
@@ -205,7 +208,7 @@ class PaperLinksGenerator:
         """Get link cells for a abbr."""
         cells = []
         for flag in folder_flags:
-            link_path = f"{period}/{cj}/{flag}/{publisher.lower()}/{abbr}/{abbr}.html"
+            link_path = os.path.join(period, cj, flag, publisher.lower(), abbr, f"{abbr}.html")
             full_path = os.path.join(self.data_base_path, link_path)
             if os.path.exists(full_path):
                 cells.append(f"[{abbr}]({link_path})")
@@ -214,12 +217,12 @@ class PaperLinksGenerator:
 
         return cells
 
-    def _get_ieee_links(self, folder_name="data/Weekly") -> List[str]:
+    def _get_ieee_links(self, folder_name=os.path.join("data", "Weekly")) -> List[str]:
         """Get IEEE Early Access links."""
         links = []
         link_paths = [
-            f"{folder_name}/Journals_Early_Access/current_year_current_month/ieee/ieee_link.html",
-            f"{folder_name}/Journals_Early_Access/all_years_all_months/ieee/ieee_link.html",
+            os.path.join(folder_name, "Journals_Early_Access", "current_year_current_month", "ieee", "ieee_link.html"),
+            os.path.join(folder_name, "Journals_Early_Access", "all_years_all_months", "ieee", "ieee_link.html"),
         ]
 
         for link_path in link_paths:
@@ -247,13 +250,13 @@ class PaperLinksGenerator:
         return None
 
     #
-    def generate_keywords_links_monthly(self, cj: str, folder_name="data/Weekly"):
+    def generate_keywords_links_monthly(self, cj: str, folder_name=os.path.join("data", "Weekly")):
         flags = ["Current Issue", "Current Month", "All Months"]
         folder_flags = [f"current_year_{f.replace(' ', '_').lower()}" for f in flags]
 
         self._generate_keywords_links(cj, folder_name, flags, folder_flags)
 
-    def generate_keywords_links_yearly(self, cj: str, folder_name="data/Yearly"):
+    def generate_keywords_links_yearly(self, cj: str, folder_name=os.path.join("data", "Yearly")):
         flags = self._get_yearly_flags(cj)
         folder_flags = [f"{f}_all_months" for f in flags]
 
@@ -266,16 +269,9 @@ class PaperLinksGenerator:
 
         keyword_publisher_abbr = self._process_keywords(cj, json_data)
 
-        # Get and sort publication types
-        pub_types = list(keyword_publisher_abbr.keys())
-        default_pub_types = self.default_publication_keywords
-        default_pub_types = self.default_publication_keywords + sorted(
-            list(set(pub_types) - set(self.default_publication_keywords))
-        )
-
         all_data_list = ["# Keywords\n\n", "| |Keywords|Links|\n", "|-|-|-|\n"]
         idx = 1
-        for keyword in sorted(pub_types, key=default_pub_types.index):
+        for keyword in self._default_or_customized_keywords(keyword_publisher_abbr):
             data_list = [
                 f"# {keyword.title()}\n\n",
                 "|Publishers|Abbreviations|" + "|".join(flags) + "|\n",
@@ -285,7 +281,7 @@ class PaperLinksGenerator:
             for publisher in keyword_publisher_abbr[keyword]:
                 for abbr in keyword_publisher_abbr[keyword][publisher]:
                     lines = [
-                        f"[Link]({folder_name}/{cj.title()}/{ff}/{publisher.lower()}/{abbr}/{abbr}.html)"
+                        f"[Link]({os.path.join(folder_name, cj.title(), ff, publisher.lower(), abbr, f'{abbr}.html')})"
                         for ff in folder_flags
                     ]
 
@@ -295,29 +291,46 @@ class PaperLinksGenerator:
             if len(data_list) == 3:
                 continue
 
-            self._write_md_file(data_list, f"{folder_name}/{cj.title()}_Keywords", f"{keyword.replace(' ', '_')}.md")
+            self._write_md_file(
+                data_list, os.path.join(folder_name, f"{cj.title()}_Keywords"), f"{keyword.replace(' ', '_')}.md"
+            )
 
             # Pandoc
             self._convert_md_to_html_keyword(folder_name, cj, keyword)
 
-            all_data_list.append(
-                f"|{idx}|{keyword}|[Link]({folder_name}/{cj.title()}_Keywords/{keyword.replace(' ', '_')}.html)|\n"
-            )
+            # TODO
+            ll = os.path.join(folder_name, f"{cj.title()}_Keywords", f"{keyword.replace(' ', '_')}.html")
+            all_data_list.append(f"|{idx}|{keyword}|[Link]({ll})|\n")
 
             idx += 1
 
-        self._write_md_file(all_data_list, f"{folder_name}", f"{cj.title()}_Keywords.md")
+        category_postfix = f"_{self.keywords_category_name.title()}" if self.keywords_category_name else ""
+        self._write_md_file(all_data_list, f"{folder_name}", f"{cj.title()}_Keywords{category_postfix}.md")
+
+    def _default_or_customized_keywords(self, json_data):
+        keywords = list(json_data.keys())
+
+        # Get and sort publication types
+        if self.keywords_category_name and self.keywords_list:
+            _keywords = []
+            for keyword in self.keywords_list:
+                if keyword in keywords:
+                    _keywords.append(keyword)
+            return _keywords
+        else:
+            # default
+            return sorted(keywords)
 
     def _check_file_exists(self, folder, folder_name, cj, publisher, abbr):
         """Check if HTML file exists for given parameters."""
         file_path = os.path.join(
-            self.data_base_path, f"{folder_name}/{cj.title()}/{folder}/{publisher.lower()}/{abbr}/{abbr}.html"
+            self.data_base_path, folder_name, cj.title(), folder, publisher.lower(), abbr, f"{abbr}.html"
         )
         return os.path.exists(file_path)
 
     def _convert_md_to_html_keyword(self, folder_name, cj, keyword):
         """Convert markdown file to HTML using pandoc."""
-        base_path = os.path.join(self.data_base_path, f"{folder_name}/{cj.title()}_Keywords")
+        base_path = os.path.join(self.data_base_path, folder_name, f"{cj.title()}_Keywords")
         file_md = os.path.join(base_path, f"{keyword.replace(' ', '_')}.md")
         file_html = os.path.join(base_path, f"{keyword.replace(' ', '_')}.html")
 

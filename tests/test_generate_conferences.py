@@ -16,6 +16,9 @@ if __name__ == "__main__":
     }
     options["path_config"] = local_paths["path_config"]
 
+    # Customized by USERS
+    path_yearly_docs = ""
+
     path_storage = os.path.join(local_paths["path_spidered_bibs"], "Conferences")
 
     output_basename = os.path.join("data", "Yearly")
@@ -30,6 +33,9 @@ if __name__ == "__main__":
                 path_storage, path_output, output_basename, cj, gc, year_flag, "all_months", options
             )
 
-    PaperLinksGenerator(local_paths["path_json"], local_paths["path_output"]).generate_yearly_links(cj, output_basename)
+    for keywords_category_name in ["", "S", "Y"]:
+        generator = PaperLinksGenerator(local_paths["path_json"], path_yearly_docs, keywords_category_name)
+        generator.generate_yearly_links(cj, output_basename)
+        generator.generate_keywords_links_yearly(cj, output_basename)
 
     delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

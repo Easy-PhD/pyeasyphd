@@ -127,7 +127,7 @@ def _compare_with_local(
             if len(data_list := transform_to_data_list(path_abbr, ".bib")) == 0:
                 continue
 
-            print("*" * 9 + f" Compare in {'/'.join(path_abbr.split('/')[-3:])} for {abbr} " + "*" * 9)
+            print("*" * 9 + f" Compare in {f'{os.sep}'.join(path_abbr.split(os.sep)[-3:])} for {abbr} " + "*" * 9)
 
             _options = {}
             _options["is_standardize_bib"] = False  # default is True

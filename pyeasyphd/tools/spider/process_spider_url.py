@@ -30,7 +30,8 @@ class ProcessSpiderUrl(object):
     ) -> None:
         if os.path.exists(self.path_abbr):
             for i in [f for f in os.listdir(self.path_abbr) if f.startswith(folder_start_swith)]:
-                print("*" * 5 + f" Check *{extension} ./{os.path.basename(self.path_abbr)}/{i}")
+                ll = os.path.join(os.path.basename(self.path_abbr), i)
+                print("*" * 5 + f" Check *{extension} .{os.sep}{ll}")
                 self._check_delete(os.path.join(self.path_abbr, i), extension, write_flag, iterate_check_url)
 
     def _check_delete(

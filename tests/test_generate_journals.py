@@ -17,7 +17,9 @@ if __name__ == "__main__":
     }
     options["path_config"] = local_paths["path_config"]
 
-    generator = PaperLinksGenerator(local_paths["path_json"], local_paths["path_output"])
+    # Customized by USERS
+    path_weekly_docs = ""
+    path_yearly_docs = ""
 
     cj = "Journals"
 
@@ -57,8 +59,16 @@ if __name__ == "__main__":
                     path_storage, path_output, output_basename, cj, gc, year, "all_months", options
                 )
 
-    generator.generate_ieee_early_access_links(os.path.join("data", "Weekly"))
-    generator.generate_weekly_links(os.path.join("data", "Weekly"))
-    generator.generate_yearly_links("Journals", os.path.join("data", "Yearly"))
+    for keywords_category_name in ["", "S", "Y"]:
+        output_basename = os.path.join("data", "Weekly")
+        generator = PaperLinksGenerator(local_paths["path_json"], path_weekly_docs, keywords_category_name)
+        generator.generate_ieee_early_access_links(output_basename)
+        generator.generate_weekly_links(output_basename)
+        generator.generate_keywords_links_monthly(cj, output_basename)
+
+        output_basename = os.path.join("data", "Yearly")
+        generator = PaperLinksGenerator(local_paths["path_json"], path_yearly_docs, keywords_category_name)
+        generator.generate_yearly_links(cj, output_basename)
+        generator.generate_keywords_links_yearly(cj, output_basename)
 
     delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

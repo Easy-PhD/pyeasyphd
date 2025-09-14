@@ -47,10 +47,10 @@ def preparation(
     im = "-".join(issue_or_month_flag) if isinstance(issue_or_month_flag, List) else issue_or_month_flag
 
     if options.get("early_access", False):
-        base_path = f"{output_basename}/{pub_type.title()}_Early_Access/{yy}_{im}"
+        base_path = os.path.join(output_basename, f"{pub_type.title()}_Early_Access", f"{yy}_{im}")
         path_output = os.path.join(path_output + "_Early_Access", f"{yy}_{im}")
     else:
-        base_path = f"{output_basename}/{pub_type.title()}/{yy}_{im}"
+        base_path = os.path.join(output_basename, f"{pub_type.title()}", f"{yy}_{im}")
         path_output = os.path.join(path_output, f"{yy}_{im}")
 
     path_root = base_path if absolute_or_relative_path == "absolute_path" else ""
@@ -106,7 +106,7 @@ def generate_from_bibs_and_write(
                 new_options = publisher_abbr_dict[publisher][abbr]
 
                 # Get bibliography path
-                path_abbr = os.path.join(path_storage, f"{publisher.lower()}/{abbr}")
+                path_abbr = os.path.join(path_storage, publisher.lower(), abbr)
                 if isinstance(year_flag, str) and year_flag.isdigit():
                     for root, _, files in os.walk(path_abbr, topdown=True):
                         files = [f for f in files if f.endswith(".bib")]
@@ -134,15 +134,17 @@ def generate_from_bibs_and_write(
         for publisher in publisher_abbr_dict:
             print(f"*** Combining papers for {publisher.upper()} ***")
             pp = os.path.join(path_output, publisher.lower())
-            absolute_path = f"{path_root}/{publisher}" if len(path_root) > 0 else ""
+            absolute_path = os.path.join(path_root, publisher) if len(path_root) > 0 else ""
 
             link = [f"# {publisher.upper()}\n\n"]
             for abbr in publisher_abbr_dict[publisher]:
                 if os.path.exists(os.path.join(pp, abbr, f"{abbr}.html")):
-                    link.append(f"- [{abbr}]({absolute_path}/{abbr}/{abbr}.html)\n")
+                    ll = os.path.join(absolute_path, abbr, f"{abbr}.html")
+                    link.append(f"- [{abbr}]({ll})\n")
 
             if combine_flag:
-                link.insert(1, f"- [All Journals]({absolute_path}/{publisher}_all.html)\n")
+                ll = os.path.join(absolute_path, f"{publisher}_all.html")
+                link.insert(1, f"- [All Journals]({ll})\n")
 
             # Process combined content
             if len(link) > 1:
