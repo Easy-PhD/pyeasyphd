@@ -14,9 +14,10 @@ from pyadvtools import (
     standard_path,
     write_list,
 )
+from pybibtexer.bib.bibtexparser import Library
+from pybibtexer.main import PythonRunBib
 
-from ...bib.bibtexparser import Library
-from ...main import BasicInput, PythonRunBib
+from ...main import BasicInput
 from .search_base import SearchInitialResult
 from .search_writers import WriteAbbrCombinedResults
 from .utils import keywords_type_for_title, switch_keywords_list, switch_keywords_type
@@ -95,7 +96,7 @@ class SearchResultsCore(BasicInput):
         self.deepcopy_library_for_every_keywords = options.get("deepcopy_library_for_every_keywords", False)
 
         # for bib
-        self._python_bib = PythonRunBib(options)
+        self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, options)
 
     def optimize(self, search_year_list: List[str] = []) -> Dict[str, Dict[str, Dict[str, Dict[str, int]]]]:
         search_year_list = list(set([str(i) for i in search_year_list]))

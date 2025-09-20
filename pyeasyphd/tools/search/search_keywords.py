@@ -10,10 +10,10 @@ from pyadvtools import (
     standard_path,
     write_list,
 )
+from pybibtexer.tools.experiments_base import generate_standard_publisher_abbr_options_dict
 
 from ...main import PandocMdTo
 from ...utils.utils import html_head, html_style, html_tail
-from ..experiments_base import generate_standard_publisher_abbr_options_dict
 from .data import obtain_search_keywords
 from .search_core import SearchResultsCore
 from .utils import extract_information, temp_html_style

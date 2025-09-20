@@ -7,9 +7,10 @@ from pyadvtools import (
     read_list,
     write_list,
 )
+from pybibtexer.bib.bibtexparser import Library
+from pybibtexer.main import PythonWriters
 
-from ...bib.bibtexparser import Library
-from ...main import PandocMdTo, PythonWriters
+from ...main import BasicInput, PandocMdTo
 from ...tools.search.utils import (
     combine_keywords_for_file_name,
     combine_keywords_for_title,
@@ -17,7 +18,7 @@ from ...tools.search.utils import (
 )
 
 
-class WriteInitialResult(object):
+class WriteInitialResult(BasicInput):
     """Write initial results for single keyword.
 
     Args:
@@ -28,6 +29,8 @@ class WriteInitialResult(object):
     """
 
     def __init__(self, options: dict) -> None:
+        super().__init__(options)
+
         self.options = options
 
         self._level_title_md = "###"
@@ -53,7 +56,7 @@ class WriteInitialResult(object):
         # update options
         _options = copy.deepcopy(self.options)
         _options["keep_entries_by_cite_keys"] = cite_keys
-        _python_writer = PythonWriters(_options)
+        _python_writer = PythonWriters(self.full_json_c, self.full_json_j, _options)
 
         # generate tex and md data
         data_list_tex, data_list_md, header = self.generate_content_tex_md(
@@ -112,7 +115,7 @@ class WriteInitialResult(object):
 
         # library
         _options = copy.deepcopy(self.options)
-        _python_writer = PythonWriters(_options)
+        _python_writer = PythonWriters(self.full_json_c, self.full_json_j, _options)
         key_url_http_bib_dict = _python_writer.output_key_url_http_bib_dict(library_for_zotero)
 
         key_basic_dict, key_beauty_dict, key_complex_dict = self._pandoc_md_to.generate_key_data_dict(

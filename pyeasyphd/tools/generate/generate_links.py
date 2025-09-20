@@ -8,12 +8,13 @@ from typing import Dict, List
 from pyadvtools import standard_path
 
 
-class PaperLinksGenerator:
+class PaperLinksGenerator(object):
     """Generate markdown files with paper links from JSON data."""
 
     def __init__(
         self,
-        json_base_path: str,
+        full_json_c: str,
+        full_json_j: str,
         data_base_path: str,
         keywords_category_name: str = "",
         display_year_period: int = 10,
@@ -25,7 +26,9 @@ class PaperLinksGenerator:
             json_base_path: Path to JSON files directory
             data_base_path: Path to data files directory
         """
-        self.json_base_path = standard_path(json_base_path)
+        self.full_json_c = full_json_c
+        self.full_json_j = full_json_j
+
         self.data_base_path = standard_path(data_base_path)
 
         # Process keyword category name and load data
@@ -115,7 +118,13 @@ class PaperLinksGenerator:
     def _load_json_data(self, file_name: str) -> Dict:
         """Load JSON data from file."""
         try:
-            file_path = os.path.join(self.json_base_path, f"{file_name}.json")
+            if file_name.lower().strip() == "conferences":
+                file_path = os.path.expanduser(self.full_json_c)
+            elif file_name.lower().strip() == "journals":
+                file_path = os.path.expanduser(self.full_json_j)
+            else:
+                file_path = ""
+
             if not os.path.exists(file_path):
                 return {}
 

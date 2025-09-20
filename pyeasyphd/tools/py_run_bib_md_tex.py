@@ -3,15 +3,11 @@ import re
 import shutil
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pyadvtools import (
-    combine_content_in_list,
-    read_list,
-    standard_path,
-    write_list,
-)
+from pyadvtools import combine_content_in_list, read_list, standard_path, write_list
+from pybibtexer.bib.bibtexparser import Library
+from pybibtexer.main import PythonRunBib, PythonWriters
 
-from ..bib.bibtexparser import Library
-from ..main import BasicInput, PythonRunBib, PythonRunMd, PythonRunTex, PythonWriters
+from ..main import BasicInput, PythonRunMd, PythonRunTex
 
 
 class PyRunBibMdTex(BasicInput):
@@ -69,10 +65,11 @@ class PyRunBibMdTex(BasicInput):
         self.delete_original_bib_in_output_folder = options.get("delete_original_bib_in_output_folder", False)
 
         # Initialize helper classes
-        self._python_bib = PythonRunBib(self.options)
+        self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, self.options)
+        self._python_writer = PythonWriters(self.full_json_c, self.full_json_j, self.options)
+
         self._python_md = PythonRunMd(self.options)
         self._python_tex = PythonRunTex(self.options)
-        self._python_writer = PythonWriters(self.options)
 
     def run_files(
         self, file_list_md_tex: List[str], output_prefix: str = "", output_level: str = "next"
@@ -206,8 +203,10 @@ class PyRunBibMdTex(BasicInput):
 
             # Write bibliography files
             _path_output = os.path.join(self.path_output, self.bib_folder_name)
-            full_bib_for_abbr, full_bib_for_zotero, full_bib_for_save = self._python_writer.write_multi_library_to_file(
-                _path_output, abbr_library, zotero_library, save_library, key_in_md_tex
+            full_bib_for_abbr, full_bib_for_zotero, full_bib_for_save = (
+                self._python_writer.write_multi_library_to_multi_file(
+                    _path_output, abbr_library, zotero_library, save_library, key_in_md_tex
+                )
             )
 
         # Process content based on format

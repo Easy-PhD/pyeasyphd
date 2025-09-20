@@ -11,11 +11,11 @@ from pyadvtools import (
     read_list,
     write_list,
 )
+from pybibtexer.bib.core import ConvertStrToLibrary
+from pybibtexer.main.python_writers import PythonWriters
 
-from ..bib.core import ConvertStrToLibrary
 from .basic_input import BasicInput
 from .pandoc_md_to import PandocMdTo
-from .python_writers import PythonWriters
 
 
 class PythonRunMd(BasicInput):
@@ -135,7 +135,7 @@ class PythonRunMd(BasicInput):
         _options = {}
         _options.update(self.options)
         _options["add_index_to_enties"] = False
-        _python_writers = PythonWriters(_options)
+        _python_writers = PythonWriters(self.full_json_c, self.full_json_j, _options)
         key_url_http_bib_dict = _python_writers.output_key_url_http_bib_dict(library)
 
         content_md = []

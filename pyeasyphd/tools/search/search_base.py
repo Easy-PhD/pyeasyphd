@@ -2,8 +2,10 @@ import copy
 import re
 from typing import Dict, List, Tuple
 
-from ...bib.bibtexparser import Library
-from ...main import PythonRunBib, PythonWriters
+from pybibtexer.bib.bibtexparser import Library
+from pybibtexer.main import PythonRunBib, PythonWriters
+
+from ...main import BasicInput
 from .search_writers import WriteInitialResult, WriteSeparateResult
 
 
@@ -33,7 +35,7 @@ def search_keywords_core(keywords_list_list: List[List[str]], library: Library, 
     return Library(search_library), Library(no_search_library)
 
 
-class SearchInitialResult(object):
+class SearchInitialResult(BasicInput):
     """Search initial result.
 
     Args:
@@ -48,16 +50,17 @@ class SearchInitialResult(object):
 
     def __init__(self, options: dict) -> None:
         self.options = options
+        super().__init__(options)
 
         self.print_on_screen: bool = options.get("print_on_screen", False)
         self.deepcopy_library_for_every_field = options.get("deepcopy_library_for_every_field", False)
 
-        self._python_bib = PythonRunBib(options)
+        self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, options)
 
         _options = {}
         _options["empty_entry_cite_keys"] = True
         _options.update(self.options)
-        self._python_writer = PythonWriters(_options)
+        self._python_writer = PythonWriters(self.full_json_c, self.full_json_j, _options)
 
     def main(
         self,
