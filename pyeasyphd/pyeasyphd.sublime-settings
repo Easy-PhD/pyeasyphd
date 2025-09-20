@@ -46,14 +46,18 @@
     ],
 
     // pyeasyphd/tools/python_run_latex_md.py
-    // true, false
-    "generate_html": false,
+    // Path to bibliographic data, can be either a directory path or a specific file path
+    "bib_path_or_file": "",
 
-    // true, false
-    "generate_tex": true,
-
+    // Path to the figures directory (must be a directory path, not a file)
+    "figures_directory": "",
     // ture, false
     "shutil_figures": true,
+
+    // true, false
+    "generate_html": false,
+    // true, false
+    "generate_tex": true,
 
     // for figure, bib, tex, and md
     "figure_folder_name": "fig", // "" or "figs" or "main"

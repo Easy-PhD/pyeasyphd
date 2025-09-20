@@ -18,7 +18,11 @@ class PyRunBibMdTex(BasicInput):
     """
 
     def __init__(
-        self, path_output: str, tex_md_flag: str = ".md", template_name: str = "paper", options: Dict[str, Any] = {}
+        self,
+        path_output: str,
+        tex_md_flag: str = ".md",
+        template_name: str = "paper",
+        options: Dict[str, Any] = {}
     ) -> None:
         """Initialize the PyRunBibMdTex instance.
 
@@ -39,13 +43,18 @@ class PyRunBibMdTex(BasicInput):
         assert self.template_name in ["paper", "beamer"], f"{template_name} must be `paper` or `beamer`."
         self.path_output = standard_path(path_output)
 
-        self.path_bibs = ""
-        self.path_figures = ""
+        # Bib
+        # Path to bibliographic data, can be either a directory path or a specific file path
+        self.bib_path_or_file = options.get("bib_path_or_file", "")
+
+        # Figures
+        # Path to the figures directory (must be a directory path, not a file)
+        self.figures_directory = options.get("figures_directory", "")
+        self.shutil_figures = options.get("shutil_figures", True)
 
         # Configuration options
         self.generate_html = options.get("generate_html", False)
         self.generate_tex = options.get("generate_tex", True)
-        self.shutil_figures = options.get("shutil_figures", True)
 
         # Folder name configurations
         self.figure_folder_name = options.get("figure_folder_name", "fig")  # "" or "figs" or "main"
@@ -89,7 +98,7 @@ class PyRunBibMdTex(BasicInput):
         data_list_md_tex = combine_content_in_list(data_list_list, ["\n"])
 
         content_md, content_tex = self.python_run_bib_md_tex(
-            output_prefix, data_list_md_tex, self.path_bibs, output_level
+            output_prefix, data_list_md_tex, self.bib_path_or_file, output_level
         )
         return content_md, content_tex
 
@@ -161,7 +170,7 @@ class PyRunBibMdTex(BasicInput):
         # Copy figures if enabled
         if self.shutil_figures:
             figure_names = self.search_figure_names(data_list_md_tex)
-            self.shutil_copy_figures(self.figure_folder_name, self.path_figures, figure_names, self.path_output)
+            self.shutil_copy_figures(self.figure_folder_name, self.figures_directory, figure_names, self.path_output)
 
         # Extract citation keys from content
         key_in_md_tex = self.search_cite_keys(data_list_md_tex, self.tex_md_flag)
