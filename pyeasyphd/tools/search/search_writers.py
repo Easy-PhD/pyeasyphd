@@ -2,20 +2,12 @@ import copy
 import os
 from typing import Dict, List, Tuple
 
-from pyadvtools import (
-    combine_content_in_list,
-    read_list,
-    write_list,
-)
+from pyadvtools import combine_content_in_list, read_list, write_list
 from pybibtexer.bib.bibtexparser import Library
 from pybibtexer.main import PythonWriters
 
 from ...main import BasicInput, PandocMdTo
-from ...tools.search.utils import (
-    combine_keywords_for_file_name,
-    combine_keywords_for_title,
-    keywords_type_for_title,
-)
+from ...tools.search.utils import combine_keywords_for_file_name, combine_keywords_for_title, keywords_type_for_title
 
 
 class WriteInitialResult(BasicInput):
@@ -76,7 +68,7 @@ class WriteInitialResult(BasicInput):
         # update options
         _options = copy.deepcopy(self.options)
         _options["keep_entries_by_cite_keys"] = cite_keys
-        _python_writer = PythonWriters(self.full_json_c, self.full_json_j, _options)
+        _python_writer = PythonWriters(_options)
 
         # generate tex and md data
         data_list_tex, data_list_md, header = self.generate_content_tex_md(
@@ -98,11 +90,7 @@ class WriteInitialResult(BasicInput):
         # pandoc md to generate md file
         path_bib = os.path.join(path_write, f"{file_prefix}{mid_list[2]}.bib")  # bib_for_abbr
         data_list_pandoc_md = self._pandoc_md_to.pandoc_md_to_md(
-            path_bib,
-            path_write,
-            path_write,
-            f"{file_prefix}.md",
-            f"{file_prefix}-pandoc.md",
+            path_bib, path_write, path_write, f"{file_prefix}.md", f"{file_prefix}-pandoc.md"
         )
 
         # mian part
@@ -146,7 +134,7 @@ class WriteInitialResult(BasicInput):
 
         # library
         _options = copy.deepcopy(self.options)
-        _python_writer = PythonWriters(self.full_json_c, self.full_json_j, _options)
+        _python_writer = PythonWriters(_options)
         key_url_http_bib_dict = _python_writer.output_key_url_http_bib_dict(library_for_zotero)
 
         key_basic_dict, key_beauty_dict, key_complex_dict = self._pandoc_md_to.generate_key_data_dict(
@@ -224,7 +212,7 @@ class WriteSeparateResult(object):
         self, data_temp: List[List[str]], field: str, keywords_type: str, combine_keywords: str, path_separate: str
     ) -> None:
         """Main method to write separate results.
-        
+
         Args:
             data_temp (List[List[str]]): List of data lists for different file types.
             field (str): Field being processed.
@@ -275,7 +263,7 @@ class WriteAbbrCombinedResults(object):
 
     def __init__(self, options: dict) -> None:
         """Initialize WriteAbbrCombinedResults with configuration options.
-        
+
         Args:
             options (dict): Configuration options.
         """
@@ -294,13 +282,13 @@ class WriteAbbrCombinedResults(object):
         self, search_field_list, keywords_type: str, field_data_dict: Dict[str, List[List[str]]], path_combine: str
     ) -> Tuple[List[str], List[str]]:
         """Main method to write combined results for abbreviations.
-        
+
         Args:
             search_field_list: List of search fields.
             keywords_type (str): Type of keywords.
             field_data_dict (Dict[str, List[List[str]]]): Dictionary containing field data.
             path_combine (str): Path to combine directory.
-            
+
         Returns:
             Tuple[List[str], List[str]]: Tuple containing error messages for PDF and HTML conversion.
         """
@@ -358,7 +346,7 @@ class WriteAbbrCombinedResults(object):
                         os.path.join(path_combine, f"html-{i}"),
                         f"{file_prefix}-{i}.md",
                         f"{file_prefix}-{i}.html",
-                        True
+                        True,
                     )
                     if error_flag_html:
                         error_pandoc_md_html.append(error_flag_html)

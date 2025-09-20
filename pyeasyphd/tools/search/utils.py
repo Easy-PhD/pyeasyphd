@@ -2,12 +2,7 @@ import os
 import re
 from typing import Dict, List, Tuple, Union
 
-from pyadvtools import (
-    IterateSortDict,
-    is_list_contain_list_contain_str,
-    is_list_contain_str,
-    write_list,
-)
+from pyadvtools import IterateSortDict, is_list_contain_list_contain_str, is_list_contain_str, write_list
 
 
 def switch_keywords_list(xx: Union[List[str], List[List[str]]]) -> Tuple[List[List[str]], str]:

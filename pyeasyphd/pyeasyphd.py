@@ -62,13 +62,13 @@ class PypapersCommand(sublime_plugin.WindowCommand):
                 options[key] = os.path.expandvars(os.path.expanduser(options[key]))
 
         if delete_cache:
-            file_path = vars_dict['file_path']
+            file_path = vars_dict["file_path"]
 
-            if latex_clean_file_types := options.get('latex_clean_file_types', []):
+            if latex_clean_file_types := options.get("latex_clean_file_types", []):
                 postfix = latex_clean_file_types
             else:
-                postfix = ['.aux', '.bbl', '.bcf', '.blg', '.fdb_latexmk', '.fls', '.log', '.out', '.run.xml']
-                postfix.extend(['.synctex.gz', '.gz', '.nav', '.snm', '.toc', '.xdv'])
+                postfix = [".aux", ".bbl", ".bcf", ".blg", ".fdb_latexmk", ".fls", ".log", ".out", ".run.xml"]
+                postfix.extend([".synctex.gz", ".gz", ".nav", ".snm", ".toc", ".xdv"])
 
             delete_files(file_path, postfix)
             delete_files(os.path.dirname(file_path), postfix)
@@ -83,4 +83,4 @@ class PypapersCommand(sublime_plugin.WindowCommand):
             p_r_l_m.run_files([vars_dict["file"]], vars_dict["file_base_name"], output_level)
 
         # display
-        self.window.status_message('Successful.')
+        self.window.status_message("Successful.")

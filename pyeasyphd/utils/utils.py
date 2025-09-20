@@ -1,11 +1,7 @@
 import os
 import re
 
-from pyadvtools import (
-    combine_content_in_list,
-    read_list,
-    write_list,
-)
+from pyadvtools import combine_content_in_list, read_list, write_list
 
 html_head = """<!DOCTYPE html>
 <html>
@@ -55,7 +51,7 @@ def operate_on_generate_html(html_name: str) -> None:
     if not (data_list := read_list(html_name, "r", None)):
         return None
 
-    head_list = [html_head.format(os.path.basename(html_name).split('.')[0].strip()), html_style, "\n"]
+    head_list = [html_head.format(os.path.basename(html_name).split(".")[0].strip()), html_style, "\n"]
     tail_list = [html_tail]
 
     content = "".join(data_list)

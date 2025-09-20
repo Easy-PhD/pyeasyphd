@@ -4,12 +4,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List
 
-from pyadvtools import (
-    generate_nested_dict,
-    read_list,
-    standard_path,
-    write_list,
-)
+from pyadvtools import generate_nested_dict, read_list, standard_path, write_list
 from pybibtexer.tools.experiments_base import generate_standard_publisher_abbr_options_dict
 
 from ...main import PandocMdTo
@@ -203,7 +198,7 @@ class Searchkeywords(object):
                     for file in nested_dict[entry_type][keywords_type][ext]:
                         data_dict.setdefault(os.path.basename(file).split(".")[0], []).append(file)
 
-            data_list = self._html_format(entry_type, data_dict, "Keywords",  "separate")
+            data_list = self._html_format(entry_type, data_dict, "Keywords", "separate")
             write_list(data_list, f"{entry_type.lower()}_links.html", "w", self._path_separate, False)
         return None
 

@@ -27,7 +27,7 @@ def generate_html_from_bib_data(
     path_output: str,
     options: Dict[str, Any] = {},
     full_json_c: str = "",
-    full_json_j: str = ""
+    full_json_j: str = "",
 ) -> List[str]:
     """Generate HTML from bibliography data.
 

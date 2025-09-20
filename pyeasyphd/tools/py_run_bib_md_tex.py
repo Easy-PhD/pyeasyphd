@@ -39,6 +39,9 @@ class PyRunBibMdTex(BasicInput):
         assert self.template_name in ["paper", "beamer"], f"{template_name} must be `paper` or `beamer`."
         self.path_output = standard_path(path_output)
 
+        self.path_bibs = ""
+        self.path_figures = ""
+
         # Configuration options
         self.generate_html = options.get("generate_html", False)
         self.generate_tex = options.get("generate_tex", True)
@@ -56,8 +59,8 @@ class PyRunBibMdTex(BasicInput):
         self.delete_original_bib_in_output_folder = options.get("delete_original_bib_in_output_folder", False)
 
         # Initialize helper classes
-        self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, self.options)
-        self._python_writer = PythonWriters(self.full_json_c, self.full_json_j, self.options)
+        self._python_bib = PythonRunBib(self.options)
+        self._python_writer = PythonWriters(self.options)
 
         self._python_md = PythonRunMd(self.options)
         self._python_tex = PythonRunTex(self.options)

@@ -11,7 +11,7 @@ def generate_library_by_filters(
     year_flag: Union[str, List[str]] = "current_year",  # filter
     options: Dict[str, Any] = {},
     full_json_c: str = "",
-    full_json_j: str = ""
+    full_json_j: str = "",
 ) -> Library:
     """Generate a Library object from input data with given filters.
 
@@ -110,7 +110,7 @@ def _obtain_year_flag_library(
 
 def _obtain_issue_flag_library(
     nested_entries: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, List[Entry]]]]]],
-    issue_flag: str = "current_issue"
+    issue_flag: str = "current_issue",
 ) -> Library:
     """Filter dictionary by issue flag.
 

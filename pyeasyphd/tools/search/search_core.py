@@ -104,7 +104,7 @@ class SearchResultsCore(BasicInput):
         self.deepcopy_library_for_every_keywords = options.get("deepcopy_library_for_every_keywords", False)
 
         # for bib
-        self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, options)
+        self._python_bib = PythonRunBib(options)
 
     def optimize(self, search_year_list: List[str] = []) -> Dict[str, Dict[str, Dict[str, Dict[str, int]]]]:
         """Optimize search results for given years.
@@ -229,13 +229,7 @@ class SearchResultsCore(BasicInput):
         keyword_field_number_dict_ = {}
         for field in self.search_field_list:
             keyword_field_number_dict, no_search_library = self.core_optimize(
-                [field],
-                keywords_type,
-                no_search_library,
-                output_prefix,
-                p_origin,
-                p_separate,
-                p_combine,
+                [field], keywords_type, no_search_library, output_prefix, p_origin, p_separate, p_combine
             )
 
             if self.deepcopy_library_for_every_field:
@@ -262,13 +256,7 @@ class SearchResultsCore(BasicInput):
         no_search_library = library
 
         keyword_field_number_dict, no_search_library = self.core_optimize(
-            self.search_field_list,
-            keywords_type,
-            no_search_library,
-            output_prefix,
-            p_origin,
-            p_separate,
-            p_combine,
+            self.search_field_list, keywords_type, no_search_library, output_prefix, p_origin, p_separate, p_combine
         )
         return keyword_field_number_dict
 

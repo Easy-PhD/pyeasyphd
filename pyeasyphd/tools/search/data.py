@@ -66,10 +66,7 @@ def obtain_search_keywords() -> Dict[str, Any]:
         [moea_d],
         [nsga],
         [f"multi{_h_}objective optimization"],
-        [
-            [f"multi{_h_}objective", "optimization"],
-            [f"multi{_h_}objective optimization"],
-        ],
+        [[f"multi{_h_}objective", "optimization"], [f"multi{_h_}objective optimization"]],
         [[f"multi{_h_}objective"], ["optimization"]],
         [f"multi{_h_}model optimization"],
         [[f"multi{_h_}model", "optimization"], [f"multi{_h_}model optimization"]],
@@ -79,36 +76,15 @@ def obtain_search_keywords() -> Dict[str, Any]:
         [[f"many{_h_}objective"], ["optimization"]],
         [f"dynamic multi{_h_}objective"],
         [f"dynamic {evol} multi{_h_}objective"],
-        [
-            ["dynamic", f"multi{_h_}objective"],
-            [
-                f"dynamic multi{_h_}objective",
-                f"dynamic {evol} multi{_h_}objective"
-            ]
-        ],
+        [["dynamic", f"multi{_h_}objective"], [f"dynamic multi{_h_}objective", f"dynamic {evol} multi{_h_}objective"]],
         [f"dynamic multi{_h_}model"],
         [["dynamic", f"multi{_h_}model"], [f"dynamic multi{_h_}model"]],
         [f"dynamic many{_h_}objective"],
         [f"dynamic {evol} many{_h_}objective"],
-        [
-            ["dynamic", f"many{_h_}objective"],
-            [
-                f"dynamic many{_h_}objective",
-                f"dynamic {evol} many{_h_}objective",
-            ]
-        ],
+        [["dynamic", f"many{_h_}objective"], [f"dynamic many{_h_}objective", f"dynamic {evol} many{_h_}objective"]],
         ["dynamic", "optimization"],
         ["dynamic", network],
-        [
-            ["dynamic"],
-            [
-                f"multi{_h_}objective",
-                f"multi{_h_}model",
-                f"many{_h_}objective",
-                "optimization",
-                network,
-            ],
-        ],
+        [["dynamic"], [f"multi{_h_}objective", f"multi{_h_}model", f"many{_h_}objective", "optimization", network]],
         [f"{uncertain} optimization"],
         [[uncertain, "optimization"], [f"{uncertain} optimization"]],
         [[uncertain], ["optimization"]],
@@ -162,12 +138,7 @@ def obtain_search_keywords() -> Dict[str, Any]:
         ["active", "learning"],
         [
             ["supervised", "learning"],
-            [
-                f"semi{_h_}supervised",
-                f"self{_h_}supervised",
-                f"weakly{_h_}supervised",
-                "unsupervised",
-            ],
+            [f"semi{_h_}supervised", f"self{_h_}supervised", f"weakly{_h_}supervised", "unsupervised"],
         ],
         ["reinforcement", "learning", f"on{_h_}policy"],
         ["reinforcement", "learning", f"off{_h_}policy"],
@@ -178,15 +149,7 @@ def obtain_search_keywords() -> Dict[str, Any]:
         ["reinforcement", "learning", evol],
         [
             ["reinforcement", "learning"],
-            [
-                "offline",
-                f"on{_h_}policy",
-                f"off{_h_}policy",
-                f"model{_h_}based",
-                "deep",
-                "continual",
-                evol,
-            ],
+            ["offline", f"on{_h_}policy", f"off{_h_}policy", f"model{_h_}based", "deep", "continual", evol],
         ],
         ["policy", "search"],
         [["policy"], ["policy", "search"]],
@@ -299,10 +262,7 @@ def obtain_search_keywords() -> Dict[str, Any]:
         ["upper", bound],
         ["lower", bound],
         [[converg], [evol, "swarm", "colony", "genetic", analy]],
-        [
-            ["time"],
-            [evol, "swarm", "colony", "genetic", analy, "hitting", computation, run],
-        ],
+        [["time"], [evol, "swarm", "colony", "genetic", analy, "hitting", computation, run]],
         [[theor], [evol, "swarm", "colony", "genetic", analy]],
         [[bound], [evol, "swarm", "colony", "genetic", analy, "upper", "lower"]],
         [["complexity"], [evol, "swarm", "colony", "genetic", analy]],

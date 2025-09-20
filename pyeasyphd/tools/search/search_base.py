@@ -68,12 +68,12 @@ class SearchInitialResult(BasicInput):
         self.print_on_screen: bool = options.get("print_on_screen", False)
         self.deepcopy_library_for_every_field = options.get("deepcopy_library_for_every_field", False)
 
-        self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, options)
+        self._python_bib = PythonRunBib(options)
 
         _options = {}
         _options["empty_entry_cite_keys"] = True
         _options.update(self.options)
-        self._python_writer = PythonWriters(self.full_json_c, self.full_json_j, _options)
+        self._python_writer = PythonWriters(_options)
 
     def main(
         self,
