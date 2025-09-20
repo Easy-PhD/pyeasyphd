@@ -10,7 +10,16 @@ from .search_writers import WriteInitialResult, WriteSeparateResult
 
 
 def search_keywords_core(keywords_list_list: List[List[str]], library: Library, field: str) -> Tuple[Library, Library]:
-    """Search keywords in `field` such as `title` or `abstract` or `keywords`."""
+    """Search keywords in specified field such as title, abstract, or keywords.
+
+    Args:
+        keywords_list_list (List[List[str]]): List of keyword lists to search for.
+        library (Library): Bibliography library to search.
+        field (str): Field to search in (e.g., 'title', 'abstract', 'keywords').
+
+    Returns:
+        Tuple[Library, Library]: Tuple containing (matching_library, non_matching_library).
+    """
     search_library = []
     no_search_library = []
 
@@ -36,19 +45,23 @@ def search_keywords_core(keywords_list_list: List[List[str]], library: Library, 
 
 
 class SearchInitialResult(BasicInput):
-    """Search initial result.
+    """Class for searching and processing initial results.
 
     Args:
-        options: dict
+        options (dict): Configuration options.
 
     Attributes:
-        options: dict
-
-        print_on_screen (bool = False): print on screen
-        deepcopy_library_for_every_field (bool = False): deepcopy library for every field
+        options (dict): Configuration options.
+        print_on_screen (bool): Whether to print results on screen. Defaults to False.
+        deepcopy_library_for_every_field (bool): Whether to deep copy library for every field. Defaults to False.
     """
 
     def __init__(self, options: dict) -> None:
+        """Initialize SearchInitialResult with configuration options.
+
+        Args:
+            options (dict): Configuration options.
+        """
         self.options = options
         super().__init__(options)
 
@@ -73,7 +86,21 @@ class SearchInitialResult(BasicInput):
         output_prefix: str,
         path_separate: str,
     ) -> Tuple[List[str], Dict[str, List[List[str]]], Dict[str, int], Library]:
-        """Search."""
+        """Main search method for processing search results.
+
+        Args:
+            search_field_list (List[str]): List of fields to search.
+            path_initial (str): Path to initial directory.
+            library (Library): Bibliography library to search.
+            keywords_type (str): Type of keywords being searched.
+            keywords_list_list (List[List[str]]): List of keyword lists.
+            combine_keywords (str): Combined keywords string.
+            output_prefix (str): Prefix for output files.
+            path_separate (str): Path to separate directory.
+
+        Returns:
+            Tuple[List[str], Dict[str, List[List[str]]], Dict[str, int], Library]: Tuple containing error messages, field data, field numbers, and remaining library.
+        """
         error_pandoc_md_md, field_data_dict, no_search_library = [], {}, library
         field_number_dict: Dict[str, int] = {}
 

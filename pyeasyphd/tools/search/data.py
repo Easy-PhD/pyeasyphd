@@ -2,7 +2,11 @@ from typing import Any, Dict
 
 
 def obtain_search_keywords() -> Dict[str, Any]:
-    """Keywords."""
+    """Obtain search keywords dictionary.
+
+    Returns:
+        Dict[str, Any]: Dictionary containing categorized search keywords.
+    """
     _h_ = "(?:| |-)"  # hyphen
 
     evol = "evol(?:ution|utionary)"  # 'evol(?:ution|utionary|ve|ved|ving)'

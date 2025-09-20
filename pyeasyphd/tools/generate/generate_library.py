@@ -15,25 +15,16 @@ def generate_library_by_filters(
 ) -> Library:
     """Generate a Library object from input data with given filters.
 
-    Parameters
-    ----------
-    original_data : Union[List[str], str, Library]
-        Input bibliography data
-    issue_or_month_flag : Union[str, List[str]]
-        Flag for issue/month selection
-    year_flag : Union[str, List[str]], optional
-        Flag for year selection, by default "current_year"
-    options : Dict[str, Any], optional
-        Additional options, by default {}
-    full_json_c : str, optional
-        JSON configuration for conference proceedings, by default "".
-    full_json_j : str, optional
-        JSON configuration for journal articles, by default "".
+    Args:
+        original_data (Union[List[str], str, Library]): Input bibliography data.
+        issue_or_month_flag (Union[str, List[str]]): Flag for issue/month selection.
+        year_flag (Union[str, List[str]], optional): Flag for year selection. Defaults to "current_year".
+        options (Dict[str, Any], optional): Additional options. Defaults to {}.
+        full_json_c (str, optional): JSON configuration for conference proceedings. Defaults to "".
+        full_json_j (str, optional): JSON configuration for journal articles. Defaults to "".
 
-    Returns
-    -------
-    Library
-        Processed library object
+    Returns:
+        Library: Processed library object.
     """
     _options = {}
     # convert_str_to_library
@@ -87,7 +78,15 @@ def _obtain_year_flag_library(
     nested_entries: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, List[Entry]]]]]],
     year_flag: Union[str, List[str]] = "current_year",
 ):
-    """Filter dict by year flag."""
+    """Filter dictionary by year flag.
+
+    Args:
+        nested_entries: Nested dictionary containing bibliography entries.
+        year_flag (Union[str, List[str]], optional): Year filter flag. Defaults to "current_year".
+
+    Returns:
+        Dict: Filtered dictionary by year.
+    """
     new_dict = {}
     for entry_type in nested_entries:
         years = [year for year in nested_entries[entry_type]]
@@ -113,7 +112,15 @@ def _obtain_issue_flag_library(
     nested_entries: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, List[Entry]]]]]],
     issue_flag: str = "current_issue"
 ) -> Library:
-    """Filter dict by issue flag."""
+    """Filter dictionary by issue flag.
+
+    Args:
+        nested_entries: Nested dictionary containing bibliography entries.
+        issue_flag (str, optional): Issue filter flag. Defaults to "current_issue".
+
+    Returns:
+        Library: Filtered library object.
+    """
     nested_entries = IterateSortDict(True).dict_update(nested_entries)
 
     entries = []
@@ -149,7 +156,15 @@ def _obtain_month_flag_library(
     nested_entries: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, List[Entry]]]]]],
     month_flag: Union[str, List[str]] = "current_month",
 ) -> Library:
-    """Filter dict by month flag."""
+    """Filter dictionary by month flag.
+
+    Args:
+        nested_entries: Nested dictionary containing bibliography entries.
+        month_flag (Union[str, List[str]], optional): Month filter flag. Defaults to "current_month".
+
+    Returns:
+        Library: Filtered library object.
+    """
     new_dict = {}
     for entry_type in nested_entries:
         for year in nested_entries[entry_type]:

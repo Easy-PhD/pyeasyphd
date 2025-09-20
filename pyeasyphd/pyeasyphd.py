@@ -8,7 +8,12 @@ from pyeasyphd.tools.py_run_bib_md_tex import PyRunBibMdTex
 
 
 def delete_files(path_storage: str, extensions) -> None:
-    """Delete."""
+    """Delete files with specified extensions from storage path.
+
+    Args:
+        path_storage (str): Path to the storage directory.
+        extensions: List of file extensions to delete.
+    """
     for name in os.listdir(path_storage):
         for ext in extensions:
             if name.endswith(ext) and os.path.isfile(os.path.join(path_storage, name)):
@@ -16,7 +21,16 @@ def delete_files(path_storage: str, extensions) -> None:
 
 
 class PypapersCommand(sublime_plugin.WindowCommand):
+    """Sublime Text command for processing papers with various templates."""
+
     def run(self, template="Paper", output_level="next", delete_cache=False):
+        """Run the paper processing command.
+
+        Args:
+            template (str, optional): Template type to use. Defaults to "Paper".
+            output_level (str, optional): Output level for processing. Defaults to "next".
+            delete_cache (bool, optional): Whether to delete cache files. Defaults to False.
+        """
         vars_dict = self.window.extract_variables()
 
         packages_path = vars_dict["packages"]

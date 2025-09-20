@@ -20,22 +20,28 @@ from .utils import extract_information, temp_html_style
 
 
 class Searchkeywords(object):
-    """Search.
+    """Search keywords in bibliography data.
 
     Args:
-        path_storage (str): the path of storage journals or conferences
-        path_output (str): the path of output journals or conferences
-        options (dict): options
+        path_storage (str): Path to storage directory for journals or conferences.
+        path_output (str): Path to output directory for journals or conferences.
+        options (dict): Configuration options.
 
     Attributes:
-        path_storage (str): the path of storage
-        path_output (str): the path of output
-        options (dict): options
-
-        search_year_list (List[str] = []): search year list
+        path_storage (str): Path to storage directory.
+        path_output (str): Path to output directory.
+        options (dict): Configuration options.
+        search_year_list (List[str]): List of years to search. Defaults to [].
     """
 
     def __init__(self, path_storage: str, path_output: str, options: Dict[str, Any]) -> None:
+        """Initialize Searchkeywords with storage and output paths.
+
+        Args:
+            path_storage (str): Path to storage directory.
+            path_output (str): Path to output directory.
+            options (Dict[str, Any]): Configuration options.
+        """
         self.path_storage = standard_path(path_storage)
         self.path_output = standard_path(path_output)
 
@@ -64,6 +70,7 @@ class Searchkeywords(object):
         self._path_combine = self.path_output + "-Combine"
 
     def run(self) -> None:
+        """Run the keyword search process."""
         all_dict = {}
         publisher_abbr_dict = generate_standard_publisher_abbr_options_dict(self.path_storage, self.options)
         for publisher in publisher_abbr_dict:

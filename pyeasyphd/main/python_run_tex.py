@@ -14,18 +14,23 @@ from .basic_input import BasicInput
 
 
 class PythonRunTex(BasicInput):
-    """Python tex.
+    """Python LaTeX processing class.
 
     Args:
-        options (Dict[str, Any]): Options.
+        options (Dict[str, Any]): Configuration options.
 
     Attributes:
-        run_latex (bool = False): Whether to run latex.
-        pdflatex_xelatex (str = "pdflatex"): pdflatex or xelatex.
-        delete_run_latex_cache (bool = True): Whether to delete run latex cache.
+        run_latex (bool): Whether to run LaTeX compilation. Defaults to False.
+        pdflatex_xelatex (str): LaTeX engine to use ('pdflatex' or 'xelatex'). Defaults to "pdflatex".
+        delete_run_latex_cache (bool): Whether to delete LaTeX cache files. Defaults to True.
     """
 
     def __init__(self, options: Dict[str, Any]) -> None:
+        """Initialize PythonRunTex with configuration options.
+
+        Args:
+            options (Dict[str, Any]): Configuration options.
+        """
         super().__init__(options)
 
         # for tex
@@ -46,6 +51,21 @@ class PythonRunTex(BasicInput):
         bib_name: str = "abbr.bib",
         template_name: str = "article",
     ) -> List[str]:
+        """Generate standard LaTeX data list with proper formatting.
+
+        Args:
+            data_list_body (List[str]): List of body content strings.
+            output_tex_name (str): Name of output LaTeX file.
+            path_output (str): Path to output directory.
+            figure_folder_name (str, optional): Name of figures folder. Defaults to "figs".
+            tex_folder_name (str, optional): Name of LaTeX folder. Defaults to "tex".
+            bib_folder_name (str, optional): Name of bibliography folder. Defaults to "bib".
+            bib_name (str, optional): Name of bibliography file. Defaults to "abbr.bib".
+            template_name (str, optional): Name of template to use. Defaults to "article".
+
+        Returns:
+            List[str]: List of processed LaTeX content strings.
+        """
         # for figures
         for i in range(len(data_list_body)):
             if re.search(r"\\includegraphics", data_list_body[i]):
@@ -58,7 +78,6 @@ class PythonRunTex(BasicInput):
         )
         return data_list_body
 
-    # for tex files
     def _special_operate_tex(
         self,
         data_list_body: List[str],
@@ -69,6 +88,17 @@ class PythonRunTex(BasicInput):
         bib_folder_name: str,
         bib_name: str,
     ) -> None:
+        """Perform special operations on LaTeX files.
+
+        Args:
+            data_list_body (List[str]): List of body content strings.
+            template_name (str): Name of template to use.
+            output_tex_name (str): Name of output LaTeX file.
+            path_output (str): Path to output directory.
+            tex_folder_name (str): Name of LaTeX folder.
+            bib_folder_name (str): Name of bibliography folder.
+            bib_name (str): Name of bibliography file.
+        """
         # read template data
         template_h, template_t = [], []
         if template_name.lower() == "paper":

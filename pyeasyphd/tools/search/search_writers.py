@@ -22,13 +22,18 @@ class WriteInitialResult(BasicInput):
     """Write initial results for single keyword.
 
     Args:
-        options: dict
+        options (dict): Configuration options.
 
     Attributes:
-        options (dict): options
+        options (dict): Configuration options.
     """
 
     def __init__(self, options: dict) -> None:
+        """Initialize WriteInitialResult with configuration options.
+
+        Args:
+            options (dict): Configuration options.
+        """
         super().__init__(options)
 
         self.options = options
@@ -48,6 +53,21 @@ class WriteInitialResult(BasicInput):
         library_for_zotero: Library,
         library_for_save: Library,
     ) -> Tuple[List[List[str]], List[str]]:
+        """Main method to write initial results.
+
+        Args:
+            path_initial (str): Path to initial directory.
+            output_prefix (str): Prefix for output files.
+            field (str): Field being searched.
+            keywords_type (str): Type of keywords.
+            combine_keywords (str): Combined keywords string.
+            library_for_abbr (Library): Abbreviated bibliography library.
+            library_for_zotero (Library): Zotero bibliography library.
+            library_for_save (Library): Save bibliography library.
+
+        Returns:
+            Tuple[List[List[str]], List[str]]: Tuple containing data and error messages.
+        """
         error_pandoc_md_md = []
 
         # generate
@@ -111,6 +131,17 @@ class WriteInitialResult(BasicInput):
     def generate_basic_beauty_complex_md(
         self, header: str, cite_key_list: List[str], data_list_pandoc_md: List[str], library_for_zotero: Library
     ) -> Tuple[List[str], List[str], List[str]]:
+        """Generate basic, beauty, and complex markdown content.
+
+        Args:
+            header (str): Header string for the content.
+            cite_key_list (List[str]): List of citation keys.
+            data_list_pandoc_md (List[str]): List of pandoc markdown data.
+            library_for_zotero (Library): Zotero bibliography library.
+
+        Returns:
+            Tuple[List[str], List[str], List[str]]: Tuple containing basic, beauty, and complex markdown content.
+        """
         data_basic_md, data_beauty_md, data_complex_md = [], [], []
 
         # library
@@ -136,6 +167,14 @@ class WriteInitialResult(BasicInput):
 
     @staticmethod
     def _convert_to_special_list(data_list: List[str]) -> List[str]:
+        """Convert data list to special formatted list.
+
+        Args:
+            data_list (List[str]): List of data strings.
+
+        Returns:
+            List[str]: Formatted list with proper indentation.
+        """
         if len(data_list) > 0:
             data_list[0] = "- " + data_list[0]
         for j in range(len(data_list) - 1):
@@ -146,7 +185,17 @@ class WriteInitialResult(BasicInput):
     def generate_content_tex_md(
         self, cite_key_list: List[str], output_prefix: str, field: str, combine_keywords: str
     ) -> Tuple[List[str], List[str], str]:
-        """Generate."""
+        """Generate LaTeX and markdown content.
+
+        Args:
+            cite_key_list (List[str]): List of citation keys.
+            output_prefix (str): Prefix for output files.
+            field (str): Field being searched.
+            combine_keywords (str): Combined keywords string.
+
+        Returns:
+            Tuple[List[str], List[str], str]: Tuple containing LaTeX content, markdown content, and header.
+        """
         c_k_f_t = combine_keywords_for_title(combine_keywords)
 
         number_references = len(cite_key_list)

@@ -19,12 +19,14 @@ class PaperLinksGenerator(object):
         keywords_category_name: str = "",
         display_year_period: int = 10,
     ):
-        """
-        Initialize the generator with base paths.
+        """Initialize the generator with base paths.
 
         Args:
-            json_base_path: Path to JSON files directory
-            data_base_path: Path to data files directory
+            full_json_c (str): Path to conferences JSON file.
+            full_json_j (str): Path to journals JSON file.
+            data_base_path (str): Path to data files directory.
+            keywords_category_name (str, optional): Category name for keywords. Defaults to "".
+            display_year_period (int, optional): Number of years to display. Defaults to 10.
         """
         self.full_json_c = full_json_c
         self.full_json_j = full_json_j
@@ -46,11 +48,11 @@ class PaperLinksGenerator(object):
         self.display_year_period = display_year_period
 
     def generate_yearly_links(self, cj: str, folder_name=os.path.join("data", "Yearly")) -> None:
-        """
-        Generate yearly markdown table with paper links.
+        """Generate yearly markdown table with paper links.
 
         Args:
-            cj: Publication type - 'conferences' or 'journals'
+            cj (str): Publication type - 'conferences' or 'journals'.
+            folder_name (str, optional): Output folder name. Defaults to "data/Yearly".
         """
         flags = self._get_yearly_flags(cj)
         folder_flags = [f"{f}_all_months" for f in flags]
@@ -58,7 +60,11 @@ class PaperLinksGenerator(object):
         self._generate_links(cj, flags, folder_flags, folder_name)
 
     def generate_weekly_links(self, folder_name=os.path.join("data", "Weekly")) -> None:
-        """Generate weekly markdown table with journal paper links."""
+        """Generate weekly markdown table with journal paper links.
+
+        Args:
+            folder_name (str, optional): Output folder name. Defaults to "data/Weekly".
+        """
         cj = "Journals"
 
         flags = ["Current Issue", "Current Month", "All Months"]

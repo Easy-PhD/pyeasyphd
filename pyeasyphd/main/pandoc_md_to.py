@@ -19,21 +19,26 @@ from .basic_input import BasicInput
 
 
 class PandocMdTo(BasicInput):
-    """Pandoc md to md, tex, html, pdf and so on.
+    """Pandoc markdown to various formats (md, tex, html, pdf).
 
     Args:
-        options (dict): Options.
+        options (dict): Configuration options.
 
     Attributes:
-        markdown_name (str = "multi-markdown"): Markdown name.
-        markdown_citation (str = "markdown_mmd"): Markdown citation.
-        columns_in_md (int = 120): Columns in md.
-        google_connected_paper_scite (bool = True): Google connected paper scite.
-        display_one_line_reference_note (bool = False): Display one line reference note.
-        cite_flag_in_tex (str = "cite"): Cite flag in tex.
+        markdown_name (str): Markdown name. Defaults to "multi-markdown".
+        markdown_citation (str): Markdown citation format. Defaults to "markdown_mmd".
+        columns_in_md (int): Number of columns in markdown. Defaults to 120.
+        google_connected_paper_scite (bool): Whether to use Google connected paper scite. Defaults to True.
+        display_one_line_reference_note (bool): Whether to display one line reference note. Defaults to False.
+        cite_flag_in_tex (str): Citation flag in LaTeX. Defaults to "cite".
     """
 
     def __init__(self, options: dict) -> None:
+        """Initialize PandocMdTo with configuration options.
+
+        Args:
+            options (dict): Configuration options.
+        """
         super().__init__(options)
 
         self.markdown_name: str = "multi-markdown"
@@ -47,7 +52,6 @@ class PandocMdTo(BasicInput):
         # tex
         self.cite_flag_in_tex: str = options.get("cite_flag_in_tex", "cite")
 
-    # for pandoc markdown files to markdown files
     def pandoc_md_to_md(
         self,
         path_bib: str,
@@ -56,12 +60,33 @@ class PandocMdTo(BasicInput):
         name_md_one: Optional[str],
         name_md_two: Optional[str],
     ) -> List[str]:
+        """Convert markdown to markdown using pandoc.
+
+        Args:
+            path_bib (str): Path to bibliography file.
+            path_md_one (str): Path to source markdown directory.
+            path_md_two (str): Path to destination markdown directory.
+            name_md_one (Optional[str]): Name of source markdown file.
+            name_md_two (Optional[str]): Name of destination markdown file.
+
+        Returns:
+            List[str]: List of processed markdown content lines.
+        """
         full_one = path_md_one if name_md_one is None else os.path.join(path_md_one, name_md_one)
         full_two = path_md_two if name_md_two is None else os.path.join(path_md_two, name_md_two)
         return self._pandoc_md_to_md(full_one, full_two, path_bib)
 
     def _pandoc_md_to_md(self, full_md_one: str, full_md_two: str, path_bib: str) -> List[str]:
-        """Pandoc."""
+        """Internal method to convert markdown to markdown using pandoc.
+
+        Args:
+            full_md_one (str): Full path to source markdown file.
+            full_md_two (str): Full path to destination markdown file.
+            path_bib (str): Path to bibliography file.
+
+        Returns:
+            List[str]: List of processed markdown content lines.
+        """
         if not os.path.exists(path_two := os.path.dirname(full_md_two)):
             os.makedirs(path_two)
 

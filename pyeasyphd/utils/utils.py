@@ -47,6 +47,11 @@ textarea_tail = "\n</textarea>"
 
 
 def operate_on_generate_html(html_name: str) -> None:
+    """Operate on generated HTML file to add styling and functionality.
+
+    Args:
+        html_name (str): Name of the HTML file to process.
+    """
     if not (data_list := read_list(html_name, "r", None)):
         return None
 

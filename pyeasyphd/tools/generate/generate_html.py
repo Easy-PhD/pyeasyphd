@@ -9,7 +9,15 @@ from ...utils.utils import html_head, html_style, html_tail, textarea_header, te
 
 
 def generate_html_content(html_body, abbr_standard):
-    """Create complete HTML document from body content."""
+    """Create complete HTML document from body content.
+
+    Args:
+        html_body: List of HTML body content lines.
+        abbr_standard (str): Standard abbreviation for the document.
+
+    Returns:
+        List[str]: Complete HTML document as list of lines.
+    """
     return [html_head.format(abbr_standard), html_style, "\n"] + html_body + [html_tail]
 
 
@@ -21,7 +29,19 @@ def generate_html_from_bib_data(
     full_json_c: str = "",
     full_json_j: str = ""
 ) -> List[str]:
-    """Generate html from bibliography data."""
+    """Generate HTML from bibliography data.
+
+    Args:
+        abbr_standard (str): Standard abbreviation for the publication.
+        original_bib_data (Union[List[str], str, Library]): Bibliography data in various formats.
+        path_output (str): Path to output directory.
+        options (Dict[str, Any], optional): Additional processing options. Defaults to {}.
+        full_json_c (str, optional): Path to conferences JSON file. Defaults to "".
+        full_json_j (str, optional): Path to journals JSON file. Defaults to "".
+
+    Returns:
+        List[str]: List of HTML body content lines.
+    """
     # Set processing options
     processing_options: dict = {
         # convert_str_to_library
@@ -77,7 +97,16 @@ def generate_html_from_bib_data(
 
 
 def _format_entry_to_html(entry, abbr, data_list):
-    """Format a single bibliography entry into HTML."""
+    """Format a single bibliography entry into HTML.
+
+    Args:
+        entry: Bibliography entry dictionary.
+        abbr (str): Publication abbreviation.
+        data_list: List of formatted bibliography data.
+
+    Returns:
+        str: HTML formatted entry string.
+    """
     # Extract entry fields
     number = entry["number"] if "number" in entry else ""
     pages = entry["pages"] if "pages" in entry else ""
@@ -103,7 +132,20 @@ def _format_entry_to_html(entry, abbr, data_list):
 
 
 def _format_entry_to_apa_style(title, year, volume, number, pages, url, abbr):
-    """Format entry in APA citation style."""
+    """Format entry in APA citation style.
+
+    Args:
+        title (str): Article title.
+        year (str): Publication year.
+        volume (str): Journal volume.
+        number (str): Issue number.
+        pages (str): Page numbers.
+        url (str): Article URL.
+        abbr (str): Publication abbreviation.
+
+    Returns:
+        str: APA formatted citation string.
+    """
     line = f"({year}). {title}. <em>{abbr}</em>"
 
     if volume:

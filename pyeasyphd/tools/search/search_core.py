@@ -24,37 +24,45 @@ from .utils import keywords_type_for_title, switch_keywords_list, switch_keyword
 
 
 class SearchResultsCore(BasicInput):
-    """Generate tex, md, html, and pdf.
+    """Core class for generating tex, md, html, and pdf from search results.
 
     Args:
-        path_storage (str): the path of storage `abbr`
-        path_output (str): the path of output `abbr`
-        path_separate (str): the path of separate `abbr`
-        j_conf_abbr (str): the abbreviation of journal or conference
-        options (dict): options
+        path_storage (str): Path to storage directory for bibliography files.
+        path_output (str): Path to output directory for generated files.
+        path_separate (str): Path to separate directory for individual results.
+        j_conf_abbr (str): Abbreviation of journal or conference.
+        options (dict): Configuration options.
 
     Attributes:
-        path_storage (str): the path of storage
-        path_output (str): the path of output
-        path_separate (str): the path of separate
-        j_conf_abbr (str): the abbreviation of journal or conference
-
-        is_standard_bib_file_name (bool = True): whether the bib file name is standard
-        keywords_type_list (List[str] = []): keywords type list
-        keywords_dict (dict = {}): keywords dict
-        delete_redundant_files (bool = True): delete redundant files
-        generate_basic_md (bool = False): generate basic md
-        generate_beauty_md (bool = False): generate beauty md
-        generate_complex_md (bool = True): generate complex md
-        generate_tex (bool = False): generate tex
-        first_field_second_keywords (bool = True): first field second keywords
-        deepcopy_library_for_every_field (bool = False): deepcopy library for every field
-        deepcopy_library_for_every_keywords (bool = False): deepcopy library for every keywords
+        path_storage (str): Path to storage directory.
+        path_output (str): Path to output directory.
+        path_separate (str): Path to separate directory.
+        j_conf_abbr (str): Abbreviation of journal or conference.
+        is_standard_bib_file_name (bool): Whether the bib file name follows standard format.
+        keywords_type_list (List[str]): List of keyword types to search.
+        keywords_dict (dict): Dictionary of keywords for searching.
+        delete_redundant_files (bool): Whether to delete redundant files after processing.
+        generate_basic_md (bool): Whether to generate basic markdown files.
+        generate_beauty_md (bool): Whether to generate beautiful markdown files.
+        generate_complex_md (bool): Whether to generate complex markdown files.
+        generate_tex (bool): Whether to generate LaTeX files.
+        first_field_second_keywords (bool): Whether to search fields first, then keywords.
+        deepcopy_library_for_every_field (bool): Whether to deep copy library for every field.
+        deepcopy_library_for_every_keywords (bool): Whether to deep copy library for every keywords.
     """
 
     def __init__(
         self, path_storage: str, path_output: str, path_separate: str, j_conf_abbr: str, options: Dict[str, Any]
     ) -> None:
+        """Initialize SearchResultsCore with paths and configuration.
+
+        Args:
+            path_storage (str): Path to storage directory for bibliography files.
+            path_output (str): Path to output directory for generated files.
+            path_separate (str): Path to separate directory for individual results.
+            j_conf_abbr (str): Abbreviation of journal or conference.
+            options (Dict[str, Any]): Configuration options.
+        """
         super().__init__(options)
         self.path_storage: str = standard_path(path_storage)
         self.path_output: str = standard_path(path_output)
@@ -99,6 +107,14 @@ class SearchResultsCore(BasicInput):
         self._python_bib = PythonRunBib(self.full_json_c, self.full_json_j, options)
 
     def optimize(self, search_year_list: List[str] = []) -> Dict[str, Dict[str, Dict[str, Dict[str, int]]]]:
+        """Optimize search results for given years.
+
+        Args:
+            search_year_list (List[str], optional): List of years to search. Defaults to [].
+
+        Returns:
+            Dict[str, Dict[str, Dict[str, Dict[str, int]]]]: Nested dictionary containing search results.
+        """
         search_year_list = list(set([str(i) for i in search_year_list]))
 
         data_list = self._obtain_full_files_data(self.path_storage, "bib", search_year_list)
@@ -107,6 +123,16 @@ class SearchResultsCore(BasicInput):
         return entry_type_keyword_type_keyword_field_number_dict
 
     def _obtain_full_files_data(self, path_storage: str, extension: str, search_year_list: List[str] = []) -> List[str]:
+        """Obtain data from all files with specified extension in storage path.
+
+        Args:
+            path_storage (str): Path to storage directory.
+            extension (str): File extension to search for.
+            search_year_list (List[str], optional): List of years to filter by. Defaults to [].
+
+        Returns:
+            List[str]: Combined content from all matching files.
+        """
         regex = None
         if self.is_standard_bib_file_name and search_year_list:
             regex = re.compile(f'({"|".join(search_year_list)})')
@@ -123,6 +149,15 @@ class SearchResultsCore(BasicInput):
         return combine_content_in_list([read_list(f, "r") for f in sort_int_str(file_list)], None)
 
     def optimize_core(self, data_list: List[str], search_year_list) -> Dict[str, Dict[str, Dict[str, Dict[str, int]]]]:
+        """Core optimization logic for processing bibliography data.
+
+        Args:
+            data_list (List[str]): List of bibliography data strings.
+            search_year_list: List of years to search.
+
+        Returns:
+            Dict[str, Dict[str, Dict[str, Dict[str, int]]]]: Nested dictionary containing search results.
+        """
         print("\n" + "*" * 9 + f" Search in {self.j_conf_abbr} " + "*" * 9)
 
         entry_type_year_volume_number_month_entry_dict = self._python_bib.parse_to_nested_entries_dict(data_list)
@@ -176,6 +211,19 @@ class SearchResultsCore(BasicInput):
         return entry_type_keyword_type_keyword_field_number_dict
 
     def _optimize_fields_keyword(self, keywords_type, library, output_prefix, p_origin, p_separate, p_combine):
+        """Optimize search by fields first, then keywords.
+
+        Args:
+            keywords_type: Type of keywords to search.
+            library: Bibliography library to search.
+            output_prefix (str): Prefix for output files.
+            p_origin (str): Path to origin directory.
+            p_separate (str): Path to separate directory.
+            p_combine (str): Path to combine directory.
+
+        Returns:
+            dict: Dictionary containing keyword field numbers.
+        """
         no_search_library = library
 
         keyword_field_number_dict_ = {}
@@ -198,6 +246,19 @@ class SearchResultsCore(BasicInput):
         return keyword_field_number_dict_
 
     def _optimize_keywords_field(self, keywords_type, library, output_prefix, p_origin, p_separate, p_combine):
+        """Optimize search by keywords first, then fields.
+
+        Args:
+            keywords_type: Type of keywords to search.
+            library: Bibliography library to search.
+            output_prefix (str): Prefix for output files.
+            p_origin (str): Path to origin directory.
+            p_separate (str): Path to separate directory.
+            p_combine (str): Path to combine directory.
+
+        Returns:
+            dict: Dictionary containing keyword field numbers.
+        """
         no_search_library = library
 
         keyword_field_number_dict, no_search_library = self.core_optimize(
@@ -221,6 +282,20 @@ class SearchResultsCore(BasicInput):
         p_separate: str,
         p_combine: str,
     ) -> Tuple[Dict[str, Dict[str, int]], Library]:
+        """Core optimization method for processing search results.
+
+        Args:
+            search_field_list (List[str]): List of fields to search.
+            keywords_type: Type of keywords to search.
+            library (Library): Bibliography library to search.
+            output_prefix (str): Prefix for output files.
+            p_origin (str): Path to origin directory.
+            p_separate (str): Path to separate directory.
+            p_combine (str): Path to combine directory.
+
+        Returns:
+            Tuple[Dict[str, Dict[str, int]], Library]: Tuple containing keyword field numbers and remaining library.
+        """
         error_pandoc_md_md: List[str] = []
         save_field_data_dict: Dict[str, List[List[str]]] = {}
         keyword_field_number_dict: Dict[str, Dict[str, int]] = {}
@@ -290,7 +365,14 @@ class SearchResultsCore(BasicInput):
         return keyword_field_number_dict, no_search_library
 
     def delete_files(self, keywords_type: str, p_origin: str, p_separate: str, p_combine: str) -> None:
-        """Delete some redundant files."""
+        """Delete redundant files after processing.
+
+        Args:
+            keywords_type (str): Type of keywords being processed.
+            p_origin (str): Path to origin directory.
+            p_separate (str): Path to separate directory.
+            p_combine (str): Path to combine directory.
+        """
         # for initial tex md bib
         if os.path.exists(p_origin):
             shutil.rmtree(p_origin)

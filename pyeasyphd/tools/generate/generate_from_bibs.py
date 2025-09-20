@@ -21,20 +21,26 @@ def preparation(
 ):
     """Prepare paths and flags for data generation.
 
-    Examples
-    --------
-    |              | current_issue | current_month | all_months |
-    |--------------|---------------|---------------|------------|
-    | current_year | YES           | YES           | YES        |
-    | all_years    | NO            | NO            | YES        |
-    | given_years  | NO            | NO            | YES        |
+    Args:
+        path_storage (str): Path to storage directory.
+        path_output (str): Path to output directory.
+        output_basename (str): Base name for output files.
+        pub_type (str): Type of publication.
+        issue_or_month_flag (Union[str, List[str]], optional): Issue or month flag. Defaults to "current_issue".
+        year_flag (Union[str, List[str]], optional): Year flag. Defaults to "current_year".
+        options (Dict[str, Any], optional): Additional options. Defaults to {}.
 
-    given_years = ["2020", "2025"]
+    Examples:
+        |              | current_issue | current_month | all_months |
+        |--------------|---------------|---------------|------------|
+        | current_year | YES           | YES           | YES        |
+        | all_years    | NO            | NO            | YES        |
+        | given_years  | NO            | NO            | YES        |
 
-    Returns
-    -------
-    Tuple[str, str, bool]
-        Returns (path_root, path_output, combine_flag)
+        given_years = ["2020", "2025"]
+
+    Returns:
+        Tuple[str, str, bool]: Returns (path_root, path_output, combine_flag).
     """
     # default settings
     path_storage = standard_path(path_storage)
@@ -77,20 +83,15 @@ def generate_from_bibs_and_write(
 ) -> None:
     """Generate or combine data from bibliographies.
 
-    Parameters
-    ----------
-    path_storage : str
-        Path to storage directory
-    path_output : str
-        Path to output directory
-    generate_or_combine : str
-        Either "generate_data" or "combine_data"
-    year_flag : Union[str, List[str]], optional
-        Flag for year selection, by default "current_year"
-    issue_or_month_flag : Union[str, List[str]], optional
-        Flag for issue/month selection, by default "current_issue"
-    options : Dict[str, Any], optional
-        Additional options, by default {}
+    Args:
+        path_storage (str): Path to storage directory.
+        path_output (str): Path to output directory.
+        output_basename (str): Base name for output files.
+        pub_type (str): Type of publication.
+        generate_or_combine (str): Either "generate_data" or "combine_data".
+        year_flag (Union[str, List[str]], optional): Flag for year selection. Defaults to "current_year".
+        issue_or_month_flag (Union[str, List[str]], optional): Flag for issue/month selection. Defaults to "current_issue".
+        options (Dict[str, Any], optional): Additional options. Defaults to {}.
     """
     path_root, path_output, combine_flag = preparation(
         path_storage, path_output, output_basename, pub_type, issue_or_month_flag, year_flag, options
@@ -143,6 +144,15 @@ def generate_from_bibs_and_write(
 
 
 def _combine_data(path_storage, path_root, path_output, combine_flag, options):
+    """Combine data from multiple sources.
+
+    Args:
+        path_storage: Path to storage directory.
+        path_root: Root path for output.
+        path_output: Path to output directory.
+        combine_flag: Flag indicating whether to combine data.
+        options: Configuration options.
+    """
     # Compulsory
     options["include_abbr_list"] = []
     options["exclude_abbr_list"] = []
