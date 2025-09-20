@@ -5,12 +5,7 @@ import shutil
 import time
 from typing import Any, Dict, List, Tuple
 
-from pyadvtools import (
-    combine_content_in_list,
-    delete_empty_lines_last_occur_add_new_line,
-    read_list,
-    write_list,
-)
+from pyadvtools import combine_content_in_list, delete_empty_lines_last_occur_add_new_line, read_list, write_list
 from pybibtexer.bib.core import ConvertStrToLibrary
 from pybibtexer.main.python_writers import PythonWriters
 
@@ -70,7 +65,7 @@ class PythonRunMd(BasicInput):
         full_bib_for_zotero: str,
         template_name: str = "article",
         generate_html: bool = False,
-        generate_tex: bool = True
+        generate_tex: bool = True,
     ) -> Tuple[List[str], List[str]]:
         """Perform special operations on markdown files.
 
@@ -136,11 +131,7 @@ class PythonRunMd(BasicInput):
         return data_list_md, data_list_tex
 
     def _special_operate_for_md(
-        self,
-        output_md_name: str,
-        path_temp: str,
-        full_bib_for_abbr: str,
-        full_bib_for_zotero: str,
+        self, output_md_name: str, path_temp: str, full_bib_for_abbr: str, full_bib_for_zotero: str
     ) -> List[str]:
         """Perform special operations for markdown processing.
 

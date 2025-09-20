@@ -53,12 +53,7 @@ class PandocMdTo(BasicInput):
         self.cite_flag_in_tex: str = options.get("cite_flag_in_tex", "cite")
 
     def pandoc_md_to_md(
-        self,
-        path_bib: str,
-        path_md_one: str,
-        path_md_two: str,
-        name_md_one: Optional[str],
-        name_md_two: Optional[str],
+        self, path_bib: str, path_md_one: str, path_md_two: str, name_md_one: Optional[str], name_md_two: Optional[str]
     ) -> List[str]:
         """Convert markdown to markdown using pandoc.
 
@@ -104,7 +99,7 @@ class PandocMdTo(BasicInput):
             )
 
         try:
-            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+            subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
             print("Pandoc error in pandoc md to md:", e.stderr)
 
@@ -124,12 +119,7 @@ class PandocMdTo(BasicInput):
 
     # for pandoc markdown files to tex files
     def pandoc_md_to_tex(
-        self,
-        template_name: str,
-        path_md: str,
-        path_tex: str,
-        name_md: Optional[str],
-        name_tex: Optional[str],
+        self, template_name: str, path_md: str, path_tex: str, name_md: Optional[str], name_tex: Optional[str]
     ) -> List[str]:
         full_one = path_md if name_md is None else os.path.join(path_md, name_md)
         full_two = path_tex if name_tex is None else os.path.join(path_tex, name_tex)
@@ -146,7 +136,7 @@ class PandocMdTo(BasicInput):
             cmd = f"pandoc {full_md} -o {full_tex} --from markdown "
 
         try:
-            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+            subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
             print("Pandoc error in pandoc md to tex:", e.stderr)
 
@@ -180,7 +170,7 @@ class PandocMdTo(BasicInput):
         cmd = f"pandoc {full_md} -o {full_html} --from markdown "
 
         try:
-            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+            subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
             print("Pandoc error in pandoc md to html:", e.stderr)
 
@@ -192,13 +182,7 @@ class PandocMdTo(BasicInput):
         return ""
 
     # for pandoc markdown files to pdf files
-    def pandoc_md_to_pdf(
-        self,
-        path_md: str,
-        path_pdf: str,
-        name_md: Optional[str],
-        name_pdf: Optional[str],
-    ) -> str:
+    def pandoc_md_to_pdf(self, path_md: str, path_pdf: str, name_md: Optional[str], name_pdf: Optional[str]) -> str:
         full_one = path_md if name_md is None else os.path.join(path_md, name_md)
         full_two = path_pdf if name_pdf is None else os.path.join(path_pdf, name_pdf)
         return self._pandoc_md_to_pdf(full_one, full_two)
@@ -217,7 +201,7 @@ class PandocMdTo(BasicInput):
             cmd = f"pandoc {full_md} -o {full_pdf} --from markdown  --listings --pdf-engine=xelatex"
 
         try:
-            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+            subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
             print("Pandoc error in pandoc md to pdf:", e.stderr)
 
@@ -228,17 +212,13 @@ class PandocMdTo(BasicInput):
     # --------- --------- --------- --------- --------- --------- --------- --------- --------- #
     # md
     def generate_key_data_dict(
-        self,
-        pandoc_md_data_list: List[str],
-        key_url_http_bib_dict: Dict[str, List[List[str]]],
+        self, pandoc_md_data_list: List[str], key_url_http_bib_dict: Dict[str, List[List[str]]]
     ) -> Tuple[Dict[str, List[str]], Dict[str, List[str]], Dict[str, List[str]]]:
         """Generate."""
         key_reference_dict = self._generate_citation_key_reference_dict_from_pandoc_md(pandoc_md_data_list)
-        (
-            key_basic_dict,
-            key_beauty_dict,
-            key_complex_dict,
-        ) = self._generate_basic_beauty_complex_dict(key_url_http_bib_dict, key_reference_dict)
+        (key_basic_dict, key_beauty_dict, key_complex_dict) = self._generate_basic_beauty_complex_dict(
+            key_url_http_bib_dict, key_reference_dict
+        )
         return key_basic_dict, key_beauty_dict, key_complex_dict
 
     def _generate_citation_key_reference_dict_from_pandoc_md(
@@ -306,9 +286,7 @@ class PandocMdTo(BasicInput):
         return delete_empty_lines_last_occur_add_new_line(new_list)
 
     def _generate_basic_beauty_complex_dict(
-        self,
-        key_url_http_bib_dict: Dict[str, List[List[str]]],
-        key_reference_dict: Dict[str, list],
+        self, key_url_http_bib_dict: Dict[str, List[List[str]]], key_reference_dict: Dict[str, list]
     ) -> Tuple[Dict[str, List[str]], Dict[str, List[str]], Dict[str, List[str]]]:
         """Generate."""
         header_list = ["<details>\n", "```\n"]
@@ -356,9 +334,7 @@ class PandocMdTo(BasicInput):
         insert_part_one, insert_part_two = self._generate_tex_content(file_prefix, add_tex_name, add_bib_name)
 
         # write tex
-        data_temp = insert_list_in_list(
-            self.article_template_tex, insert_part_one, r"\\begin{document}", "before"
-        )
+        data_temp = insert_list_in_list(self.article_template_tex, insert_part_one, r"\\begin{document}", "before")
         data_temp = insert_list_in_list(data_temp, insert_part_two, r"\\begin{document}", "after")
         write_list(data_temp, f"{file_prefix}.tex", "w", os.path.join(path_combine, "tex"))
         return None

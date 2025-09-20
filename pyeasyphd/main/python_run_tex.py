@@ -1,14 +1,10 @@
 import os
 import re
+import shutil
 import subprocess
 from typing import Any, Dict, List, Optional
 
-from pyadvtools import (
-    delete_files,
-    insert_list_in_list,
-    read_list,
-    write_list,
-)
+from pyadvtools import delete_files, insert_list_in_list, read_list, write_list
 
 from .basic_input import BasicInput
 
@@ -69,7 +65,9 @@ class PythonRunTex(BasicInput):
         # for figures
         for i in range(len(data_list_body)):
             if re.search(r"\\includegraphics", data_list_body[i]):
-                data_list_body[i] = data_list_body[i].replace(f".{os.sep}Figures{os.sep}", f".{os.sep}{figure_folder_name}{os.sep}")
+                data_list_body[i] = data_list_body[i].replace(
+                    f".{os.sep}Figures{os.sep}", f".{os.sep}{figure_folder_name}{os.sep}"
+                )
                 data_list_body[i] = data_list_body[i].replace(f"Figures{os.sep}", f"{figure_folder_name}{os.sep}")
         write_list(data_list_body, output_tex_name, "w", os.path.join(path_output, tex_folder_name), False)
 
@@ -163,19 +161,22 @@ class PythonRunTex(BasicInput):
 
         # run latex
         if self.run_latex:
-            os.chdir(path_output)
-            cmd = "latexmk -{} {}".format(self.pdflatex_xelatex, main_name)
-            try:
-                subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
-            except subprocess.CalledProcessError as e:
-                print("Error in Run LaTex:", e.stderr)
+            if shutil.which("latexmk"):
+                os.chdir(path_output)
+                cmd = "latexmk -{} {}".format(self.pdflatex_xelatex, main_name)
+                try:
+                    subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
+                except subprocess.CalledProcessError as e:
+                    print("Error in Run LaTex:", e.stderr)
+            else:
+                print("latexmk not found. Please install Texlive.")
 
         # delete cache
         if self.delete_run_latex_cache:
             if self.latex_clean_file_types is not None:
                 postfix = self.latex_clean_file_types
             else:
-                postfix = ['.aux', '.bbl', '.bcf', '.blg', '.fdb_latexmk', '.fls', '.log', '.out', '.run.xml']
-                postfix.extend(['.synctex.gz', '.gz', '.nav', '.snm', '.toc', '.xdv'])
+                postfix = [".aux", ".bbl", ".bcf", ".blg", ".fdb_latexmk", ".fls", ".log", ".out", ".run.xml"]
+                postfix.extend([".synctex.gz", ".gz", ".nav", ".snm", ".toc", ".xdv"])
             delete_files(path_output, postfix)
         return None
