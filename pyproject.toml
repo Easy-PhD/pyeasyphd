@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyeasyphd"
-version = "0.1.2"
+version = "0.1.3"
 description = "pyeasyphd"
 license = "GPL-3.0-or-later"
 authors = ["NextAI <nextartifintell@gmail.com>"]
@@ -14,8 +14,8 @@ classifiers = ["Topic :: Software Development :: Libraries :: Python Modules"]
 
 [tool.poetry.dependencies]
 python = ">=3.13"
-pyadvtools = "^0.0.5"
-pybibtexer = "^0.0.3"
+pyadvtools = "^0.1.2"
+pybibtexer = "^0.1.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.18.1"

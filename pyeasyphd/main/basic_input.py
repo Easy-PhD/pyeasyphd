@@ -34,20 +34,10 @@ class BasicInput(BasicInputInPyBibtexer):
         Args:
             options (Dict[str, Any]): Configuration options dictionary.
         """
+        super().__init__(options)
+
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self._path_templates = os.path.join(os.path.dirname(current_dir), "data", "Templates")
-
-        full_json_c = os.path.join(self._path_templates, "AbbrFull", "conferences.json")
-        full_json_j = os.path.join(self._path_templates, "AbbrFull", "journals.json")
-
-        _full_json_c = options.get("full_json_c")
-        if isinstance(_full_json_c, "str"):
-            full_json_c = _full_json_c
-        _full_json_j = options.get("full_json_j")
-        if isinstance(_full_json_j, "str"):
-            full_json_j = _full_json_j
-
-        super().__init__(full_json_c, full_json_j, options)
 
         # main
         self._initialize_pandoc_md_to(options)

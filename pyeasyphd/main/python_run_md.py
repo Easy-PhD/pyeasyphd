@@ -164,7 +164,7 @@ class PythonRunMd(BasicInput):
         _options = {}
         _options.update(self.options)
         _options["add_index_to_enties"] = False
-        _python_writers = PythonWriters(self.full_json_c, self.full_json_j, _options)
+        _python_writers = PythonWriters(_options)
         key_url_http_bib_dict = _python_writers.output_key_url_http_bib_dict(library)
 
         content_md = []

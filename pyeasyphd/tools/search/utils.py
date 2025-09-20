@@ -11,10 +11,16 @@ from pyadvtools import (
 
 
 def switch_keywords_list(xx: Union[List[str], List[List[str]]]) -> Tuple[List[List[str]], str]:
-    """Switch keyword.
+    """Switch keyword list format and generate combined keywords string.
 
-    Input: ["evolutionary", "algorithm"] or [["evolution"], ["evolutionary"]]
-    Output: [["evolutionary", "algorithm"]] or [["evolution"], ["evolutionary"]]
+    Args:
+        xx (Union[List[str], List[List[str]]]): Input keyword list or nested keyword list.
+            Examples: ["evolutionary", "algorithm"] or [["evolution"], ["evolutionary"]]
+
+    Returns:
+        Tuple[List[List[str]], str]: Tuple containing:
+            - List of keyword lists with regex word boundaries
+            - Combined keywords string for file naming
     """
     yyy: List[List[str]] = [[]]
 
@@ -54,6 +60,14 @@ def switch_keywords_list(xx: Union[List[str], List[List[str]]]) -> Tuple[List[Li
 
 
 def combine_keywords_for_title(combine_keywords: str) -> str:
+    """Convert combined keywords string to human-readable title format.
+
+    Args:
+        combine_keywords (str): Combined keywords string with special characters.
+
+    Returns:
+        str: Human-readable title format with proper spacing and punctuation.
+    """
     combine_keywords = combine_keywords.replace("_without_", " without ")
     combine_keywords = combine_keywords.replace("_and_", "; ")
     combine_keywords = combine_keywords.replace("0", "")
@@ -66,6 +80,14 @@ def combine_keywords_for_title(combine_keywords: str) -> str:
 
 
 def combine_keywords_for_file_name(combine_keywords: str) -> str:
+    """Convert combined keywords string to valid file name format.
+
+    Args:
+        combine_keywords (str): Combined keywords string.
+
+    Returns:
+        str: File name safe string with underscores and hyphens.
+    """
     combine_keywords = combine_keywords_for_title(combine_keywords)
     combine_keywords = combine_keywords.replace("/", "-")
     combine_keywords = combine_keywords.replace("; ", "_and_")
@@ -74,6 +96,14 @@ def combine_keywords_for_file_name(combine_keywords: str) -> str:
 
 
 def switch_keywords_type(keywords_type: str) -> str:
+    """Normalize keywords type string for consistent formatting.
+
+    Args:
+        keywords_type (str): Keywords type string to normalize.
+
+    Returns:
+        str: Normalized keywords type with consistent separators.
+    """
     keywords_type = keywords_type.replace("/", "-")
     keywords_type = keywords_type.replace(" ", "_")
     keywords_type = re.sub(r"-+", "-", keywords_type)
@@ -82,11 +112,25 @@ def switch_keywords_type(keywords_type: str) -> str:
 
 
 def keywords_type_for_title(keywords_type: str) -> str:
+    """Convert keywords type string to title format.
+
+    Args:
+        keywords_type (str): Keywords type string with underscores.
+
+    Returns:
+        str: Title format with spaces instead of underscores.
+    """
     keywords_type = keywords_type.replace("_", " ")
     return keywords_type.strip()
 
 
 def extract_information(old_dict: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, int]]]]], path_output: str) -> None:
+    """Extract and organize search information into markdown tables.
+
+    Args:
+        old_dict (Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, int]]]]]): Nested dictionary containing search results.
+        path_output (str): Output directory path for generated markdown files.
+    """
     new_dict: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, int]]]]] = {}
 
     for abbr in old_dict:

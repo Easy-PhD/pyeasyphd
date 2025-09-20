@@ -1,14 +1,4 @@
 {
-    // config
-    // config path
-    // Must be configured by the user.
-    "path_config": "",
-
-    // figures, templates, bibs
-    "path_bibs": "",
-    "path_figures": "",
-    "path_templates": "",
-
     // pyeasyphd/main/pandoc_md_to.py
     // for pandoc
     "csl_name": "apa-no-ampersand",

@@ -22,23 +22,14 @@ class PyRunBibMdTex(BasicInput):
     ) -> None:
         """Initialize the PyRunBibMdTex instance.
 
-        Parameters
-        ----------
-        path_output : str
-            Output directory path for processed files
-        tex_md_flag : str, optional
-            Flag indicating whether to process as LaTeX (".tex") or Markdown (".md"),
-            by default ".md"
-        template_name : str, optional
-            Template type to use ("paper" or "beamer"), by default "paper"
-        options : Dict[str, Any], optional
-            Additional configuration options, by default {}
+        Args:
+            path_output (str): Output directory path for processed files.
+            tex_md_flag (str, optional): Flag indicating whether to process as LaTeX (".tex") or Markdown (".md"). Defaults to ".md".
+            template_name (str, optional): Template type to use ("paper" or "beamer"). Defaults to "paper".
+            options (Dict[str, Any], optional): Additional configuration options. Defaults to {}.
 
-        Raises
-        ------
-        AssertionError
-            If tex_md_flag is not ".tex" or ".md"
-            If template_name is not "paper" or "beamer"
+        Raises:
+            AssertionError: If tex_md_flag is not ".tex" or ".md" or if template_name is not "paper" or "beamer".
         """
         super().__init__(options)
 
@@ -76,19 +67,13 @@ class PyRunBibMdTex(BasicInput):
     ) -> Tuple[List[str], List[str]]:
         """Process a list of Markdown or LaTeX files.
 
-        Parameters
-        ----------
-        file_list_md_tex : List[str]
-            List of input file paths (Markdown or LaTeX)
-        output_prefix : str, optional
-            Prefix for output files, by default ""
-        output_level : str, optional
-            Output directory level ("previous", "current", or "next"), by default "next"
+        Args:
+            file_list_md_tex (List[str]): List of input file paths (Markdown or LaTeX).
+            output_prefix (str, optional): Prefix for output files. Defaults to "".
+            output_level (str, optional): Output directory level ("previous", "current", or "next"). Defaults to "next".
 
-        Returns
-        -------
-        Tuple[List[str], List[str]]
-            Tuple containing processed Markdown content and LaTeX content
+        Returns:
+            Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         file_list_md_tex = [f for f in file_list_md_tex if f.endswith(self.tex_md_flag)]
         data_list_list = [read_list(standard_path(f), "r") for f in file_list_md_tex]
@@ -114,21 +99,14 @@ class PyRunBibMdTex(BasicInput):
     ) -> Tuple[List[str], List[str]]:
         """Process BibTeX, Markdown and LaTeX content.
 
-        Parameters
-        ----------
-        output_prefix : str
-            Prefix for output files
-        data_list_md_tex : List[str]
-            List of content lines (Markdown or LaTeX)
-        original_bib_data : Union[List[str], str, Library]
-            BibTeX data in various formats
-        output_level : str, optional
-            Output directory level ("previous", "current", or "next"), by default "next"
+        Args:
+            output_prefix (str): Prefix for output files.
+            data_list_md_tex (List[str]): List of content lines (Markdown or LaTeX).
+            original_bib_data (Union[List[str], str, Library]): BibTeX data in various formats.
+            output_level (str, optional): Output directory level ("previous", "current", or "next"). Defaults to "next".
 
-        Returns
-        -------
-        Tuple[List[str], List[str]]
-            Tuple containing processed Markdown content and LaTeX content
+        Returns:
+            Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         # Basic file names
         output_tex, output_md = output_prefix + ".tex", output_prefix + ".md"
@@ -168,21 +146,14 @@ class PyRunBibMdTex(BasicInput):
     ) -> Tuple[List[str], List[str]]:
         """Process BibTeX, Markdown and LaTeX content.
 
-        Parameters
-        ----------
-        output_md : str
-            Output Markdown filename
-        output_tex : str
-            Output LaTeX filename
-        data_list_md_tex : List[str]
-            List of content lines (Markdown or LaTeX)
-        original_bib_data : Union[List[str], str, Library]
-            BibTeX data in various formats
+        Args:
+            output_md (str): Output Markdown filename.
+            output_tex (str): Output LaTeX filename.
+            data_list_md_tex (List[str]): List of content lines (Markdown or LaTeX).
+            original_bib_data (Union[List[str], str, Library]): BibTeX data in various formats.
 
-        Returns
-        -------
-        Tuple[List[str], List[str]]
-            Tuple containing processed Markdown content and LaTeX content
+        Returns:
+            Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         # Copy figures if enabled
         if self.shutil_figures:
@@ -258,17 +229,12 @@ class PyRunBibMdTex(BasicInput):
     def search_figure_names(data_list: List[str], figure_postfixes: Optional[List[str]] = None) -> List[str]:
         """Search for figure filenames in content.
 
-        Parameters
-        ----------
-        data_list : List[str]
-            List of content lines to search
-        figure_postfixes : Optional[List[str]], optional
-            List of figure file extensions to look for, by default None
+        Args:
+            data_list (List[str]): List of content lines to search.
+            figure_postfixes (Optional[List[str]], optional): List of figure file extensions to look for. Defaults to None.
 
-        Returns
-        -------
-        List[str]
-            List of found figure filenames
+        Returns:
+            List[str]: List of found figure filenames.
         """
         if figure_postfixes is None:
             figure_postfixes = ["eps", "jpg", "png", "svg", "psd", "raw", "jpeg", "pdf"]
@@ -283,20 +249,11 @@ class PyRunBibMdTex(BasicInput):
     def shutil_copy_figures(fig_folder_name: str, path_fig: str, fig_names: List[str], path_output: str) -> None:
         """Copy figure files to output directory.
 
-        Parameters
-        ----------
-        fig_folder_name : str
-            Name of figures folder in output directory
-        path_fig : str
-            Source directory containing figures
-        fig_names : List[str]
-            List of figure filenames to copy
-        path_output : str
-            Output directory path
-
-        Returns
-        -------
-        None
+        Args:
+            fig_folder_name (str): Name of figures folder in output directory.
+            path_fig (str): Source directory containing figures.
+            fig_names (List[str]): List of figure filenames to copy.
+            path_output (str): Output directory path.
         """
         if not os.path.exists(path_fig):
             print(f"{path_fig} does not existed.")
@@ -320,22 +277,16 @@ class PyRunBibMdTex(BasicInput):
     def search_cite_keys(data_list: List[str], tex_md_flag: str = ".tex") -> List[str]:
         r"""Extract citation keys from content according to their places.
 
-        Parameters
-        ----------
-        data_list : List[str]
-            List of content lines to search
-        tex_md_flag : str, optional
-            Flag indicating content format (".tex" or ".md"), by default ".tex"
+        Args:
+            data_list (List[str]): List of content lines to search.
+            tex_md_flag (str, optional): Flag indicating content format (".tex" or ".md"). Defaults to ".tex".
 
-        Returns
-        -------
-        List[str]
-            List of found citation keys
+        Returns:
+            List[str]: List of found citation keys.
 
-        Notes
-        -----
-        For LaTeX, searches for \\cite, \\citep, \\citet patterns
-        For Markdown, searches for [@key], @key; and ;@key] patterns
+        Note:
+            For LaTeX, searches for \\cite, \\citep, \\citet patterns.
+            For Markdown, searches for [@key], @key; and ;@key] patterns.
         """
         cite_key_list = []
         if tex_md_flag == ".tex":
@@ -360,14 +311,8 @@ class PyRunBibMdTex(BasicInput):
     def _cleanup_file(self, file_path: str) -> None:
         """Cleanup files and empty directories.
 
-        Parameters
-        ----------
-        file_path : str
-            Path to file to be removed
-
-        Returns
-        -------
-        None
+        Args:
+            file_path (str): Path to file to be removed.
         """
         if os.path.exists(file_path):
             os.remove(file_path)

@@ -1,10 +1,12 @@
-"""Initialization."""
+"""Tools module for PyEasyPhD advanced functionality.
+
+This module provides advanced tools for bibliography processing,
+search functionality, and content generation.
+"""
 
 __all__ = [
     "PyRunBibMdTex",
-
-    "Searchkeywords",
-
+    "Searchkeywords", 
     "generate_from_bibs_and_write",
     "PaperLinksGenerator",
 ]

@@ -213,15 +213,25 @@ class WriteInitialResult(BasicInput):
 
 
 class WriteSeparateResult(object):
-    """Write separate result."""
+    """Write separate result for different keyword types."""
 
     def __init__(self) -> None:
+        """Initialize WriteSeparateResult with title levels."""
         self._level_title_md = "##"
         self._level_title_tex = "section"
 
     def main(
         self, data_temp: List[List[str]], field: str, keywords_type: str, combine_keywords: str, path_separate: str
     ) -> None:
+        """Main method to write separate results.
+        
+        Args:
+            data_temp (List[List[str]]): List of data lists for different file types.
+            field (str): Field being processed.
+            keywords_type (str): Type of keywords.
+            combine_keywords (str): Combined keywords string.
+            path_separate (str): Path to separate directory.
+        """
         k_t_f_t = keywords_type_for_title(keywords_type)
         _title = f"{field.title()} contains {k_t_f_t}"
 
@@ -248,23 +258,27 @@ class WriteSeparateResult(object):
 
 
 class WriteAbbrCombinedResults(object):
-    """Write combined results for abbr (such as `TEVC`, `PNAS`).
+    """Write combined results for abbreviations (such as `TEVC`, `PNAS`).
 
     Args:
-        options: dict
+        options (dict): Configuration options.
 
     Attributes:
-        options (dict): options
-        pandoc_md_basic_to_pdf (bool): whether to convert basic md to pdf
-        pandoc_md_beauty_to_pdf (bool): whether to convert beauty md to pdf
-        pandoc_md_complex_to_pdf (bool): whether to convert complex md to pdf
-        pandoc_md_basic_to_html (bool): whether to convert basic md to html
-        pandoc_md_beauty_to_html (bool): whether to convert beauty md to html
-        pandoc_md_complex_to_html (bool): whether to convert complex md to html
-
+        options (dict): Configuration options.
+        pandoc_md_basic_to_pdf (bool): Whether to convert basic markdown to PDF.
+        pandoc_md_beauty_to_pdf (bool): Whether to convert beauty markdown to PDF.
+        pandoc_md_complex_to_pdf (bool): Whether to convert complex markdown to PDF.
+        pandoc_md_basic_to_html (bool): Whether to convert basic markdown to HTML.
+        pandoc_md_beauty_to_html (bool): Whether to convert beauty markdown to HTML.
+        pandoc_md_complex_to_html (bool): Whether to convert complex markdown to HTML.
     """
 
     def __init__(self, options: dict) -> None:
+        """Initialize WriteAbbrCombinedResults with configuration options.
+        
+        Args:
+            options (dict): Configuration options.
+        """
         self.pandoc_md_basic_to_pdf: bool = options.get("pandoc_md_basic_to_pdf", False)
         self.pandoc_md_beauty_to_pdf: bool = options.get("pandoc_md_beauty_to_pdf", False)
         self.pandoc_md_complex_to_pdf: bool = options.get("pandoc_md_complex_to_pdf", False)
@@ -279,6 +293,17 @@ class WriteAbbrCombinedResults(object):
     def main(
         self, search_field_list, keywords_type: str, field_data_dict: Dict[str, List[List[str]]], path_combine: str
     ) -> Tuple[List[str], List[str]]:
+        """Main method to write combined results for abbreviations.
+        
+        Args:
+            search_field_list: List of search fields.
+            keywords_type (str): Type of keywords.
+            field_data_dict (Dict[str, List[List[str]]]): Dictionary containing field data.
+            path_combine (str): Path to combine directory.
+            
+        Returns:
+            Tuple[List[str], List[str]]: Tuple containing error messages for PDF and HTML conversion.
+        """
         path_subsection = os.path.join(path_combine, "tex-subsection")
         path_md = os.path.join(path_combine, "md")
         path_bib = os.path.join(path_combine, "bib")
