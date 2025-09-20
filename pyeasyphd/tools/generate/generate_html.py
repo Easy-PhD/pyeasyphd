@@ -26,8 +26,6 @@ def generate_html_from_bib_data(
     original_bib_data: Union[List[str], str, Library],
     path_output: str,
     options: Dict[str, Any] = {},
-    full_json_c: str = "",
-    full_json_j: str = "",
 ) -> List[str]:
     """Generate HTML from bibliography data.
 
@@ -69,10 +67,10 @@ def generate_html_from_bib_data(
     processing_options.update(options)
 
     # Process bibliography data
-    _python_bib = PythonRunBib(full_json_c, full_json_j, processing_options)
+    _python_bib = PythonRunBib(processing_options)
     _, zotero_library, _ = _python_bib.parse_to_multi_standard_library(original_bib_data)
 
-    _python_writer = PythonWriters(full_json_c, full_json_j, processing_options)
+    _python_writer = PythonWriters(processing_options)
 
     # Generate HTML content for each entry
     html_body = []

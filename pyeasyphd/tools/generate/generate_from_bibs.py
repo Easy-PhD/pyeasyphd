@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Union
 from pyadvtools import standard_path, write_list
 from pybibtexer.tools.experiments_base import generate_standard_publisher_abbr_options_dict
 
-from ...main import BasicInput, PandocMdTo
+from ...main import PandocMdTo
 from .generate_html import generate_html_content, generate_html_from_bib_data
 from .generate_library import generate_library_by_filters
 
@@ -97,12 +97,6 @@ def generate_from_bibs_and_write(
         path_storage, path_output, output_basename, pub_type, issue_or_month_flag, year_flag, options
     )
 
-    # Default settings
-    x = BasicInput(options)
-    options = x.options
-    full_json_c = x.full_json_c
-    full_json_j = x.full_json_j
-
     if generate_or_combine == "generate_data":
         publisher_abbr_dict = generate_standard_publisher_abbr_options_dict(path_storage, options)
         for publisher in publisher_abbr_dict:
@@ -124,11 +118,11 @@ def generate_from_bibs_and_write(
 
                 # Generate and process library
                 library = generate_library_by_filters(
-                    path_abbr, issue_or_month_flag, year_flag, new_options, full_json_c, full_json_j
+                    path_abbr, issue_or_month_flag, year_flag, new_options
                 )
 
                 # Generate md, tex, pdf, html
-                html_body = generate_html_from_bib_data(abbr, library, pp, new_options, full_json_c, full_json_j)
+                html_body = generate_html_from_bib_data(abbr, library, pp, new_options)
                 if combine_flag and html_body:
                     publisher_html_body.extend(html_body + ["\n"])
 

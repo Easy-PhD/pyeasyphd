@@ -10,8 +10,6 @@ def generate_library_by_filters(
     issue_or_month_flag: Union[str, List[str]],  # filter
     year_flag: Union[str, List[str]] = "current_year",  # filter
     options: Dict[str, Any] = {},
-    full_json_c: str = "",
-    full_json_j: str = "",
 ) -> Library:
     """Generate a Library object from input data with given filters.
 
@@ -53,7 +51,7 @@ def generate_library_by_filters(
     _options["substitute_in_bib"] = False  # default is True
 
     _options.update(options)
-    _python_bib = PythonRunBib(full_json_c, full_json_j, _options)
+    _python_bib = PythonRunBib(_options)
 
     # Generate nested entries dictionary
     entry_type_year_volume_number_month_entry_dict = _python_bib.parse_to_nested_entries_dict(original_data)
