@@ -57,7 +57,7 @@ class PyRunBibMdTex(BasicInput):
         self.figure_folder_name = options.get("figure_folder_name", "fig")  # "" or "figs" or "main"
         self.bib_folder_name = options.get("bib_folder_name", "bib")  # "" or "bibs" or "main"
         self.md_folder_name = options.get("md_folder_name", "md")  # "" or "mds" or "main"
-        self.tex_folder_name = options.get("tex_folder_name", "tex")  # "" or "texes" or "main"
+        self.tex_folder_name = options.get("tex_folder_name", "tex")  # "" or "texs" or "main"
 
         # Cleanup options
         self.delete_original_md_in_output_folder = options.get("delete_original_md_in_output_folder", False)

@@ -31,7 +31,7 @@ class PythonRunTex(BasicInput):
         # for tex
         self.final_output_main_tex_name: str = options.get("final_output_main_tex_name", "")
         self.run_latex: bool = options.get("run_latex", False)
-        self.pdflatex_xelatex: str = options.get("pdflatex_xelatex", "pdflatex")  # pdflatex, xelatex
+        self.pdflatex_xelatex: str = options.get("pdflatex_xelatex", "xelatex")  # pdflatex, xelatex
         self.delete_run_latex_cache: bool = options.get("delete_run_latex_cache", True)
         self.latex_clean_file_types: Optional[List[str]] = options.get("latex_clean_file_types", None)
 

@@ -47,7 +47,7 @@
     // true, false
     "run_latex": false,
     // "pdflatex", "xelatex"
-    "pdflatex_xelatex": "pdflatex",
+    "pdflatex_xelatex": "xelatex",
     // true, false
     "delete_run_latex_cache": true,
     "latex_clean_file_types": [
