@@ -267,8 +267,11 @@ class PyRunBibMdTex(BasicInput):
             fig_names (List[str]): List of figure filenames to copy.
             path_output (str): Output directory path.
         """
+        if not fig_names:
+            return None
+
         if not os.path.exists(path_fig):
-            print(f"{path_fig} does not existed.")
+            print(f"The specified figure directory: {path_fig} does not exist.")
             return None
 
         file_list = []
@@ -276,6 +279,10 @@ class PyRunBibMdTex(BasicInput):
             for name in files:
                 if name in fig_names:
                     file_list.append(os.path.join(root, name))
+
+        not_founded_figures = list(set([os.path.basename(f) for f in file_list]).intersection(set(fig_names)))
+        if not_founded_figures:
+            print(f"Figures: {', '.join(not_founded_figures)} could not be found.")
 
         for file in file_list:
             path_output_file = os.path.join(path_output, fig_folder_name, os.path.basename(file))

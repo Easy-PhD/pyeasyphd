@@ -28,8 +28,6 @@ class WriteInitialResult(BasicInput):
         """
         super().__init__(options)
 
-        self.options = options
-
         self._level_title_md = "###"
         self._level_title_tex = "subsection"
         self._pandoc_md_to = PandocMdTo(options)

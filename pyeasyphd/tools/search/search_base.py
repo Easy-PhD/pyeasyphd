@@ -62,7 +62,6 @@ class SearchInitialResult(BasicInput):
         Args:
             options (dict): Configuration options.
         """
-        self.options = options
         super().__init__(options)
 
         self.print_on_screen: bool = options.get("print_on_screen", False)
