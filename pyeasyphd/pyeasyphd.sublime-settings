@@ -50,20 +50,33 @@
     "bib_path_or_file": "",
 
     // Path to the figures directory (must be a directory path, not a file)
-    "figures_directory": "",
+    "includegraphics_figs_directory": "",
     // ture, false
-    "shutil_figures": true,
+    "shutil_includegraphics_figs": true,
+    // ture, false
+    "includegraphics_figs_in_relative_path": true,
+    // figure postfixes
+    "includegraphics_figs_postfixes": ["eps", "jpg", "png", "svg", "psd", "raw", "jpeg", "pdf"],
+
+    // Path to the texes directory (must be a directory path, not a file)
+    "input_texs_directory": "",
+    // true, false
+    "shutil_input_texs": true,
+    // ture, false
+    "input_texs_in_relative_path": true,
+    // tex postfixes
+    "input_texs_postfixes": ["tex", "latex"],
 
     // true, false
     "generate_html": false,
     // true, false
     "generate_tex": true,
 
-    // for figure, bib, tex, and md
-    "figure_folder_name": "fig", // "" or "figs" or "main"
-    "bib_folder_name": "bib", // "" or "bibs" or "main"
-    "md_folder_name": "md", // "" or "mds" or "main"
-    "tex_folder_name": "tex", // "" or "texs" or "main"
+    // for fig, bib, tex, and md
+    "fig_folder_name": "fig", // "" or "fig" or "figs" or "main"
+    "bib_folder_name": "bib", // "" or "bib" or "bibs" or "main"
+    "md_folder_name": "md", // "" or "md" or "mds" or "main"
+    "tex_folder_name": "tex", // "" or "tex" or "texs" or "main"
 
     // for delete original md, tex, and bib files in output folder
     "delete_original_md_in_output_folder": false,

@@ -1,7 +1,7 @@
 import os
 import re
 import shutil
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 from pyadvtools import combine_content_in_list, read_list, standard_path, write_list
 from pybibtexer.bib.bibtexparser import Library
@@ -18,11 +18,7 @@ class PyRunBibMdTex(BasicInput):
     """
 
     def __init__(
-        self,
-        path_output: str,
-        tex_md_flag: str = ".md",
-        template_name: str = "paper",
-        options: Dict[str, Any] = {}
+        self, path_output: str, tex_md_flag: str = ".md", template_name: str = "paper", options: Dict[str, Any] = {}
     ) -> None:
         """Initialize the PyRunBibMdTex instance.
 
@@ -47,17 +43,31 @@ class PyRunBibMdTex(BasicInput):
         # Path to bibliographic data, can be either a directory path or a specific file path
         self.bib_path_or_file = options.get("bib_path_or_file", "")
 
-        # Figures
+        # Figures \includegraphics{/path/to/example.png}
         # Path to the figures directory (must be a directory path, not a file)
-        self.figures_directory = options.get("figures_directory", "")
-        self.shutil_figures = options.get("shutil_figures", True)
+        self.includegraphics_figs_directory = options.get("includegraphics_figs_directory", "")
+        self.shutil_includegraphics_figs = options.get("shutil_includegraphics_figs", True)
+        self.includegraphics_figs_in_relative_path = options.get("includegraphics_figs_in_relative_path", True)
+        includegraphics_figs_postfixes = options.get("includegraphics_figs_postfixes")
+        if includegraphics_figs_postfixes is None:
+            includegraphics_figs_postfixes = ["eps", "jpg", "png", "svg", "psd", "raw", "jpeg", "pdf"]
+        self.includegraphics_figs_postfixes = includegraphics_figs_postfixes
+
+        # Texs (Texes) \input{/path/to/example.tex}
+        self.input_texs_directory = options.get("input_texs_directory", "")
+        self.shutil_input_texs = options.get("shutil_input_texs", True)
+        self.input_texs_in_relative_path = options.get("input_texs_in_relative_path", True)
+        input_texs_postfixes = options.get("input_texs_postfixes")
+        if input_texs_postfixes is None:
+            input_texs_postfixes = ["tex", "latex"]
+        self.input_texs_postfixes = input_texs_postfixes
 
         # Configuration options
         self.generate_html = options.get("generate_html", False)
         self.generate_tex = options.get("generate_tex", True)
 
         # Folder name configurations
-        self.figure_folder_name = options.get("figure_folder_name", "fig")  # "" or "figs" or "main"
+        self.fig_folder_name = options.get("fig_folder_name", "fig")  # "" or "figs" or "main"
         self.bib_folder_name = options.get("bib_folder_name", "bib")  # "" or "bibs" or "main"
         self.md_folder_name = options.get("md_folder_name", "md")  # "" or "mds" or "main"
         self.tex_folder_name = options.get("tex_folder_name", "tex")  # "" or "texs" or "main"
@@ -168,9 +178,26 @@ class PyRunBibMdTex(BasicInput):
             Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         # Copy figures if enabled
-        if self.shutil_figures:
-            figure_names = self.search_figure_names(data_list_md_tex)
-            self.shutil_copy_figures(self.figure_folder_name, self.figures_directory, figure_names, self.path_output)
+        if self.shutil_includegraphics_figs:
+            figure_names = self.search_subfile_names(data_list_md_tex, self.includegraphics_figs_postfixes)
+            self.shutil_copy_files(
+                self.fig_folder_name,
+                self.includegraphics_figs_directory,
+                figure_names,
+                self.path_output,
+                self.includegraphics_figs_in_relative_path,
+            )
+
+        # Copy input texs (texes) if enabled
+        if self.shutil_input_texs:
+            input_tex_names = self.search_subfile_names(data_list_md_tex, self.input_texs_postfixes)
+            self.shutil_copy_files(
+                self.tex_folder_name,
+                self.input_texs_directory,
+                input_tex_names,
+                self.path_output,
+                self.input_texs_in_relative_path,
+            )
 
         # Extract citation keys from content
         key_in_md_tex = self.search_cite_keys(data_list_md_tex, self.tex_md_flag)
@@ -217,7 +244,7 @@ class PyRunBibMdTex(BasicInput):
                 data_list_tex,
                 output_tex,
                 self.path_output,
-                self.figure_folder_name,
+                self.fig_folder_name,
                 self.tex_folder_name,
                 self.bib_folder_name,
                 os.path.basename(full_bib_for_abbr),
@@ -238,7 +265,7 @@ class PyRunBibMdTex(BasicInput):
         return data_list_md, data_list_tex
 
     @staticmethod
-    def search_figure_names(data_list: List[str], figure_postfixes: Optional[List[str]] = None) -> List[str]:
+    def search_subfile_names(data_list: List[str], postfixes: List[str]) -> List[str]:
         """Search for figure filenames in content.
 
         Args:
@@ -248,48 +275,69 @@ class PyRunBibMdTex(BasicInput):
         Returns:
             List[str]: List of found figure filenames.
         """
-        if figure_postfixes is None:
-            figure_postfixes = ["eps", "jpg", "png", "svg", "psd", "raw", "jpeg", "pdf"]
-
-        regex = re.compile(rf'[\w\-]+\.(?:{"|".join(figure_postfixes)})', re.I)
+        regex = re.compile(rf'[\w\-]+\.(?:{"|".join(postfixes)})', re.I)
         figure_names = []
         for line in data_list:
             figure_names.extend(regex.findall(line))
         return sorted(set(figure_names), key=figure_names.index)
 
     @staticmethod
-    def shutil_copy_figures(fig_folder_name: str, path_fig: str, fig_names: List[str], path_output: str) -> None:
-        """Copy figure files to output directory.
+    def shutil_copy_files(
+        file_folder_name: str, path_file: str, file_names: List[str], path_output: str, relative_path: bool
+    ) -> None:
+        """Copy specified files from source directory to output directory.
+
+        Searches for files recursively in the source directory and copies them to
+        the output location, preserving either relative paths or using a flat structure.
 
         Args:
-            fig_folder_name (str): Name of figures folder in output directory.
-            path_fig (str): Source directory containing figures.
-            fig_names (List[str]): List of figure filenames to copy.
-            path_output (str): Output directory path.
+            file_folder_name: Name of the subfolder in output directory (used when relative_path=False).
+            path_file: Source directory path to search for files.
+            file_names: List of filenames to copy.
+            path_output: Destination directory path.
+            relative_path: If True, preserves relative path structure; if False, uses flat structure.
+
+        Returns:
+            None: Function executes side effects (file copying) but returns nothing.
         """
-        if not fig_names:
+        # Early return if no files or invalid source path
+        if not file_names or not path_file:
             return None
 
-        if not os.path.exists(path_fig):
-            print(f"The specified figure directory: {path_fig} does not exist.")
+        # Validate source directory exists
+        if not os.path.exists(path_file):
+            print(f"Source directory does not exist: {path_file}")
             return None
 
+        # Recursively search for matching files
         file_list = []
-        for root, _, files in os.walk(path_fig, topdown=False):
+        for root, _, files in os.walk(path_file, topdown=False):
             for name in files:
-                if name in fig_names:
+                if name in file_names:
                     file_list.append(os.path.join(root, name))
 
-        not_founded_figures = list(set([os.path.basename(f) for f in file_list]).intersection(set(fig_names)))
-        if not_founded_figures:
-            print(f"Figures: {', '.join(not_founded_figures)} could not be found.")
+        # Report missing files
+        found_files = [os.path.basename(f) for f in file_list]
+        not_found = [f for f in file_names if f not in found_files]
+        if not_found:
+            print(f"Files not found: {', '.join(not_found)}")
 
-        for file in file_list:
-            path_output_file = os.path.join(path_output, fig_folder_name, os.path.basename(file))
-            p = os.path.dirname(path_output_file)
-            if not os.path.exists(p):
-                os.makedirs(p)
-            shutil.copy(file, path_output_file)
+        # Copy each found file to destination
+        for file_path in file_list:
+            if relative_path:
+                # Preserve relative path structure
+                path_output_file = file_path.replace(path_file, path_output)
+            else:
+                # Use flat structure in specified folder
+                path_output_file = os.path.join(path_output, file_folder_name, os.path.basename(file_path))
+
+            # Create destination directory if needed
+            output_dir = os.path.dirname(path_output_file)
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+
+            # Perform file copy
+            shutil.copy(file_path, path_output_file)
         return None
 
     @staticmethod
