@@ -299,12 +299,15 @@ class PaperLinksGenerator(object):
 
             for publisher in keyword_publisher_abbr[keyword]:
                 for abbr in keyword_publisher_abbr[keyword][publisher]:
-                    lines = [
-                        f"[Link]({os.path.join(folder_name, cj.title(), ff, publisher.lower(), abbr, f'{abbr}.html')})"
-                        for ff in folder_flags
-                    ]
+                    lines = []
+                    for ff in folder_flags:
+                        ll = os.path.join(folder_name, cj.title(), ff, publisher.lower(), abbr, f'{abbr}.html')
+                        if os.path.exists(os.path.join(self.data_base_path, ll)):
+                            lines.append(f"[Link]({ll})")
+                        else:
+                            lines.append("")
 
-                    if any(self._check_file_exists(ff, folder_name, cj, publisher, abbr) for ff in folder_flags):
+                    if any(lines):
                         data_list.append(f"|{publisher}|{abbr}|" + "|".join(lines) + "|\n")
 
             if len(data_list) == 3:
@@ -338,13 +341,6 @@ class PaperLinksGenerator(object):
         else:
             # default
             return sorted(keywords)
-
-    def _check_file_exists(self, folder, folder_name, cj, publisher, abbr):
-        """Check if HTML file exists for given parameters."""
-        file_path = os.path.join(
-            self.data_base_path, folder_name, cj.title(), folder, publisher.lower(), abbr, f"{abbr}.html"
-        )
-        return os.path.exists(file_path)
 
     def _convert_md_to_html_keyword(self, folder_name, cj, keyword):
         """Convert markdown file to HTML using pandoc."""
