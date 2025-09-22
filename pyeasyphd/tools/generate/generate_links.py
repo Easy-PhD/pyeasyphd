@@ -15,6 +15,7 @@ class PaperLinksGenerator(object):
         self,
         full_json_c: str,
         full_json_j: str,
+        full_json_k: str,
         data_base_path: str,
         keywords_category_name: str = "",
         display_year_period: int = 10,
@@ -24,12 +25,14 @@ class PaperLinksGenerator(object):
         Args:
             full_json_c (str): Path to conferences JSON file.
             full_json_j (str): Path to journals JSON file.
+            full_json_k (str): Path to keywords JSON file.
             data_base_path (str): Path to data files directory.
             keywords_category_name (str, optional): Category name for keywords. Defaults to "".
             display_year_period (int, optional): Number of years to display. Defaults to 10.
         """
         self.full_json_c = full_json_c
         self.full_json_j = full_json_j
+        self.full_json_k = full_json_k
 
         self.data_base_path = standard_path(data_base_path)
 
@@ -89,8 +92,8 @@ class PaperLinksGenerator(object):
         table_rows = self._generate_table_rows_abbr(json_data, cj, folder_flags, folder_name)
         if table_rows:
             md_content.extend(table_rows)
-            self._write_md_file(md_content, folder_name, f"{cj}_Abbr.md")
-            self._convert_md_to_html(folder_name, f"{cj}_Abbr")
+            self._write_md_file(md_content, folder_name, f"{cj}_Abbreviation.md")
+            self._convert_md_to_html(folder_name, f"{cj}_Abbreviation")
 
         return None
 
@@ -128,6 +131,8 @@ class PaperLinksGenerator(object):
                 file_path = os.path.expanduser(self.full_json_c)
             elif file_name.lower().strip() == "journals":
                 file_path = os.path.expanduser(self.full_json_j)
+            elif file_name.lower().strip() == "keywords":
+                file_path = os.path.expanduser(self.full_json_k)
             else:
                 file_path = ""
 

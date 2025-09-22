@@ -1,3 +1,4 @@
+import datetime
 import os
 import re
 
@@ -61,3 +62,39 @@ def operate_on_generate_html(html_name: str) -> None:
     data_list = combine_content_in_list([head_list, [content], tail_list])
     write_list(data_list, html_name, "w", None, False)
     return None
+
+
+def is_last_week_of_month():
+    """
+    Check if today's date falls in the last week of the current month.
+
+    Returns:
+        bool: True if today is in the last week of the month, False otherwise.
+    """
+    # Get today's date
+    today = datetime.date.today()
+
+    # Calculate the last day of the current month
+    # First, find the first day of next month
+    if today.month == 12:
+        next_month = datetime.date(today.year + 1, 1, 1)
+    else:
+        next_month = datetime.date(today.year, today.month + 1, 1)
+
+    # Subtract one day to get the last day of the current month
+    last_day_of_month = next_month - datetime.timedelta(days=1)
+
+    # Calculate the week number of today and the last day of the month
+    # Using isocalendar() which returns (year, week number, weekday)
+    today_week = today.isocalendar()[1]
+    last_day_week = last_day_of_month.isocalendar()[1]
+
+    # For December, the week number might roll over to next year
+    # If so, we need to adjust the comparison
+    if today.month == 12 and today_week < last_day_week:
+        # This handles the case where the last week of December is actually
+        # the first week of the next year in the ISO calendar
+        return True
+
+    # Check if we're in the same week as the last day of the month
+    return today_week == last_day_week
