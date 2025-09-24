@@ -62,6 +62,19 @@ class PaperLinksGenerator(object):
 
         self._generate_links(cj, flags, folder_flags, folder_name)
 
+    def generate_monthly_links(self, folder_name=os.path.join("data", "Monthly")) -> None:
+        """Generate monthly markdown table with journal paper links.
+
+        Args:
+            folder_name (str, optional): Output folder name. Defaults to "data/Weekly".
+        """
+        cj = "Journals"
+
+        flags = ["All Months"]
+        folder_flags = [f"current_year_{f.replace(' ', '_').lower()}" for f in flags]
+
+        self._generate_links(cj, flags, folder_flags, folder_name)
+
     def generate_weekly_links(self, folder_name=os.path.join("data", "Weekly")) -> None:
         """Generate weekly markdown table with journal paper links.
 
@@ -70,7 +83,7 @@ class PaperLinksGenerator(object):
         """
         cj = "Journals"
 
-        flags = ["Current Issue", "Current Month", "All Months"]
+        flags = ["Current Issue", "Current Month"]
         folder_flags = [f"current_year_{f.replace(' ', '_').lower()}" for f in flags]
 
         self._generate_links(cj, flags, folder_flags, folder_name)
@@ -269,8 +282,14 @@ class PaperLinksGenerator(object):
 
         return None
 
-    def generate_keywords_links_monthly(self, cj: str, folder_name=os.path.join("data", "Weekly")):
-        flags = ["Current Issue", "Current Month", "All Months"]
+    def generate_keywords_links_weekly(self, cj: str, folder_name=os.path.join("data", "Weekly")):
+        flags = ["Current Issue", "Current Month"]
+        folder_flags = [f"current_year_{f.replace(' ', '_').lower()}" for f in flags]
+
+        self._generate_keywords_links(cj, folder_name, flags, folder_flags)
+
+    def generate_keywords_links_monthly(self, cj: str, folder_name=os.path.join("data", "Monthly")):
+        flags = ["All Months"]
         folder_flags = [f"current_year_{f.replace(' ', '_').lower()}" for f in flags]
 
         self._generate_keywords_links(cj, folder_name, flags, folder_flags)
