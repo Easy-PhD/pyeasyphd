@@ -6,9 +6,9 @@ license = "GPL-3.0-or-later"
 authors = ["NextAI <nextartifintell@gmail.com>"]
 maintainers = ["NextAI <nextartifintell@gmail.com>"]
 readme = ["README.md"]
-homepage = "https://github.com/NextArtifIntell/pyeasyphd"
-repository = "https://github.com/NextArtifIntell/pyeasyphd"
-documentation = "https://github.com/NextArtifIntell/pyeasyphd"
+homepage = "https://github.com/Easy-PhD/pyeasyphd"
+repository = "https://github.com/Easy-PhD/pyeasyphd"
+documentation = "https://github.com/Easy-PhD/pyeasyphd"
 keywords = ["Python", "Markdown", "LaTex"]
 classifiers = ["Topic :: Software Development :: Libraries :: Python Modules"]
 
