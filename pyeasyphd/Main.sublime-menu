@@ -15,7 +15,7 @@
                         [
                             {
                                 "command": "open_url",
-                                "args": {"url": "https://github.com/NextArtifIntell/pyeasyphd"},
+                                "args": {"url": "https://github.com/Easy-PhD/pyeasyphd"},
                                 "caption": "Documentation"
                             },
                             { "caption": "-" },
