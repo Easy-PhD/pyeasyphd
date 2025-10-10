@@ -7,17 +7,17 @@ Pip
 
 .. code-block:: bash
 
-   pip install pyadvtools
+   pip install pyeasyphd
 
 UV
 
 .. code-block:: bash
 
-   uv add pyadvtools
+   uv add pyeasyphd
 
 
 Poetry
 
 .. code-block:: bash
 
-   poetry add pyadvtools
+   poetry add pyeasyphd
