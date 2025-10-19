@@ -67,19 +67,19 @@
     // tex postfixes
     "input_texs_postfixes": ["tex", "latex"],
 
-    // true, false
-    "generate_html": false,
-    // true, false
-    "generate_tex": true,
-
     // for fig, bib, tex, and md
-    "fig_folder_name": "fig", // "" or "fig" or "figs" or "main"
-    "bib_folder_name": "bib", // "" or "bib" or "bibs" or "main"
-    "md_folder_name": "md", // "" or "md" or "mds" or "main"
-    "tex_folder_name": "tex", // "" or "tex" or "texs" or "main"
+    "fig_folder_name": "figs", // "" or "fig" or "figs" or "main"
+    "bib_folder_name": "bibs", // "" or "bib" or "bibs" or "main"
+    "md_folder_name": "mds", // "" or "md" or "mds" or "main"
+    "tex_folder_name": "texs", // "" or "tex" or "texs" or "main"
 
     // for delete original md, tex, and bib files in output folder
     "delete_original_md_in_output_folder": false,
     "delete_original_tex_in_output_folder": false,
     "delete_original_bib_in_output_folder": false,
+
+    // true, false
+    "generate_html": false,
+    // true, false
+    "generate_tex": true,
 }

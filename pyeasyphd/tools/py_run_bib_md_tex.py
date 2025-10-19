@@ -41,7 +41,7 @@ class PyRunBibMdTex(BasicInput):
 
         # Bib
         # Path to bibliographic data, can be either a directory path or a specific file path
-        self.bib_path_or_file = options.get("bib_path_or_file", "")
+        self.bib_path_or_file = options.get("bib_path_or_file", "")  # input
 
         # Figures \includegraphics{/path/to/example.png}
         # Path to the figures directory (must be a directory path, not a file)
@@ -62,20 +62,20 @@ class PyRunBibMdTex(BasicInput):
             input_texs_postfixes = ["tex", "latex"]
         self.input_texs_postfixes = input_texs_postfixes
 
-        # Configuration options
-        self.generate_html = options.get("generate_html", False)
-        self.generate_tex = options.get("generate_tex", True)
-
-        # Folder name configurations
-        self.fig_folder_name = options.get("fig_folder_name", "fig")  # "" or "figs" or "main"
-        self.bib_folder_name = options.get("bib_folder_name", "bib")  # "" or "bibs" or "main"
-        self.md_folder_name = options.get("md_folder_name", "md")  # "" or "mds" or "main"
-        self.tex_folder_name = options.get("tex_folder_name", "tex")  # "" or "texs" or "main"
+        # (output) Folder name configurations
+        self.fig_folder_name = options.get("fig_folder_name", "figs")  # "" or "figs" or "main"
+        self.bib_folder_name = options.get("bib_folder_name", "bibs")  # "" or "bibs" or "main"
+        self.md_folder_name = options.get("md_folder_name", "mds")  # "" or "mds" or "main"
+        self.tex_folder_name = options.get("tex_folder_name", "texs")  # "" or "texs" or "main"
 
         # Cleanup options
         self.delete_original_md_in_output_folder = options.get("delete_original_md_in_output_folder", False)
         self.delete_original_tex_in_output_folder = options.get("delete_original_tex_in_output_folder", False)
         self.delete_original_bib_in_output_folder = options.get("delete_original_bib_in_output_folder", False)
+
+        # Configuration options
+        self.generate_html = options.get("generate_html", False)
+        self.generate_tex = options.get("generate_tex", True)
 
         # Initialize helper classes
         self._python_bib = PythonRunBib(self.options)
@@ -181,10 +181,10 @@ class PyRunBibMdTex(BasicInput):
         if self.shutil_includegraphics_figs:
             figure_names = self.search_subfile_names(data_list_md_tex, self.includegraphics_figs_postfixes)
             self.shutil_copy_files(
-                self.fig_folder_name,
                 self.includegraphics_figs_directory,
                 figure_names,
                 self.path_output,
+                self.fig_folder_name,
                 self.includegraphics_figs_in_relative_path,
             )
 
@@ -192,10 +192,10 @@ class PyRunBibMdTex(BasicInput):
         if self.shutil_input_texs:
             input_tex_names = self.search_subfile_names(data_list_md_tex, self.input_texs_postfixes)
             self.shutil_copy_files(
-                self.tex_folder_name,
                 self.input_texs_directory,
                 input_tex_names,
                 self.path_output,
+                self.tex_folder_name,
                 self.input_texs_in_relative_path,
             )
 
@@ -283,7 +283,7 @@ class PyRunBibMdTex(BasicInput):
 
     @staticmethod
     def shutil_copy_files(
-        file_folder_name: str, path_file: str, file_names: List[str], path_output: str, relative_path: bool
+        path_file: str, file_names: List[str], path_output: str, output_folder_name: str, relative_path: bool
     ) -> None:
         """Copy specified files from source directory to output directory.
 
@@ -291,10 +291,10 @@ class PyRunBibMdTex(BasicInput):
         the output location, preserving either relative paths or using a flat structure.
 
         Args:
-            file_folder_name: Name of the subfolder in output directory (used when relative_path=False).
             path_file: Source directory path to search for files.
             file_names: List of filenames to copy.
             path_output: Destination directory path.
+            output_folder_name: Name of the subfolder in output directory (used when relative_path=False).
             relative_path: If True, preserves relative path structure; if False, uses flat structure.
 
         Returns:
@@ -329,7 +329,7 @@ class PyRunBibMdTex(BasicInput):
                 path_output_file = file_path.replace(path_file, path_output)
             else:
                 # Use flat structure in specified folder
-                path_output_file = os.path.join(path_output, file_folder_name, os.path.basename(file_path))
+                path_output_file = os.path.join(path_output, output_folder_name, os.path.basename(file_path))
 
             # Create destination directory if needed
             output_dir = os.path.dirname(path_output_file)
