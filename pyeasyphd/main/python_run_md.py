@@ -206,7 +206,7 @@ class PythonRunMd(BasicInput):
             main_part, last_part = [], []
             main_part_flag, last_part_flag = True, True
             for line_index in range(len(data_list_md)):
-                if main_part_flag and re.match(r"#+ [']?References'?\s[\[{]", data_list_md[line_index]):
+                if main_part_flag and re.match(r"#+ [\"']?References[\"']?\s[\[{]", data_list_md[line_index]):
                     main_part_flag = False
                     main_part = delete_empty_lines_last_occur_add_new_line(data_list_md[:line_index])
                 if last_part_flag and re.match(r"^\[\^1]: ", data_list_md[line_index]):
