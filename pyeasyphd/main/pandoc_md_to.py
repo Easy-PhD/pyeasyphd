@@ -31,6 +31,7 @@ class PandocMdTo(BasicInput):
         google_connected_paper_scite (bool): Whether to use Google connected paper scite. Defaults to True.
         display_one_line_reference_note (bool): Whether to display one line reference note. Defaults to False.
         cite_flag_in_tex (str): Citation flag in LaTeX. Defaults to "cite".
+        add_url_for_basic_dict (bool): Whether to add url for items in basic dict. Defualts to True.
     """
 
     def __init__(self, options: dict) -> None:
@@ -51,6 +52,8 @@ class PandocMdTo(BasicInput):
         self.display_one_line_reference_note: bool = options.get("display_one_line_reference_note", False)
         # tex
         self.cite_flag_in_tex: str = options.get("cite_flag_in_tex", "cite")
+
+        self.add_url_for_basic_dict: bool = options.get("add_url_for_basic_dict", True)
 
     def pandoc_md_to_md(
         self, path_bib: str, path_md_one: str, path_md_two: str, name_md_one: Optional[str], name_md_two: Optional[str]
@@ -311,7 +314,9 @@ class PandocMdTo(BasicInput):
             if (not self.google_connected_paper_scite) and aa:
                 bb = [f"([www]({aa[0].strip()}))\n"]
 
-            a.extend(aa)
+            if self.add_url_for_basic_dict:
+                a.extend(aa)
+
             b.extend(bb)
 
             if self.display_one_line_reference_note:

@@ -9,6 +9,8 @@
     "display_one_line_reference_note": false,
     // "fullcite", "cite"
     "cite_flag_in_tex": "cite",
+    // true, false
+    "add_url_for_basic_dict": true,
 
     // for md file
     // pyeasyphd/main/python_run_md.py

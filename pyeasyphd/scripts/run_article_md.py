@@ -36,7 +36,7 @@ def run_article_md_daily_notes(
         # bib options
         "abbr_index_article_for_abbr": 1,  # 0, 1, 2
         "abbr_index_inproceedings_for_abbr": 2,  # 0, 1, 2
-        "add_link_to_fields_for_abbr": None,  # None, or ["title", "journal", "booktitle"]
+        "add_link_to_fields_for_abbr": ["title"],  # None, or ["title", "journal", "booktitle"]
         "maximum_authors_for_abbr": 0,  # 0, 1, 2, ...
         "add_index_to_entries": False,
         "bib_for_abbr_name": "abbr.bib",
@@ -62,6 +62,7 @@ def run_article_md_daily_notes(
         "generate_tex": False,
 
         # md options
+        "add_url_for_basic_dict": False,  # True
         "final_output_main_md_name": "main.md",
         "delete_temp_generate_md": True,
         "add_reference_in_md": True,
