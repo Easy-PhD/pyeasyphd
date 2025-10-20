@@ -13,6 +13,35 @@ from .basic_input import BasicInput
 from .pandoc_md_to import PandocMdTo
 
 
+def batch_convert_citations(text):
+    """
+    Process all citations in the text, including multiple citations in one bracket.
+
+    Example: [@ref1; @ref2] -> <sup>[@ref1](#ref1)</sup><sup>[@ref2](#ref2)</sup>
+    """
+    # Match all citation patterns within square brackets
+    pattern = r'\[([^]]+)\]'
+
+    def process_citation(match):
+        citations = match.group(1)
+        # Split multiple citations (support semicolon or comma separation)
+        citation_list = re.split(r'[;,]', citations)
+
+        result = []
+        for citation in citation_list:
+            citation = citation.strip()
+            if citation.startswith('@'):
+                cite_id = citation[1:]  # Remove the @ symbol
+                result.append(f'[{citation}](#{cite_id.lower()})')
+            else:
+                # Keep non-citation content in original format
+                result.append(f'[{citation}]')
+
+        return ''.join(result)
+
+    return re.sub(pattern, process_citation, text)
+
+
 class PythonRunMd(BasicInput):
     """Python markdown processing class.
 
@@ -26,6 +55,7 @@ class PythonRunMd(BasicInput):
         replace_cite_to_fullcite_in_md (bool): Whether to replace citations with full citations in markdown. Defaults to False.
         replace_by_basic_beauty_complex_in_md (str): Replace by basic, beauty, or complex format. Defaults to "beauty".
         display_basic_beauty_complex_references_in_md (str): Display basic, beauty, or complex references. Defaults to "beauty".
+        add_anchor_in_md (bool): Whether add anchor in markdown. Defaults to False.
     """
 
     def __init__(self, options: Dict[str, Any]) -> None:
@@ -46,6 +76,7 @@ class PythonRunMd(BasicInput):
         self.display_basic_beauty_complex_references_in_md: str = options.get(
             "display_basic_beauty_complex_references_in_md", "beauty"
         )
+        self.add_anchor_in_md: bool = options.get("add_anchor_in_md", False)
 
         # for md
         self._pandoc_md_to = PandocMdTo(self.options)
@@ -175,6 +206,9 @@ class PythonRunMd(BasicInput):
                         continue
 
                     content[i] = content[i].replace(mch.group(), mch.group(1) + "[" + mch.group(2) + "]")
+            # add anchor
+            if self.add_anchor_in_md:
+                content = [batch_convert_citations(line) for line in content]
             n2 = "2_generate" + ".md"
             write_list(content, n2, "w", path_temp)
 

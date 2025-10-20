@@ -32,6 +32,9 @@ class PandocMdTo(BasicInput):
         display_one_line_reference_note (bool): Whether to display one line reference note. Defaults to False.
         cite_flag_in_tex (str): Citation flag in LaTeX. Defaults to "cite".
         add_url_for_basic_dict (bool): Whether to add url for items in basic dict. Defualts to True.
+        add_anchor_for_basic_dict (bool): Whether to add anchor for items in basic dict. Defaults to False.
+        add_anchor_for_beauty_dict (bool): Whether to add anchor for items in beauty dict. Defaults to False.
+        add_anchor_for_complex_dict (bool): Whether to add anchor for items in complex dict. Defaults to False.
     """
 
     def __init__(self, options: dict) -> None:
@@ -54,6 +57,9 @@ class PandocMdTo(BasicInput):
         self.cite_flag_in_tex: str = options.get("cite_flag_in_tex", "cite")
 
         self.add_url_for_basic_dict: bool = options.get("add_url_for_basic_dict", True)
+        self.add_anchor_for_basic_dict: bool = options.get("add_anchor_for_basic_dict", False)
+        self.add_anchor_for_beauty_dict: bool = options.get("add_anchor_for_beauty_dict", False)
+        self.add_anchor_for_complex_dict: bool = options.get("add_anchor_for_complex_dict", False)
 
     def pandoc_md_to_md(
         self, path_bib: str, path_md_one: str, path_md_two: str, name_md_one: Optional[str], name_md_two: Optional[str]
@@ -314,10 +320,17 @@ class PandocMdTo(BasicInput):
             if (not self.google_connected_paper_scite) and aa:
                 bb = [f"([www]({aa[0].strip()}))\n"]
 
+            # add url
             if self.add_url_for_basic_dict:
                 a.extend(aa)
 
             b.extend(bb)
+
+            # add anchor
+            if self.add_anchor_for_basic_dict:
+                a = [f'<a id="{k.lower()}"></a>'] + a
+            if self.add_anchor_for_beauty_dict or self.add_anchor_for_complex_dict:
+                b = [f'<a id="{k.lower()}"></a>'] + b
 
             if self.display_one_line_reference_note:
                 a = ["".join(a).replace("\n", " ").strip() + "\n"]

@@ -62,7 +62,11 @@ def run_article_md_daily_notes(
         "generate_tex": False,
 
         # md options
-        "add_url_for_basic_dict": False,  # True
+        "add_url_for_basic_dict": False,  # default is True
+        "add_anchor_for_basic_dict": False,  # default is False
+        "add_anchor_for_beauty_dict": True,  # default is False
+        "add_anchor_for_complex_dict": False,  # default is False
+
         "final_output_main_md_name": "main.md",
         "delete_temp_generate_md": True,
         "add_reference_in_md": True,
@@ -70,6 +74,7 @@ def run_article_md_daily_notes(
         "replace_cite_to_fullcite_in_md": True,
         "replace_by_basic_beauty_complex_in_md": "basic",
         "display_basic_beauty_complex_references_in_md": "beauty",
+        "add_anchor_in_md": True,  # default is False
 
         "md_folder_name": "mds",  # "" or "md" or "main"
         "delete_original_md_in_output_folder": True,  # False
