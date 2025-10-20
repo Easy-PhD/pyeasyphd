@@ -328,9 +328,9 @@ class PandocMdTo(BasicInput):
 
             # add anchor
             if self.add_anchor_for_basic_dict:
-                a = [f'<a id="{k.lower()}"></a>'] + a
+                a = [f'<a id="{k.lower()}"></a>\n'] + a
             if self.add_anchor_for_beauty_dict or self.add_anchor_for_complex_dict:
-                b = [f'<a id="{k.lower()}"></a>'] + b
+                b = [f'<a id="{k.lower()}"></a>\n'] + b
 
             if self.display_one_line_reference_note:
                 a = ["".join(a).replace("\n", " ").strip() + "\n"]
