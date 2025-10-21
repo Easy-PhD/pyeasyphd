@@ -6,7 +6,7 @@ from pyeasyphd.utils.utils import is_last_week_of_month
 from ._base import build_base_options, expand_path
 
 
-def run_generate_j_Weekly(
+def run_generate_j_weekly(
     options: dict,
     path_weekly_docs: str,
     keywords_category_names: list[str],
@@ -39,7 +39,7 @@ def run_generate_j_Weekly(
         generator.generate_keywords_links_weekly("Journals", output_basename)
 
 
-def run_generate_j_e_Weekly(
+def run_generate_j_e_weekly(
     options: dict,
     path_weekly_docs: str,
     keywords_category_names: list[str],
@@ -79,7 +79,7 @@ def run_generate_j_e_Weekly(
         generator.generate_keywords_links_weekly("Journals", output_basename)
 
 
-def run_generate_j_Monthly(
+def run_generate_j_monthly(
     options: dict,
     path_monthly_docs: str,
     keywords_category_names: list[str],
@@ -118,7 +118,7 @@ def run_generate_j_Monthly(
         generator.generate_keywords_links_monthly("Journals", output_basename)
 
 
-def run_generate_j_Yearly(
+def run_generate_j_yearly(
     options: dict,
     path_yearly_docs: str,
     keywords_category_names: list[str],
@@ -185,7 +185,7 @@ def run_generate_base(
     )
 
 
-def run_generate_c_Yearly(
+def run_generate_c_yearly(
     options: dict,
     path_yearly_docs: str,
     keywords_category_names: list[str],
