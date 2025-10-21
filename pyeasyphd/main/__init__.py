@@ -1,9 +1,3 @@
-"""Main module for PyEasyPhD core functionality.
-
-This module contains the core classes for processing academic papers,
-managing bibliographies, and converting between different formats.
-"""
-
 __all__ = ["BasicInput", "PandocMdTo", "PythonRunMd", "PythonRunTex"]
 
 from .basic_input import BasicInput
