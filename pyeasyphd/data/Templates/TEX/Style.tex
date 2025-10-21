@@ -1,15 +1,20 @@
 %------------------------------------------------------------------------------
 %% https://ctan.org/pkg/
 %% Geometry
-\usepackage{geometry}
-% \geometry{a4paper,scale=0.9}
-\usepackage{fancyhdr} % Extensive control of page headers and footers
+\makeatletter
+\@ifclassloaded{beamer}{%
+}{%
+    \usepackage{geometry}
+    \usepackage{fancyhdr} % Extensive control of page headers and footers
+}
+\makeatother
 
 %% Font
 \ifx\cn\undefined
     \usepackage[utf8]{inputenc} % Required for inputting international characters, allow utf-8 input
     \usepackage[T1]{fontenc} % Output font encoding for international characters, use 8-bit T1 fonts
     % \usepackage[default]{sourcesanspro} % https://fonts.adobe.com/fonts/source-sans#fonts-section
+    \usepackage{lmodern} % The Latin Modern family is a recent collection of fonts.
 \else
     \usepackage[UTF8]{ctex}
     \newcommand{\chuhao}{\fontsize{42pt}{1.25\baselineskip}\selectfont}     %初号
@@ -25,8 +30,6 @@
     \newcommand{\liuhao}{\fontsize{7.875pt}{1.25\baselineskip}\selectfont}  %六号
     \newcommand{\qihao}{\fontsize{5.25pt}{1.25\baselineskip}\selectfont}    %七号
 \fi
-\usepackage{microtype} % Subliminal refinements towards typographical perfection
-\usepackage{lmodern} % The Latin Modern family is a recent collection of fonts.
 
 %% Algorithm
 % https://www.overleaf.com/learn/latex/Algorithms
@@ -79,19 +82,19 @@
 
 %% Math
 \usepackage{bm} % https://www.ctan.org/pkg/bm
-\usepackage{amsmath} % https://www.ctan.org/pkg/amsmath
-\usepackage{amsfonts} % https://www.ctan.org/pkg/amsfonts
+% \usepackage{amsmath} % https://www.ctan.org/pkg/amsmath
+% loads amsmath automatically
+\usepackage{mathtools} % https://www.ctan.org/pkg/mathtools. Based on amsmath.
+% \usepackage{amsfonts} % https://www.ctan.org/pkg/amsfonts
+% loads amsfonts automatically
 \usepackage{amssymb} % https://latexstudio.net/hulatex/package/maths-1.htm. Contained in amsfonts.
 \usepackage{amsthm} % https://www.ctan.org/pkg/amsthm. Facilitates the kind of theorem setup typically needed in AMS Publications.
-\usepackage{mathrsfs}
+\usepackage{mathrsfs} % \mathscr
 \usepackage{csquotes} % Provides advanced facilities for inline and display quotations.
-\usepackage{siunitx} % Ensure that the combined mathematical meaning of the value plus unit combination is clear.
-\usepackage{mathtools} % https://www.ctan.org/pkg/mathtools. Based on amsmath.
 \usepackage{nicefrac} % Compact symbols for 1/2, etc.
 
 %% Color
 % cyan, magenta, darkgray, lightgray, brown, orange, lime, purple, teal, violet and pink
-\usepackage{color}
 \usepackage{xcolor} % The package allows rows and columns to be coloured, and even individual cells.
 \usepackage{colortbl} % Fill color
 
@@ -101,14 +104,8 @@
 \usepackage{float} % Improves the interface for defining floating objects such as figures and tables.
 
 %% Figure
-\usepackage{graphicx}
-\usepackage{graphics}
-\graphicspath{{./}
-{./figure/}{./figures/}{./image/}{./images/}{./graphics/}{./graphic/}{./pictures/}{./picture/}
-{./Figure/}{./Figures/}{./Image/}{./Images/}{./Graphics/}{./Graphic/}{./Pictures/}{./Picture/}
-{./fig}{./figs}{./img}{./imgs}
-{./Fig}{./Figs}{./Img}{./Imgs}
-}
+\usepackage{graphicx} % no need for \usepackage{graphics}
+\graphicspath{{./}{./figures/}{./images/}{./figs}{./imgs}}
 \usepackage{pgf} % PGF is a macro package for creating graphics.
 \usepackage{wrapfig}
 \usepackage{standalone}
@@ -239,11 +236,5 @@
 \usepackage{ifthen} % Conditional commands in LATEX documents
 \usepackage{pdfpages} % Simplifies the inclusion of external multi-page PDF documents in LATEX documents.
 \usepackage{verbatim} % (that skips everything between \begin{comment} and \end{comment})
-\usepackage{pstricks} % PSTricks offers an extensive collection of macros for generating PostScript
 \usepackage[english]{babel} % Manages culturally-determined typographical (and other) rules for a wide range of languages.
-\usepackage{makeidx} % Standard package for creating indexes, and Provides two new commands, \see and \printindex.
-\usepackage{rotating} % Rotation tools, including rotated full-page floats
-\usepackage{bbm} % Provide LaTex support for Blackboard varients of Computer Modern fonts.
-\usepackage{soul} % Find hypen automatically
-\usepackage{url} % Allow linebreaks at certain characters or combinations of characters. (simple URL typesetting)
 \usepackage{enumitem}
