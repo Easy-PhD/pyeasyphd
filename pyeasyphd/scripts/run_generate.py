@@ -3,7 +3,7 @@ import os
 from pyeasyphd.tools import PaperLinksGenerator, generate_from_bibs_and_write
 from pyeasyphd.utils.utils import is_last_week_of_month
 
-from ._base import build_base_options, expand_path, expand_paths
+from ._base import build_base_options, expand_paths
 
 
 def run_generate_j_weekly(
@@ -14,13 +14,11 @@ def run_generate_j_weekly(
     path_conferences_journals_json: str,
 ):
     # Expand and normalize file paths
-    path_weekly_docs = expand_path(path_weekly_docs)
+    path_weekly_docs, path_spidering_bibs = expand_paths(path_weekly_docs, path_spidering_bibs)
 
-    _, path_spidering_bibs, path_conferences_journals_json = expand_paths(
-        "", path_spidering_bibs, path_conferences_journals_json
-    )
-    opt = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
-    opt.update(options)
+    # Update options
+    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_.update(options)
 
     # Generate md and html files
     for gc in ["generate_data", "combine_data"]:
@@ -30,12 +28,16 @@ def run_generate_j_weekly(
         # "current_issue", "current_month"
         for flag in ["current_issue", "current_month"]:
             generate_from_bibs_and_write(
-                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, opt
+                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, options_
             )
 
     # Generate links
     for keywords_category_name in keywords_category_names:
-        full_json_c, full_json_j, full_json_k = opt["full_json_c"], opt["full_json_j"], opt["full_json_k"]
+        full_json_c, full_json_j, full_json_k = (
+            options_["full_json_c"],
+            options_["full_json_j"],
+            options_["full_json_k"],
+        )
         output_basename = os.path.join("data", "Weekly")
         generator = PaperLinksGenerator(full_json_c, full_json_j, full_json_k, path_weekly_docs, keywords_category_name)
         generator.generate_weekly_links(output_basename)
@@ -50,14 +52,12 @@ def run_generate_j_e_weekly(
     path_conferences_journals_json: str,
 ):
     # Expand and normalize file paths
-    path_weekly_docs = expand_path(path_weekly_docs)
+    path_weekly_docs, path_spidering_bibs = expand_paths(path_weekly_docs, path_spidering_bibs)
 
-    _, path_spidering_bibs, path_conferences_journals_json = expand_paths(
-        "", path_spidering_bibs, path_conferences_journals_json
-    )
-    opt = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
-    opt.update(options)
-    opt["early_access"] = True
+    # Update options
+    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_.update(options)
+    options_["early_access"] = True
 
     # Generate md and html files
     for gc in ["generate_data", "combine_data"]:
@@ -67,18 +67,22 @@ def run_generate_j_e_weekly(
         # "current_month"
         for flag in ["current_month"]:
             generate_from_bibs_and_write(
-                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, opt
+                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, options_
             )
 
         # "all_years"
         for year in ["all_years"]:
             generate_from_bibs_and_write(
-                path_storage, path_output, output_basename, "Journals", gc, year, "all_months", opt
+                path_storage, path_output, output_basename, "Journals", gc, year, "all_months", options_
             )
 
     # Generate links
     for keywords_category_name in keywords_category_names:
-        full_json_c, full_json_j, full_json_k = opt["full_json_c"], opt["full_json_j"], opt["full_json_k"]
+        full_json_c, full_json_j, full_json_k = (
+            options_["full_json_c"],
+            options_["full_json_j"],
+            options_["full_json_k"],
+        )
         output_basename = os.path.join("data", "Weekly")
         generator = PaperLinksGenerator(full_json_c, full_json_j, full_json_k, path_weekly_docs, keywords_category_name)
         generator.generate_ieee_early_access_links(output_basename)
@@ -93,13 +97,11 @@ def run_generate_j_monthly(
     path_conferences_journals_json: str,
 ):
     # Expand and normalize file paths
-    path_monthly_docs = expand_path(path_monthly_docs)
+    path_monthly_docs, path_spidering_bibs = expand_paths(path_monthly_docs, path_spidering_bibs)
 
-    _, path_spidering_bibs, path_conferences_journals_json = expand_paths(
-        "", path_spidering_bibs, path_conferences_journals_json
-    )
-    opt = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
-    opt.update(options)
+    # Update options
+    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_.update(options)
 
     # Generate md and html files
     for gc in ["generate_data", "combine_data"]:
@@ -113,12 +115,16 @@ def run_generate_j_monthly(
                     continue
 
             generate_from_bibs_and_write(
-                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, opt
+                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, options_
             )
 
     # Generate links
     for keywords_category_name in keywords_category_names:
-        full_json_c, full_json_j, full_json_k = opt["full_json_c"], opt["full_json_j"], opt["full_json_k"]
+        full_json_c, full_json_j, full_json_k = (
+            options_["full_json_c"],
+            options_["full_json_j"],
+            options_["full_json_k"],
+        )
         output_basename = os.path.join("data", "Monthly")
         generator = PaperLinksGenerator(
             full_json_c, full_json_j, full_json_k, path_monthly_docs, keywords_category_name
@@ -136,13 +142,11 @@ def run_generate_j_yearly(
     year_list: list[str],
 ):
     # Expand and normalize file paths
-    path_yearly_docs = expand_path(path_yearly_docs)
+    path_yearly_docs, path_spidered_bibs = expand_paths(path_yearly_docs, path_spidered_bibs)
 
-    path_spidered_bibs, _, path_conferences_journals_json = expand_paths(
-        path_spidered_bibs, "", path_conferences_journals_json
-    )
-    opt = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
-    opt.update(options)
+    # Update options
+    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_.update(options)
 
     # Generate md and html files
     for gc in ["generate_data", "combine_data"]:
@@ -152,12 +156,16 @@ def run_generate_j_yearly(
         # "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015"
         for year in year_list:
             generate_from_bibs_and_write(
-                path_storage, path_output, output_basename, "Journals", gc, [year], "all_months", opt
+                path_storage, path_output, output_basename, "Journals", gc, [year], "all_months", options_
             )
 
     # Generate links
     for keywords_category_name in keywords_category_names:
-        full_json_c, full_json_j, full_json_k = opt["full_json_c"], opt["full_json_j"], opt["full_json_k"]
+        full_json_c, full_json_j, full_json_k = (
+            options_["full_json_c"],
+            options_["full_json_j"],
+            options_["full_json_k"],
+        )
         output_basename = os.path.join("data", "Yearly")
         generator = PaperLinksGenerator(full_json_c, full_json_j, full_json_k, path_yearly_docs, keywords_category_name)
         generator.generate_yearly_links("Journals", output_basename)
@@ -173,13 +181,11 @@ def run_generate_c_yearly(
     year_list: list[str],
 ):
     # Expand and normalize file paths
-    path_yearly_docs = expand_path(path_yearly_docs)
+    path_yearly_docs, path_spidered_bibs = expand_paths(path_yearly_docs, path_spidered_bibs)
 
-    path_spidered_bibs, _, path_conferences_journals_json = expand_paths(
-        path_spidered_bibs, "", path_conferences_journals_json
-    )
-    opt = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
-    opt.update(options)
+    # Update options
+    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_.update(options)
 
     # Generate md and html files
     for gc in ["generate_data", "combine_data"]:
@@ -189,12 +195,16 @@ def run_generate_c_yearly(
         # "2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015"
         for year in year_list:
             generate_from_bibs_and_write(
-                path_storage, path_output, output_basename, "Conferences", gc, [year], "all_months", opt
+                path_storage, path_output, output_basename, "Conferences", gc, [year], "all_months", options_
             )
 
     # Generate links
     for keywords_category_name in keywords_category_names:
-        full_json_c, full_json_j, full_json_k = opt["full_json_c"], opt["full_json_j"], opt["full_json_k"]
+        full_json_c, full_json_j, full_json_k = (
+            options_["full_json_c"],
+            options_["full_json_j"],
+            options_["full_json_k"],
+        )
         output_basename = os.path.join("data", "Yearly")
         generator = PaperLinksGenerator(full_json_c, full_json_j, full_json_k, path_yearly_docs, keywords_category_name)
         generator.generate_yearly_links("Conferences", output_basename)

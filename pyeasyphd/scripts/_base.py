@@ -7,14 +7,9 @@ def expand_path(path: str) -> str:
     return os.path.expandvars(os.path.expanduser(path))
 
 
-def expand_paths(
-    path_spidered_bibs: str, path_spidering_bibs: str, path_conferences_journals_json: str
-):
+def expand_paths(*paths):
     # Expand and normalize file paths
-    path_spidered_bibs = expand_path(path_spidered_bibs)
-    path_spidering_bibs = expand_path(path_spidering_bibs)
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
-    return path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json
+    return [expand_path(path) for path in paths]
 
 
 def build_base_options(
