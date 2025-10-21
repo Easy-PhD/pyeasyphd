@@ -6,6 +6,8 @@ from pybibtexer.tools import compare_bibs_with_zotero
 
 from pyeasyphd.tools import Searchkeywords
 
+from ._base import build_base_options, build_search_options, expand_path
+
 
 def run_search_for_screen(
     acronym: str,
@@ -27,22 +29,23 @@ def run_search_for_screen(
         path_conferences_journals_json: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
-    path_spidered_bibs = _expand_path(path_spidered_bibs)
-    path_spidering_bibs = _expand_path(path_spidering_bibs)
-    path_conferences_journals_json = _expand_path(path_conferences_journals_json)
+    path_spidered_bibs = expand_path(path_spidered_bibs)
+    path_spidering_bibs = expand_path(path_spidering_bibs)
+    path_conferences_journals_json = expand_path(path_conferences_journals_json)
 
     # Configure search options
-    options = _build_search_options(
-        print_on_screen=True,
-        search_year_list=[str(year)],
-        include_publisher_list=[],
-        include_abbr_list=[acronym],
-        exclude_publisher_list=["arXiv"],
-        exclude_abbr_list=[],
-        keywords_type="Temp",
-        keywords_list_list=[[title]],
-        path_conferences_journals_json=path_conferences_journals_json,
-    )
+    options = {
+        **build_base_options(
+            include_publisher_list=[],
+            include_abbr_list=[acronym],
+            exclude_publisher_list=["arXiv"],
+            exclude_abbr_list=[],
+            path_conferences_journals_json=path_conferences_journals_json,
+        ),
+        **build_search_options(
+            print_on_screen=True, search_year_list=[str(year)], keywords_type="Temp", keywords_list_list=[[title]]
+        ),
+    }
 
     # Execute searches across different bibliography sources
     _execute_searches(options, "", path_spidered_bibs, path_spidering_bibs)
@@ -68,73 +71,29 @@ def run_search_for_files(
         path_conferences_journals_json: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
-    path_main_output = _expand_path(path_main_output)
-    path_spidered_bibs = _expand_path(path_spidered_bibs)
-    path_spidering_bibs = _expand_path(path_spidering_bibs)
-    path_conferences_journals_json = _expand_path(path_conferences_journals_json)
+    path_main_output = expand_path(path_main_output)
+    path_spidered_bibs = expand_path(path_spidered_bibs)
+    path_spidering_bibs = expand_path(path_spidering_bibs)
+    path_conferences_journals_json = expand_path(path_conferences_journals_json)
 
     # Configure search options
-    options = _build_search_options(
-        print_on_screen=False,
-        search_year_list=[],
-        include_publisher_list=[],
-        include_abbr_list=[],
-        exclude_publisher_list=["arXiv"],
-        exclude_abbr_list=[],
-        keywords_type=keywords_type,
-        keywords_list_list=keywords_list_list,
-        path_conferences_journals_json=path_conferences_journals_json,
-    )
-
+    options = {
+        **build_base_options(
+            include_publisher_list=[],
+            include_abbr_list=[],
+            exclude_publisher_list=["arXiv"],
+            exclude_abbr_list=[],
+            path_conferences_journals_json=path_conferences_journals_json,
+        ),
+        **build_search_options(
+            print_on_screen=False,
+            search_year_list=[],
+            keywords_type=keywords_type,
+            keywords_list_list=keywords_list_list,
+        ),
+    }
     # Execute searches across different bibliography sources
     _execute_searches(options, path_main_output, path_spidered_bibs, path_spidering_bibs)
-
-
-def _expand_path(path: str) -> str:
-    """Expand user home directory and environment variables in path."""
-    return os.path.expandvars(os.path.expanduser(path))
-
-
-def _build_search_options(
-    print_on_screen: bool,
-    search_year_list: List[str],
-    include_publisher_list: List[str],
-    include_abbr_list: List[str],
-    exclude_publisher_list: List[str],
-    exclude_abbr_list: List[str],
-    keywords_type: str,
-    keywords_list_list: List[List[str]],
-    path_conferences_journals_json: str,
-) -> Dict[str, Any]:
-    """
-    Build search options dictionary with common configuration.
-
-    Args:
-        print_on_screen: Whether to display results on screen
-        search_year_list: List of years to filter search results
-        include_publisher_list: List of publishers to include
-        include_abbr_list: List of conference/journal abbreviations to include
-        exclude_publisher_list: List of publishers to exclude from search
-        exclude_abbr_list: List of conference/journal abbreviations to exclude from search
-        keywords_type: Category name for search keywords
-        keywords_list_list: Nested list of search keywords
-        path_conferences_journals_json: Base path for conferences/journals JSON files
-
-    Returns:
-        Dictionary containing configured search options
-    """
-    return {
-        "print_on_screen": print_on_screen,
-        "search_year_list": search_year_list,
-        "include_publisher_list": include_publisher_list,
-        "include_abbr_list": include_abbr_list,
-        "exclude_publisher_list": exclude_publisher_list,
-        "exclude_abbr_list": exclude_abbr_list,
-        "keywords_dict": {keywords_type: keywords_list_list},
-        "keywords_type_list": [keywords_type],
-        "full_json_c": os.path.join(path_conferences_journals_json, "conferences.json"),
-        "full_json_j": os.path.join(path_conferences_journals_json, "journals.json"),
-    }
 
 
 def _execute_searches(
@@ -163,10 +122,7 @@ def _execute_searches(
 
 
 def run_compare_after_search(
-    zotero_bib: str,
-    keywords_type: str,
-    path_main_output: str,
-    path_conferences_journals_json: str,
+    zotero_bib: str, keywords_type: str, path_main_output: str, path_conferences_journals_json: str
 ):
     """
     Compare search results with Zotero bibliography and generate comparison report.
@@ -178,22 +134,23 @@ def run_compare_after_search(
         path_conferences_journals_json: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
-    zotero_bib = _expand_path(zotero_bib)
-    path_main_output = _expand_path(path_main_output)
-    path_conferences_journals_json = _expand_path(path_conferences_journals_json)
+    zotero_bib = expand_path(zotero_bib)
+    path_main_output = expand_path(path_main_output)
+    path_conferences_journals_json = expand_path(path_conferences_journals_json)
 
     # Configure search options
-    options = _build_search_options(
-        print_on_screen=False,
-        search_year_list=[],
-        include_publisher_list=[],
-        include_abbr_list=[],
-        exclude_publisher_list=["arXiv"],
-        exclude_abbr_list=[],
-        keywords_type=keywords_type,
-        keywords_list_list=[],
-        path_conferences_journals_json=path_conferences_journals_json,
-    )
+    options = {
+        **build_base_options(
+            include_publisher_list=[],
+            include_abbr_list=[],
+            exclude_publisher_list=["arXiv"],
+            exclude_abbr_list=[],
+            path_conferences_journals_json=path_conferences_journals_json,
+        ),
+        **build_search_options(
+            print_on_screen=False, search_year_list=[], keywords_type=keywords_type, keywords_list_list=[]
+        ),
+    }
 
     # Download bibliography files from local search results
     download_bib = _download_bib_from_local(path_main_output, keywords_type)
@@ -221,13 +178,7 @@ def _generate_data_list(path_output: str, folder_name: str, keywords_type: str) 
 
     # Extract data from both title and abstract bibliography folders
     for bib_type in ["title-bib-zotero", "abstract-bib-zotero"]:
-        folder_path = os.path.join(
-            path_output,
-            f"{folder_name}-Separate",
-            "article",
-            keywords_type,
-            bib_type
-        )
+        folder_path = os.path.join(path_output, f"{folder_name}-Separate", "article", keywords_type, bib_type)
 
         # Extract bibliography data content if folder exists
         if os.path.exists(folder_path):
