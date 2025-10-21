@@ -3,7 +3,7 @@ import os
 from pyeasyphd.tools import PaperLinksGenerator, generate_from_bibs_and_write
 from pyeasyphd.utils.utils import is_last_week_of_month
 
-from ._base import build_base_options, expand_path
+from ._base import build_options, expand_path
 
 
 def run_generate_j_weekly(
@@ -17,7 +17,7 @@ def run_generate_j_weekly(
     path_weekly_docs = expand_path(path_weekly_docs)
 
     _, path_spidering_bibs, path_conferences_journals_json, full_json_c, full_json_j, full_json_k, options_ = (
-        run_generate_base(options, "", path_spidering_bibs, path_conferences_journals_json)
+        build_options(options, "", path_spidering_bibs, path_conferences_journals_json)
     )
 
     # Generate md and html files
@@ -50,7 +50,7 @@ def run_generate_j_e_weekly(
     path_weekly_docs = expand_path(path_weekly_docs)
 
     _, path_spidering_bibs, path_conferences_journals_json, full_json_c, full_json_j, full_json_k, options_ = (
-        run_generate_base(options, "", path_spidering_bibs, path_conferences_journals_json)
+        build_options(options, "", path_spidering_bibs, path_conferences_journals_json)
     )
     options_["early_access"] = True
 
@@ -90,7 +90,7 @@ def run_generate_j_monthly(
     path_monthly_docs = expand_path(path_monthly_docs)
 
     _, path_spidering_bibs, path_conferences_journals_json, full_json_c, full_json_j, full_json_k, options_ = (
-        run_generate_base(options, "", path_spidering_bibs, path_conferences_journals_json)
+        build_options(options, "", path_spidering_bibs, path_conferences_journals_json)
     )
 
     # Generate md and html files
@@ -130,7 +130,7 @@ def run_generate_j_yearly(
     path_yearly_docs = expand_path(path_yearly_docs)
 
     path_spidered_bibs, _, path_conferences_journals_json, full_json_c, full_json_j, full_json_k, options_ = (
-        run_generate_base(options, path_spidered_bibs, "", path_conferences_journals_json)
+        build_options(options, path_spidered_bibs, "", path_conferences_journals_json)
     )
 
     # Generate md and html files
@@ -152,39 +152,6 @@ def run_generate_j_yearly(
         generator.generate_keywords_links_yearly("Journals", output_basename)
 
 
-def run_generate_base(
-    options: dict, path_spidered_bibs: str, path_spidering_bibs: str, path_conferences_journals_json: str
-):
-    # Expand and normalize file paths
-    path_spidered_bibs = expand_path(path_spidered_bibs)
-    path_spidering_bibs = expand_path(path_spidering_bibs)
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
-
-    # Configure options
-    options_ = build_base_options(
-        include_publisher_list=[],
-        include_abbr_list=[],
-        exclude_publisher_list=["arXiv"],
-        exclude_abbr_list=[],
-        path_conferences_journals_json=path_conferences_journals_json,
-    )
-    options_.update(options)
-
-    full_json_c = options_["full_json_c"]
-    full_json_j = options_["full_json_j"]
-    full_json_k = options_["full_json_k"]
-
-    return (
-        path_spidered_bibs,
-        path_spidering_bibs,
-        path_conferences_journals_json,
-        full_json_c,
-        full_json_j,
-        full_json_k,
-        options_
-    )
-
-
 def run_generate_c_yearly(
     options: dict,
     path_yearly_docs: str,
@@ -197,7 +164,7 @@ def run_generate_c_yearly(
     path_yearly_docs = expand_path(path_yearly_docs)
 
     path_spidered_bibs, _, path_conferences_journals_json, full_json_c, full_json_j, full_json_k, options_ = (
-        run_generate_base(options, path_spidered_bibs, "", path_conferences_journals_json)
+        build_options(options, path_spidered_bibs, "", path_conferences_journals_json)
     )
 
     # Generate md and html files
