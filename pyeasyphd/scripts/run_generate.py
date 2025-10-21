@@ -58,7 +58,7 @@ def run_generate_j_e_Weekly(
     for gc in ["generate_data", "combine_data"]:
         path_storage = os.path.join(path_spidering_bibs, "spider_j_e")
         output_basename = os.path.join("data", "Weekly")
-        path_output = os.path.expanduser(os.path.join(path_weekly_docs, output_basename, "Journals_Early_Access"))
+        path_output = os.path.expanduser(os.path.join(path_weekly_docs, output_basename, "Journals"))
         # "current_month"
         for flag in ["current_month"]:
             generate_from_bibs_and_write(
