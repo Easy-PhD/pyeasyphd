@@ -1,6 +1,9 @@
 import os
 from typing import Any, Dict, List
 
+from pyadvtools import transform_to_data_list
+from pybibtexer.tools import compare_bibs_with_zotero
+
 from pyeasyphd.tools import Searchkeywords
 
 
@@ -157,3 +160,103 @@ def _execute_searches(
         path_storage = os.path.join(path_spidering_bibs, je)
         path_output = os.path.join(path_main_output, "Search_spidering_bib", je)
         Searchkeywords(path_storage, path_output, options).run()
+
+
+def run_compare_after_search(
+    zotero_bib: str,
+    keywords_type: str,
+    path_main_output: str,
+    path_conferences_journals_json: str,
+):
+    """
+    Compare search results with Zotero bibliography and generate comparison report.
+
+    Args:
+        zotero_bib: Path to Zotero bibliography file
+        keywords_type: Category name for the search keywords used
+        path_main_output: Main output directory for search results and comparison
+        path_conferences_journals_json: Path to conferences/journals JSON files
+    """
+    # Expand and normalize file paths
+    zotero_bib = _expand_path(zotero_bib)
+    path_main_output = _expand_path(path_main_output)
+    path_conferences_journals_json = _expand_path(path_conferences_journals_json)
+
+    # Configure search options
+    options = _build_search_options(
+        print_on_screen=False,
+        search_year_list=[],
+        include_publisher_list=[],
+        include_abbr_list=[],
+        exclude_publisher_list=["arXiv"],
+        exclude_abbr_list=[],
+        keywords_type=keywords_type,
+        keywords_list_list=[],
+        path_conferences_journals_json=path_conferences_journals_json,
+    )
+
+    # Download bibliography files from local search results
+    download_bib = _download_bib_from_local(path_main_output, keywords_type)
+
+    # Generate comparison output path and run comparison
+    path_output = os.path.join(path_main_output, "comparison_new")
+    compare_bibs_with_zotero(zotero_bib, download_bib, path_output, options)
+
+    return None
+
+
+def _generate_data_list(path_output: str, folder_name: str, keywords_type: str) -> list[str]:
+    """
+    Extract bibliography data content from files in specified folder structure.
+
+    Args:
+        path_output: Base output path for search results
+        folder_name: Specific folder name within the output structure
+        keywords_type: Category name for the search keywords used
+
+    Returns:
+        List of bibliography data content extracted from .bib files in the specified folders
+    """
+    data_list = []
+
+    # Extract data from both title and abstract bibliography folders
+    for bib_type in ["title-bib-zotero", "abstract-bib-zotero"]:
+        folder_path = os.path.join(
+            path_output,
+            f"{folder_name}-Separate",
+            "article",
+            keywords_type,
+            bib_type
+        )
+
+        # Extract bibliography data content if folder exists
+        if os.path.exists(folder_path):
+            data_list.extend(transform_to_data_list(folder_path, ".bib"))
+
+    return data_list
+
+
+def _download_bib_from_local(path_output: str, keywords_type: str) -> list[str]:
+    """
+    Collect bibliography data content from all local search result directories.
+
+    Args:
+        path_output: Base output path containing search results
+        keywords_type: Category name for the search keywords used
+
+    Returns:
+        Combined list of bibliography data content from all .bib files in search results
+    """
+    data_list = []
+
+    # Collect data from spidered bibliographies (Conferences and Journals)
+    for cj in ["Conferences", "Journals"]:
+        folder_name = os.path.join("Search_spidered_bib", cj)
+        data_list.extend(_generate_data_list(path_output, folder_name, keywords_type))
+
+    # Collect data from spidering bibliographies (journal sources)
+    for je in ["spider_j", "spider_j_e"]:
+        folder_name = os.path.join("Search_spidering_bib", je)
+        data_list.extend(_generate_data_list(path_output, folder_name, keywords_type))
+
+    return data_list
