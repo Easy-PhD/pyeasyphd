@@ -52,23 +52,24 @@ def run_generate_j_e_Weekly(
     _, path_spidering_bibs, path_conferences_journals_json, full_json_c, full_json_j, full_json_k, options_ = (
         run_generate_base(options, "", path_spidering_bibs, path_conferences_journals_json)
     )
+    options_["early_access"] = True
 
     # Generate md and html files
-    # for gc in ["generate_data", "combine_data"]:
-    #     path_storage = os.path.join(path_spidering_bibs, "spider_j_e")
-    #     output_basename = os.path.join("data", "Weekly")
-    #     path_output = os.path.expanduser(os.path.join(path_weekly_docs, output_basename, "Journals_Early_Access"))
-    #     # "current_month"
-    #     for flag in ["current_month"]:
-    #         generate_from_bibs_and_write(
-    #             path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, options_
-    #         )
+    for gc in ["generate_data", "combine_data"]:
+        path_storage = os.path.join(path_spidering_bibs, "spider_j_e")
+        output_basename = os.path.join("data", "Weekly")
+        path_output = os.path.expanduser(os.path.join(path_weekly_docs, output_basename, "Journals_Early_Access"))
+        # "current_month"
+        for flag in ["current_month"]:
+            generate_from_bibs_and_write(
+                path_storage, path_output, output_basename, "Journals", gc, "current_year", flag, options_
+            )
 
-    #     # "all_years"
-    #     for year in ["all_years"]:
-    #         generate_from_bibs_and_write(
-    #             path_storage, path_output, output_basename, "Journals", gc, year, "all_months", options_
-    #         )
+        # "all_years"
+        for year in ["all_years"]:
+            generate_from_bibs_and_write(
+                path_storage, path_output, output_basename, "Journals", gc, year, "all_months", options_
+            )
 
     # Generate links
     for keywords_category_name in keywords_category_names:
