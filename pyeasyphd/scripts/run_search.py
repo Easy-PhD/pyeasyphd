@@ -6,7 +6,7 @@ from pybibtexer.tools import compare_bibs_with_zotero
 
 from pyeasyphd.tools import Searchkeywords
 
-from ._base import build_base_options, build_search_options, expand_path
+from ._base import build_base_options, build_search_options, expand_path, expand_paths
 
 
 def run_search_for_screen(
@@ -29,9 +29,9 @@ def run_search_for_screen(
         path_conferences_journals_json: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
-    path_spidered_bibs = expand_path(path_spidered_bibs)
-    path_spidering_bibs = expand_path(path_spidering_bibs)
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
+    path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json = expand_paths(
+        path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json
+    )
 
     # Configure search options
     options = {
@@ -72,9 +72,9 @@ def run_search_for_files(
     """
     # Expand and normalize file paths
     path_main_output = expand_path(path_main_output)
-    path_spidered_bibs = expand_path(path_spidered_bibs)
-    path_spidering_bibs = expand_path(path_spidering_bibs)
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
+    path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json = expand_paths(
+        path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json
+    )
 
     # Configure search options
     options = {

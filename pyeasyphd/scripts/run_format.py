@@ -5,7 +5,7 @@ from pybibtexer.tools import format_bib_to_abbr_zotero_save_modes, format_bib_to
 from ._base import build_options, expand_path
 
 
-def run_format_single_file_to_save(
+def run_format_bib_to_save_by_entry_type(
     options: dict,
     need_format_bib: str,
     path_output: str,
@@ -23,7 +23,7 @@ def run_format_single_file_to_save(
     format_bib_to_save_mode_by_entry_type(Path(need_format_bib).stem, path_output, need_format_bib, options=options_)
 
 
-def run_format_single_file_to_abbr_zotero_save(
+def run_format_bib_to_abbr_zotero_save(
     options: dict,
     need_format_bib: str,
     path_output: str,

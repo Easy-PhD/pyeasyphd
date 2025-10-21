@@ -7,6 +7,16 @@ def expand_path(path: str) -> str:
     return os.path.expandvars(os.path.expanduser(path))
 
 
+def expand_paths(
+    path_spidered_bibs: str, path_spidering_bibs: str, path_conferences_journals_json: str
+):
+    # Expand and normalize file paths
+    path_spidered_bibs = expand_path(path_spidered_bibs)
+    path_spidering_bibs = expand_path(path_spidering_bibs)
+    path_conferences_journals_json = expand_path(path_conferences_journals_json)
+    return path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json
+
+
 def build_base_options(
     include_publisher_list: List[str],
     include_abbr_list: List[str],
@@ -27,6 +37,7 @@ def build_base_options(
     Returns:
         Dictionary containing configured options
     """
+    path_conferences_journals_json = expand_path(path_conferences_journals_json)
     return {
         "include_publisher_list": include_publisher_list,
         "include_abbr_list": include_abbr_list,
@@ -36,39 +47,6 @@ def build_base_options(
         "full_json_j": os.path.join(path_conferences_journals_json, "journals.json"),
         "full_json_k": os.path.join(path_conferences_journals_json, "keywords.json"),
     }
-
-
-def build_options(
-    options: dict, path_spidered_bibs: str, path_spidering_bibs: str, path_conferences_journals_json: str
-):
-    # Expand and normalize file paths
-    path_spidered_bibs = expand_path(path_spidered_bibs)
-    path_spidering_bibs = expand_path(path_spidering_bibs)
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
-
-    # Configure options
-    options_ = build_base_options(
-        include_publisher_list=[],
-        include_abbr_list=[],
-        exclude_publisher_list=["arXiv"],
-        exclude_abbr_list=[],
-        path_conferences_journals_json=path_conferences_journals_json,
-    )
-    options_.update(options)
-
-    full_json_c = options_["full_json_c"]
-    full_json_j = options_["full_json_j"]
-    full_json_k = options_["full_json_k"]
-
-    return (
-        path_spidered_bibs,
-        path_spidering_bibs,
-        path_conferences_journals_json,
-        full_json_c,
-        full_json_j,
-        full_json_k,
-        options_,
-    )
 
 
 def build_search_options(
