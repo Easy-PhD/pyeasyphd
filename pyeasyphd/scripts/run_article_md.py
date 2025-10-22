@@ -68,6 +68,9 @@ def run_article_md_daily_notes(
         "generate_tex": False,
 
         # md options
+        # ["www", "google", "connected", "scite"]
+        "display_www_google_connected_scite": ["google", "connected"],  # python_writers.py
+
         "add_url_for_basic_dict": False,  # default is True
         "add_anchor_for_basic_dict": False,  # default is False
         "add_anchor_for_beauty_dict": True,  # default is False
@@ -78,8 +81,8 @@ def run_article_md_daily_notes(
         "add_reference_in_md": True,
         "add_bib_in_md": False,
         "replace_cite_to_fullcite_in_md": True,
-        "replace_by_basic_beauty_complex_in_md": "basic",
-        "display_basic_beauty_complex_references_in_md": "beauty",
+        "replace_by_basic_beauty_complex_in_md": "beauty",  # default is "basic"
+        "display_basic_beauty_complex_references_in_md": "basic",  # default is "beauty"
         "add_anchor_in_md": True,  # default is False
 
         "md_folder_name": "mds",  # "" or "md" or "main"

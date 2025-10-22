@@ -5,7 +5,6 @@
     // the number of columns in md files
     "columns_in_md": 120,
     // display one line reference note
-    "google_connected_paper_scite": true,
     "display_one_line_reference_note": false,
     // "fullcite", "cite"
     "cite_flag_in_tex": "cite",

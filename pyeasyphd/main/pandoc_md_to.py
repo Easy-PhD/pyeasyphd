@@ -28,7 +28,6 @@ class PandocMdTo(BasicInput):
         markdown_name (str): Markdown name. Defaults to "multi-markdown".
         markdown_citation (str): Markdown citation format. Defaults to "markdown_mmd".
         columns_in_md (int): Number of columns in markdown. Defaults to 120.
-        google_connected_paper_scite (bool): Whether to use Google connected paper scite. Defaults to True.
         display_one_line_reference_note (bool): Whether to display one line reference note. Defaults to False.
         cite_flag_in_tex (str): Citation flag in LaTeX. Defaults to "cite".
         add_url_for_basic_dict (bool): Whether to add url for items in basic dict. Defualts to True.
@@ -51,7 +50,6 @@ class PandocMdTo(BasicInput):
             self.markdown_citation = "markdown-citations"
 
         self.columns_in_md: int = options.get("columns_in_md", 120)
-        self.google_connected_paper_scite: bool = options.get("google_connected_paper_scite", True)
         self.display_one_line_reference_note: bool = options.get("display_one_line_reference_note", False)
         # tex
         self.cite_flag_in_tex: str = options.get("cite_flag_in_tex", "cite")
@@ -316,9 +314,6 @@ class PandocMdTo(BasicInput):
             b: List[str] = copy.deepcopy(key_reference_dict[k])
             aa: List[str] = key_url_http_bib_dict[k][0]
             bb: List[str] = key_url_http_bib_dict[k][1]
-
-            if (not self.google_connected_paper_scite) and aa:
-                bb = [f"([www]({aa[0].strip()}))\n"]
 
             # add url
             if self.add_url_for_basic_dict:
