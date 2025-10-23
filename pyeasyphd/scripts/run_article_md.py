@@ -72,8 +72,8 @@ def run_article_md_daily_notes(
         "display_www_google_connected_scite": ["google", "connected"],  # python_writers.py
 
         "add_url_for_basic_dict": False,  # default is True
-        "add_anchor_for_basic_dict": False,  # default is False
-        "add_anchor_for_beauty_dict": True,  # default is False
+        "add_anchor_for_basic_dict": True,  # default is False
+        "add_anchor_for_beauty_dict": False,  # default is False
         "add_anchor_for_complex_dict": False,  # default is False
 
         "final_output_main_md_name": "main.md",
