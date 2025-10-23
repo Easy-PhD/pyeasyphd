@@ -11,13 +11,13 @@ def run_generate_j_weekly(
     path_weekly_docs: str,
     keywords_category_names: list[str],
     path_spidering_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ):
     # Expand and normalize file paths
     path_weekly_docs, path_spidering_bibs = expand_paths(path_weekly_docs, path_spidering_bibs)
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_.update(options)
 
     # Generate md and html files
@@ -49,13 +49,13 @@ def run_generate_j_e_weekly(
     path_weekly_docs: str,
     keywords_category_names: list[str],
     path_spidering_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ):
     # Expand and normalize file paths
     path_weekly_docs, path_spidering_bibs = expand_paths(path_weekly_docs, path_spidering_bibs)
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_.update(options)
     options_["early_access"] = True
 
@@ -94,13 +94,13 @@ def run_generate_j_monthly(
     path_monthly_docs: str,
     keywords_category_names: list[str],
     path_spidering_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ):
     # Expand and normalize file paths
     path_monthly_docs, path_spidering_bibs = expand_paths(path_monthly_docs, path_spidering_bibs)
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_.update(options)
 
     # Generate md and html files
@@ -138,14 +138,14 @@ def run_generate_j_yearly(
     path_yearly_docs: str,
     keywords_category_names: list[str],
     path_spidered_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
     year_list: list[str],
 ):
     # Expand and normalize file paths
     path_yearly_docs, path_spidered_bibs = expand_paths(path_yearly_docs, path_spidered_bibs)
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_.update(options)
 
     # Generate md and html files
@@ -177,14 +177,14 @@ def run_generate_c_yearly(
     path_yearly_docs: str,
     keywords_category_names: list[str],
     path_spidered_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
     year_list: list[str],
 ):
     # Expand and normalize file paths
     path_yearly_docs, path_spidered_bibs = expand_paths(path_yearly_docs, path_spidered_bibs)
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_.update(options)
 
     # Generate md and html files

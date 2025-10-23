@@ -15,7 +15,7 @@ def run_search_for_screen(
     title: str,
     path_spidered_bibs: str,
     path_spidering_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ) -> None:
     """
     Run search for screen display with specific conference/journal parameters.
@@ -26,11 +26,11 @@ def run_search_for_screen(
         title: Paper title used as search keyword
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
-        path_conferences_journals_json: Path to conferences/journals JSON files
+        path_conf_j_jsons: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
-    path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json = expand_paths(
-        path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json
+    path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons = expand_paths(
+        path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons
     )
 
     # Configure search options
@@ -40,7 +40,7 @@ def run_search_for_screen(
             include_abbr_list=[acronym],
             exclude_publisher_list=["arXiv"],
             exclude_abbr_list=[],
-            path_conferences_journals_json=path_conferences_journals_json,
+            path_conf_j_jsons=path_conf_j_jsons,
         ),
         **build_search_options(
             print_on_screen=True, search_year_list=[str(year)], keywords_type="Temp", keywords_list_list=[[title]]
@@ -57,7 +57,7 @@ def run_search_for_files(
     path_main_output: str,
     path_spidered_bibs: str,
     path_spidering_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ) -> None:
     """
     Run search and save results to files with custom keywords.
@@ -68,12 +68,12 @@ def run_search_for_files(
         path_main_output: Main output directory for search results
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
-        path_conferences_journals_json: Path to conferences/journals JSON files
+        path_conf_j_jsons: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
     path_main_output = expand_path(path_main_output)
-    path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json = expand_paths(
-        path_spidered_bibs, path_spidering_bibs, path_conferences_journals_json
+    path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons = expand_paths(
+        path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons
     )
 
     # Configure search options
@@ -83,7 +83,7 @@ def run_search_for_files(
             include_abbr_list=[],
             exclude_publisher_list=["arXiv"],
             exclude_abbr_list=[],
-            path_conferences_journals_json=path_conferences_journals_json,
+            path_conf_j_jsons=path_conf_j_jsons,
         ),
         **build_search_options(
             print_on_screen=False,
@@ -122,7 +122,7 @@ def _execute_searches(
 
 
 def run_compare_after_search(
-    zotero_bib: str, keywords_type: str, path_main_output: str, path_conferences_journals_json: str
+    zotero_bib: str, keywords_type: str, path_main_output: str, path_conf_j_jsons: str
 ):
     """
     Compare search results with Zotero bibliography and generate comparison report.
@@ -131,12 +131,12 @@ def run_compare_after_search(
         zotero_bib: Path to Zotero bibliography file
         keywords_type: Category name for the search keywords used
         path_main_output: Main output directory for search results and comparison
-        path_conferences_journals_json: Path to conferences/journals JSON files
+        path_conf_j_jsons: Path to conferences/journals JSON files
     """
     # Expand and normalize file paths
     zotero_bib = expand_path(zotero_bib)
     path_main_output = expand_path(path_main_output)
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
+    path_conf_j_jsons = expand_path(path_conf_j_jsons)
 
     # Configure search options
     options = {
@@ -145,7 +145,7 @@ def run_compare_after_search(
             include_abbr_list=[],
             exclude_publisher_list=["arXiv"],
             exclude_abbr_list=[],
-            path_conferences_journals_json=path_conferences_journals_json,
+            path_conf_j_jsons=path_conf_j_jsons,
         ),
         **build_search_options(
             print_on_screen=False, search_year_list=[], keywords_type=keywords_type, keywords_list_list=[]

@@ -8,7 +8,7 @@ def run_beamer_tex_weekly_reports(
     input_file_names: list[str],
     path_output_file: str,
     bib_path_or_file: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
     options: dict
 ) -> None:
     """
@@ -24,7 +24,7 @@ def run_beamer_tex_weekly_reports(
         input_file_names (list[str]): List of input file names
         path_output_file (str): Path to output directory
         bib_path_or_file (str): Path to bibliography file or directory
-        path_conferences_journals_json (str): Path to conferences and journals JSON files directory
+        path_conf_j_jsons (str): Path to conferences and journals JSON files directory
         options (dict): Additional options to override default settings
 
     Returns:
@@ -35,8 +35,8 @@ def run_beamer_tex_weekly_reports(
 
     # Initialize default options with detailed descriptions
     _options = {
-        "full_json_c": os.path.expanduser(os.path.join(path_conferences_journals_json, "conferences.json")),
-        "full_json_j": os.path.expanduser(os.path.join(path_conferences_journals_json, "journals.json")),
+        "full_json_c": os.path.expanduser(os.path.join(path_conf_j_jsons, "conferences.json")),
+        "full_json_j": os.path.expanduser(os.path.join(path_conf_j_jsons, "journals.json")),
 
         # figure options
         "includegraphics_figs_directory": "",

@@ -9,7 +9,7 @@ def run_compare_bib_with_local(
     path_output: str,
     path_spidered_bibs: str,
     path_spidering_bibs: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ) -> None:
     # Expand and normalize file paths
     need_compare_bib, path_output, path_spidered_bibs, path_spidering_bibs = expand_paths(
@@ -17,7 +17,7 @@ def run_compare_bib_with_local(
     )
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_["include_early_access"] = True
     options_.update(options)
 
@@ -30,7 +30,7 @@ def run_compare_bib_with_zotero(
     need_compare_bib: str,
     zotero_bib: str,
     path_output: str,
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ) -> None:
     # Expand and normalize file paths
     need_compare_bib, zotero_bib, path_output = expand_paths(
@@ -38,7 +38,7 @@ def run_compare_bib_with_zotero(
     )
 
     # Update options
-    options_ = build_base_options([], [], ["arXiv"], [], path_conferences_journals_json)
+    options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)
     options_.update(options)
 
     # Compare

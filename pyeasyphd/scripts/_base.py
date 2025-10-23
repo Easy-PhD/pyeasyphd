@@ -17,7 +17,7 @@ def build_base_options(
     include_abbr_list: List[str],
     exclude_publisher_list: List[str],
     exclude_abbr_list: List[str],
-    path_conferences_journals_json: str,
+    path_conf_j_jsons: str,
 ) -> Dict[str, Any]:
     """
     Build options dictionary with common configuration.
@@ -27,20 +27,20 @@ def build_base_options(
         include_abbr_list: List of conference/journal abbreviations to include
         exclude_publisher_list: List of publishers to exclude
         exclude_abbr_list: List of conference/journal abbreviations to exclude
-        path_conferences_journals_json: Base path for conferences/journals JSON files
+        path_conf_j_jsons: Base path for conferences/journals JSON files
 
     Returns:
         Dictionary containing configured options
     """
-    path_conferences_journals_json = expand_path(path_conferences_journals_json)
+    path_conf_j_jsons = expand_path(path_conf_j_jsons)
     return {
         "include_publisher_list": include_publisher_list,
         "include_abbr_list": include_abbr_list,
         "exclude_publisher_list": exclude_publisher_list,
         "exclude_abbr_list": exclude_abbr_list,
-        "full_json_c": os.path.join(path_conferences_journals_json, "conferences.json"),
-        "full_json_j": os.path.join(path_conferences_journals_json, "journals.json"),
-        "full_json_k": os.path.join(path_conferences_journals_json, "keywords.json"),
+        "full_json_c": os.path.join(path_conf_j_jsons, "conferences.json"),
+        "full_json_j": os.path.join(path_conf_j_jsons, "journals.json"),
+        "full_json_k": os.path.join(path_conf_j_jsons, "keywords.json"),
     }
 
 
