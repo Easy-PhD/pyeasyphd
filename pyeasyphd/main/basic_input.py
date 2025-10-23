@@ -37,7 +37,7 @@ class BasicInput(BasicInputInPyBibtexer):
         super().__init__(options)
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        self._path_templates = os.path.join(os.path.dirname(current_dir), "data", "Templates")
+        self._path_templates = os.path.join(os.path.dirname(current_dir), "data", "templates")
 
         # main
         self._initialize_pandoc_md_to(options)
@@ -54,14 +54,14 @@ class BasicInput(BasicInputInPyBibtexer):
         csl_name = options.get("csl_name", "apa-no-ampersand")
         if not isinstance(csl_name, str):
             csl_name = "apa-no-ampersand"
-        self.full_csl_style_pandoc = os.path.join(self._path_templates, "CSL", f"{csl_name}.csl")
+        self.full_csl_style_pandoc = os.path.join(self._path_templates, "csl", f"{csl_name}.csl")
         if not os.path.exists(self.full_csl_style_pandoc):
-            self.full_csl_style_pandoc = os.path.join(self._path_templates, "CSL", "apa-no-ampersand.csl")
+            self.full_csl_style_pandoc = os.path.join(self._path_templates, "csl", "apa-no-ampersand.csl")
 
-        self.full_tex_article_template_pandoc = os.path.join(self._path_templates, "TEX", "eisvogel.latex")
-        self.full_tex_beamer_template_pandoc = os.path.join(self._path_templates, "TEX", "eisvogel.beamer")
+        self.full_tex_article_template_pandoc = os.path.join(self._path_templates, "tex", "eisvogel.latex")
+        self.full_tex_beamer_template_pandoc = os.path.join(self._path_templates, "tex", "eisvogel.beamer")
 
-        self.article_template_tex = self._try_read_list("TEX", "Article.tex")
+        self.article_template_tex = self._try_read_list("tex", "Article.tex")
 
     def _initialize_python_run_tex(self, options: Dict[str, Any]) -> None:
         """Initialize Python LaTeX processing configuration.
@@ -69,12 +69,12 @@ class BasicInput(BasicInputInPyBibtexer):
         Args:
             options (Dict[str, Any]): Configuration options.
         """
-        self.article_template_header_tex = self._try_read_list("TEX", "Article_Header.tex")
-        self.article_template_tail_tex = self._try_read_list("TEX", "Article_Tail.tex")
-        self.beamer_template_header_tex = self._try_read_list("TEX", "Beamer_Header.tex")
-        self.beamer_template_tail_tex = self._try_read_list("TEX", "Beamer_Tail.tex")
-        self.math_commands_tex = self._try_read_list("TEX", "math_commands.tex")
-        self.usepackages_tex = self._try_read_list("TEX", "Style.tex")
+        self.article_template_header_tex = self._try_read_list("tex", "Article_Header.tex")
+        self.article_template_tail_tex = self._try_read_list("tex", "Article_Tail.tex")
+        self.beamer_template_header_tex = self._try_read_list("tex", "Beamer_Header.tex")
+        self.beamer_template_tail_tex = self._try_read_list("tex", "Beamer_Tail.tex")
+        self.math_commands_tex = self._try_read_list("tex", "math_commands.tex")
+        self.usepackages_tex = self._try_read_list("tex", "Style.tex")
 
         # handly preamble
         self.handly_preamble = options.get("handly_preamble", False)
