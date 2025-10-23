@@ -12,8 +12,6 @@ class BasicInput(BasicInputInPyBibtexer):
         options (Dict[str, Any]): Configuration options.
 
     Attributes:
-        full_json_c (str): Full path to conferences JSON file.
-        full_json_j (str): Full path to journals JSON file.
         full_csl_style_pandoc (str): Full path to CSL style for pandoc.
         full_tex_article_template_pandoc (str): Full path to tex article template for pandoc.
         full_tex_beamer_template_pandoc (str): Full path to tex beamer template for pandoc.
