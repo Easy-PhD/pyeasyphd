@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pyadvtools import transform_to_data_list
 from pybibtexer.tools import compare_bibs_with_zotero
@@ -58,6 +58,7 @@ def run_search_for_files(
     path_spidered_bibs: str,
     path_spidering_bibs: str,
     path_conf_j_jsons: str,
+    options: Optional[dict] = None
 ) -> None:
     """
     Run search and save results to files with custom keywords.
@@ -70,6 +71,9 @@ def run_search_for_files(
         path_spidering_bibs: Path to spidering bibliography files
         path_conf_j_jsons: Path to conferences/journals JSON files
     """
+    if options is None:
+        options = {}
+
     # Expand and normalize file paths
     path_main_output = expand_path(path_main_output)
     path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons = expand_paths(
@@ -77,7 +81,7 @@ def run_search_for_files(
     )
 
     # Configure search options
-    options = {
+    options_ = {
         **build_base_options(
             include_publisher_list=[],
             include_abbr_list=[],
@@ -92,8 +96,9 @@ def run_search_for_files(
             keywords_list_list=keywords_list_list,
         ),
     }
+    options_.update(options)
     # Execute searches across different bibliography sources
-    _execute_searches(options, path_main_output, path_spidered_bibs, path_spidering_bibs)
+    _execute_searches(options_, path_main_output, path_spidered_bibs, path_spidering_bibs)
 
 
 def _execute_searches(
