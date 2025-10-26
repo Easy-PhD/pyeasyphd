@@ -48,10 +48,9 @@ def run_article_md_daily_notes(
         "bib_for_abbr_name": "abbr.bib",
         "bib_for_zotero_name": "zotero.bib",
         "bib_for_save_name": "save.bib",
-        "display_google_connected_scite": ["google", "connected", "scite"],
 
         "bib_folder_name": "bibs",  # "" or "bib" or "bibs" or "main"
-        "delete_original_bib_in_output_folder": True,
+        "delete_original_bib_in_output_folder": True,  # default is False
         "bib_path_or_file": os.path.expanduser(bib_path_or_file),
 
         # tex options
@@ -64,13 +63,14 @@ def run_article_md_daily_notes(
         "shutil_input_texs": False,  # True or False
         "input_texs_in_relative_path": True,
         "tex_folder_name": "texs",  # "" or "tex" or "texs" or "main"
-        "delete_original_tex_in_output_folder": True,
+        "delete_original_tex_in_output_folder": True,  # default is False
         "generate_tex": False,
 
         # md options
         # ["www", "google", "connected", "scite"]
         "display_www_google_connected_scite": ["google", "connected"],  # python_writers.py
 
+        "join_flag_in_http": " | ",  # default is " | " or " |\n"
         "add_url_for_basic_dict": False,  # default is True
         "add_anchor_for_basic_dict": True,  # default is False
         "add_anchor_for_beauty_dict": False,  # default is False
@@ -86,7 +86,7 @@ def run_article_md_daily_notes(
         "add_anchor_in_md": True,  # default is False
 
         "md_folder_name": "mds",  # "" or "md" or "main"
-        "delete_original_md_in_output_folder": True,  # False
+        "delete_original_md_in_output_folder": True,  # default is False
 
         # html options
         "generate_html": False,
