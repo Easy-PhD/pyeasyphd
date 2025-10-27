@@ -207,7 +207,7 @@ def run_compare_after_search(
     download_bib = _download_bib_from_local(path_main_output, keywords_type)
 
     # Generate comparison output path and run comparison
-    path_output = os.path.join(path_main_output, "comparison_new")
+    path_output = os.path.join(path_main_output, "Compared")
     compare_bibs_with_zotero(zotero_bib, download_bib, path_output, options)
 
     return None
