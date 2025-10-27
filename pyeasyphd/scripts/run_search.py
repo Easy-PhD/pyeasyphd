@@ -22,12 +22,17 @@ def run_search_for_screen(
 
     Args:
         acronym: Conference/journal acronym to search for
-        year: Publication year to filter by
+        year: Publication year to filter by (0 means all years)
         title: Paper title used as search keyword
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
         path_conf_j_jsons: Path to conferences/journals JSON files
     """
+    # Handle year filtering: if year is 0, search all years (empty list)
+    search_year_list = [str(year)]
+    if year == 0:
+        search_year_list = []  # Empty list means no year filtering
+
     # Expand and normalize file paths
     path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons = expand_paths(
         path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons
@@ -43,12 +48,17 @@ def run_search_for_screen(
             path_conf_j_jsons=path_conf_j_jsons,
         ),
         **build_search_options(
-            print_on_screen=True, search_year_list=[str(year)], keywords_type="Temp", keywords_list_list=[[title]]
+            print_on_screen=True,
+            search_year_list=search_year_list,  # Empty list for all years, otherwise specific year
+            keywords_type="Temp",
+            keywords_list_list=[[title]]  # Use title as search keyword
         ),
     }
 
     # Execute searches across different bibliography sources
     _execute_searches(options, "", path_spidered_bibs, path_spidering_bibs)
+
+    return None
 
 
 def run_search_for_files(
@@ -58,51 +68,73 @@ def run_search_for_files(
     path_spidered_bibs: str,
     path_spidering_bibs: str,
     path_conf_j_jsons: str,
+    search_in_spidered_bib: bool = False,
+    search_in_spidering_bib: bool = False,
     options: Optional[dict] = None
 ) -> None:
     """
     Run search and save results to files with custom keywords.
 
     Args:
-        keywords_type: Category name for the search keywords
-        keywords_list_list: Nested list of keywords to search for
+        keywords_type: Category name for the search keywords (used for organizing results)
+        keywords_list_list: Nested list of keywords to search for (each inner list represents a search group)
         path_main_output: Main output directory for search results
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
         path_conf_j_jsons: Path to conferences/journals JSON files
+        search_in_spidered_bib: Whether to search in spidered bibliography files
+        search_in_spidering_bib: Whether to search in spidering bibliography files
+        options: Additional search options to override defaults
     """
+    # Initialize options dictionary if not provided
     if options is None:
         options = {}
 
-    # Expand and normalize file paths
+    # Expand and normalize file paths to ensure consistent path formatting
     path_main_output = expand_path(path_main_output)
     path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons = expand_paths(
         path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons
     )
 
-    # Configure search options
+    # Configure search options by combining base options and search-specific options
     options_ = {
         **build_base_options(
-            include_publisher_list=[],
-            include_abbr_list=[],
-            exclude_publisher_list=["arXiv"],
-            exclude_abbr_list=[],
-            path_conf_j_jsons=path_conf_j_jsons,
+            include_publisher_list=[],  # No specific publishers to include
+            include_abbr_list=[],       # No specific conference/journal abbreviations to include
+            exclude_publisher_list=["arXiv"],  # Exclude arXiv publications from search
+            exclude_abbr_list=[],       # No specific conference/journal abbreviations to exclude
+            path_conf_j_jsons=path_conf_j_jsons,  # Path to conference/journal metadata
         ),
         **build_search_options(
-            print_on_screen=False,
-            search_year_list=[],
-            keywords_type=keywords_type,
-            keywords_list_list=keywords_list_list,
+            print_on_screen=False,      # Disable screen output (results go to files only)
+            search_year_list=[],        # Empty list means search all years (no year filtering)
+            keywords_type=keywords_type,  # Use provided keyword category for result organization
+            keywords_list_list=keywords_list_list,  # Use provided nested keyword lists for searching
         ),
     }
+    # Update with any additional options provided by caller (overrides defaults)
     options_.update(options)
-    # Execute searches across different bibliography sources
-    _execute_searches(options_, path_main_output, path_spidered_bibs, path_spidering_bibs)
+
+    # Execute searches across different bibliography sources with configured options
+    _execute_searches(
+        options_,
+        path_main_output,
+        path_spidered_bibs,
+        path_spidering_bibs,
+        search_in_spidered_bib,   # Flag to control spidered bibliography search
+        search_in_spidering_bib   # Flag to control spidering bibliography search
+    )
+
+    return None
 
 
 def _execute_searches(
-    options: Dict[str, Any], path_main_output: str, path_spidered_bibs: str, path_spidering_bibs: str
+    options: Dict[str, Any],
+    path_main_output: str,
+    path_spidered_bibs: str,
+    path_spidering_bibs: str,
+    search_in_spidered_bib: bool = False,
+    search_in_spidering_bib: bool = False,
 ) -> None:
     """
     Execute searches across different bibliography sources.
@@ -112,18 +144,32 @@ def _execute_searches(
         path_main_output: Base path for search results output
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
+        search_in_spidered_bib: Whether to search in spidered bibliography files
+        search_in_spidering_bib: Whether to search in spidering bibliography files
     """
     # Search in spidered bibliographies (Conferences and Journals)
-    for cj in ["Conferences", "Journals"]:
-        path_storage = os.path.join(path_spidered_bibs, cj)
-        path_output = os.path.join(path_main_output, "Search_spidered_bib", cj)
-        Searchkeywords(path_storage, path_output, options).run()
+    # If enabled, search through completed/conference and journal bibliographies
+    if search_in_spidered_bib:
+        for cj in ["Conferences", "Journals"]:
+            # Construct path to stored bibliography files for conferences/journals
+            path_storage = os.path.join(path_spidered_bibs, cj)
+            # Construct output path for search results
+            path_output = os.path.join(path_main_output, "Search_spidered_bib", cj)
+            # Execute search with given options and paths
+            Searchkeywords(path_storage, path_output, options).run()
 
     # Search in spidering bibliographies (Journals and Journals Early Access)
-    for je in ["spider_j", "spider_j_e"]:
-        path_storage = os.path.join(path_spidering_bibs, je)
-        path_output = os.path.join(path_main_output, "Search_spidering_bib", je)
-        Searchkeywords(path_storage, path_output, options).run()
+    # If enabled, search through actively spidering/in-progress journal bibliographies
+    if search_in_spidering_bib:
+        for je in ["spider_j", "spider_j_e"]:
+            # Construct path to spidering bibliography files (journals and early access)
+            path_storage = os.path.join(path_spidering_bibs, je)
+            # Construct output path for search results
+            path_output = os.path.join(path_main_output, "Search_spidering_bib", je)
+            # Execute search with given options and paths
+            Searchkeywords(path_storage, path_output, options).run()
+
+    return None
 
 
 def run_compare_after_search(
