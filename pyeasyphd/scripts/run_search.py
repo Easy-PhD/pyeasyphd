@@ -56,7 +56,7 @@ def run_search_for_screen(
     }
 
     # Execute searches across different bibliography sources
-    _execute_searches(options, "", path_spidered_bibs, path_spidering_bibs)
+    _execute_searches(options, "", path_spidered_bibs, path_spidering_bibs, True, True)
 
     return None
 
@@ -69,7 +69,7 @@ def run_search_for_files(
     path_spidering_bibs: str,
     path_conf_j_jsons: str,
     search_in_spidered_bibs: bool = False,
-    search_in_spidering_bibs: bool = False,
+    search_in_spidering_bibs: bool = True,
     options: Optional[dict] = None
 ) -> None:
     """
@@ -134,7 +134,7 @@ def _execute_searches(
     path_spidered_bibs: str,
     path_spidering_bibs: str,
     search_in_spidered_bibs: bool = False,
-    search_in_spidering_bibs: bool = False,
+    search_in_spidering_bibs: bool = True,
 ) -> None:
     """
     Execute searches across different bibliography sources.
