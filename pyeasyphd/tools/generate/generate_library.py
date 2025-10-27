@@ -35,9 +35,9 @@ def generate_library_by_filters(
     # middlewares_library_to_library.py
     _options["generate_entry_cite_keys"] = False  # default is False
     _options["function_common_again"] = False  # default is True
-    _options["function_common_again_abbr"] = False  # default is True
-    _options["function_common_again_zotero"] = False  # default is True
-    _options["function_common_again_save"] = False  # default is True
+    _options["function_common_again_for_abbr"] = False  # default is True
+    _options["function_common_again_for_zotero"] = False  # default is True
+    _options["function_common_again_for_save"] = False  # default is True
 
     # convert_library_to_str.py
     # middlewares_library_to_str.py

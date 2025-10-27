@@ -45,13 +45,13 @@ class Searchkeywords(object):
         options_["is_standardize_bib"] = False  # default is True
         options_["choose_abbr_zotero_save"] = "save"  # default is "save"
         options_["function_common_again"] = True  # default is True
-        options_["function_common_again_abbr"] = False  # default is True
-        options_["function_common_again_zotero"] = False  # default is True
-        options_["function_common_again_save"] = False  # default is True
-        options_["is_sort_entry_fields"] = True  # default is False
-        options_["is_sort_entries_by_field_keys"] = True  # default is False
-        options_["sort_entries_by_field_keys_reverse"] = True  # default is False
-        options_["generate_entry_cite_keys"] = True  # default is False
+        options_["function_common_again_for_abbr"] = False  # default is True
+        options_["function_common_again_for_zotero"] = False  # default is True
+        options_["function_common_again_for_save"] = False  # default is True
+        options_["is_sort_entry_fields"] = True  # default is True
+        options_["is_sort_blocks"] = True  # default is True
+        options_["sort_entries_by_field_keys_reverse"] = True  # default is True
+        options_["generate_entry_cite_keys"] = True  # default is True
 
         options_["default_keywords_dict"] = obtain_search_keywords()
         options_["default_search_field_list"] = ["title", "abstract"]
