@@ -68,8 +68,8 @@ def run_search_for_files(
     path_spidered_bibs: str,
     path_spidering_bibs: str,
     path_conf_j_jsons: str,
-    search_in_spidered_bib: bool = False,
-    search_in_spidering_bib: bool = False,
+    search_in_spidered_bibs: bool = False,
+    search_in_spidering_bibs: bool = False,
     options: Optional[dict] = None
 ) -> None:
     """
@@ -82,8 +82,8 @@ def run_search_for_files(
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
         path_conf_j_jsons: Path to conferences/journals JSON files
-        search_in_spidered_bib: Whether to search in spidered bibliography files
-        search_in_spidering_bib: Whether to search in spidering bibliography files
+        search_in_spidered_bibs: Whether to search in spidered bibliography files
+        search_in_spidering_bibs: Whether to search in spidering bibliography files
         options: Additional search options to override defaults
     """
     # Initialize options dictionary if not provided
@@ -121,8 +121,8 @@ def run_search_for_files(
         path_main_output,
         path_spidered_bibs,
         path_spidering_bibs,
-        search_in_spidered_bib,   # Flag to control spidered bibliography search
-        search_in_spidering_bib   # Flag to control spidering bibliography search
+        search_in_spidered_bibs,   # Flag to control spidered bibliography search
+        search_in_spidering_bibs   # Flag to control spidering bibliography search
     )
 
     return None
@@ -133,8 +133,8 @@ def _execute_searches(
     path_main_output: str,
     path_spidered_bibs: str,
     path_spidering_bibs: str,
-    search_in_spidered_bib: bool = False,
-    search_in_spidering_bib: bool = False,
+    search_in_spidered_bibs: bool = False,
+    search_in_spidering_bibs: bool = False,
 ) -> None:
     """
     Execute searches across different bibliography sources.
@@ -144,12 +144,12 @@ def _execute_searches(
         path_main_output: Base path for search results output
         path_spidered_bibs: Path to spidered bibliography files
         path_spidering_bibs: Path to spidering bibliography files
-        search_in_spidered_bib: Whether to search in spidered bibliography files
-        search_in_spidering_bib: Whether to search in spidering bibliography files
+        search_in_spidered_bibs: Whether to search in spidered bibliography files
+        search_in_spidering_bibs: Whether to search in spidering bibliography files
     """
     # Search in spidered bibliographies (Conferences and Journals)
     # If enabled, search through completed/conference and journal bibliographies
-    if search_in_spidered_bib:
+    if search_in_spidered_bibs:
         for cj in ["Conferences", "Journals"]:
             # Construct path to stored bibliography files for conferences/journals
             path_storage = os.path.join(path_spidered_bibs, cj)
@@ -160,7 +160,7 @@ def _execute_searches(
 
     # Search in spidering bibliographies (Journals and Journals Early Access)
     # If enabled, search through actively spidering/in-progress journal bibliographies
-    if search_in_spidering_bib:
+    if search_in_spidering_bibs:
         for je in ["spider_j", "spider_j_e"]:
             # Construct path to spidering bibliography files (journals and early access)
             path_storage = os.path.join(path_spidering_bibs, je)
