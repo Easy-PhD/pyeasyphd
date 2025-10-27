@@ -41,6 +41,9 @@ if __name__ == "__main__":
         ["reversible jump MCMC"],
     ]
 
+    # Configurations
+    search_in_spidered_bibs = False
+    search_in_spidering_bibs = True
     options = {
         "include_publisher_list": [],
         "include_abbr_list": [],
@@ -56,6 +59,8 @@ if __name__ == "__main__":
         path_spidered_bibs,
         path_spidering_bibs,
         path_conf_j_jsons,
+        search_in_spidered_bibs,
+        search_in_spidered_bibs,
         options
     )
 

@@ -11,7 +11,7 @@ if __name__ == "__main__":
     path_conf_j_jsons = local_options["path_conf_j_jsons"]
 
     acronym = "NeurIPS"
-    year = 2017
+    year = 2017  # 0 means all years
     title = "Attention is all you need"
 
     run_search_for_screen(
