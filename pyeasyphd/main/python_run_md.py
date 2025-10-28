@@ -20,24 +20,24 @@ def batch_convert_citations(text):
     Example: [@ref1; @ref2] -> <sup>[@ref1](#ref1)</sup><sup>[@ref2](#ref2)</sup>
     """
     # Match all citation patterns within square brackets
-    pattern = r'\[([^]]+)\]'
+    pattern = r"\[([^]]+)\]"
 
     def process_citation(match):
         citations = match.group(1)
         # Split multiple citations (support semicolon or comma separation)
-        citation_list = re.split(r'[;,]', citations)
+        citation_list = re.split(r"[;,]", citations)
 
         result = []
         for citation in citation_list:
             citation = citation.strip()
-            if citation.startswith('@'):
+            if citation.startswith("@"):
                 cite_id = citation[1:]  # Remove the @ symbol
-                result.append(f'[{citation}](#{cite_id.lower()})')
+                result.append(f"[{citation}](#{cite_id.lower()})")
             else:
                 # Keep non-citation content in original format
-                result.append(f'[{citation}]')
+                result.append(f"[{citation}]")
 
-        return ''.join(result)
+        return "".join(result)
 
     return re.sub(pattern, process_citation, text)
 
@@ -266,7 +266,7 @@ class PythonRunMd(BasicInput):
                         ["```\n"],
                         temp_c,
                         ["```\n"],
-                        ["</details>\n"]
+                        ["</details>\n"],
                     ]
                 )
 
