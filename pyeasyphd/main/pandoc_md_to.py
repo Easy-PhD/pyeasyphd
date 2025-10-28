@@ -34,6 +34,7 @@ class PandocMdTo(BasicInput):
         add_anchor_for_basic_dict (bool): Whether to add anchor for items in basic dict. Defaults to False.
         add_anchor_for_beauty_dict (bool): Whether to add anchor for items in beauty dict. Defaults to False.
         add_anchor_for_complex_dict (bool): Whether to add anchor for items in complex dict. Defaults to False.
+        details_to_bib_separator (str): Separator between <details> and bibliography content. Defaults to "\n".
     """
 
     def __init__(self, options: dict) -> None:
@@ -58,6 +59,8 @@ class PandocMdTo(BasicInput):
         self.add_anchor_for_basic_dict: bool = options.get("add_anchor_for_basic_dict", False)
         self.add_anchor_for_beauty_dict: bool = options.get("add_anchor_for_beauty_dict", False)
         self.add_anchor_for_complex_dict: bool = options.get("add_anchor_for_complex_dict", False)
+
+        self.details_to_bib_separator: str = options.get("details_to_bib_separator", "\n")
 
     def pandoc_md_to_md(
         self, path_bib: str, path_md_one: str, path_md_two: str, name_md_one: Optional[str], name_md_two: Optional[str]
@@ -296,7 +299,7 @@ class PandocMdTo(BasicInput):
         self, key_url_http_bib_dict: Dict[str, List[List[str]]], key_reference_dict: Dict[str, list]
     ) -> Tuple[Dict[str, List[str]], Dict[str, List[str]], Dict[str, List[str]]]:
         """Generate."""
-        header_list = ["<details>\n", "```\n"]
+        header_list = [f"<details>{self.details_to_bib_separator}", "```\n"]
         tail_list = ["```\n", "</details>\n"]
 
         key_basic_dict: Dict[str, List[str]] = {}

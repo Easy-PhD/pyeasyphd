@@ -56,6 +56,7 @@ class PythonRunMd(BasicInput):
         replace_by_basic_beauty_complex_in_md (str): Replace by basic, beauty, or complex format. Defaults to "beauty".
         display_basic_beauty_complex_references_in_md (str): Display basic, beauty, or complex references. Defaults to "beauty".
         add_anchor_in_md (bool): Whether add anchor in markdown. Defaults to False.
+        details_to_bib_separator (str): Separator between <details> and bibliography content. Defaults to "\n".
     """
 
     def __init__(self, options: Dict[str, Any]) -> None:
@@ -77,6 +78,7 @@ class PythonRunMd(BasicInput):
             "display_basic_beauty_complex_references_in_md", "beauty"
         )
         self.add_anchor_in_md: bool = options.get("add_anchor_in_md", False)
+        self.details_to_bib_separator: str = options.get("details_to_bib_separator", "\n")
 
         # for md
         self._pandoc_md_to = PandocMdTo(self.options)
@@ -262,7 +264,7 @@ class PythonRunMd(BasicInput):
                 bib_in_md = combine_content_in_list(
                     [
                         ["## Bibliography\n\n"],
-                        ["<details>\n<summary>Bibliography</summary>\n\n"],
+                        [f"<details>{self.details_to_bib_separator}"],
                         ["```\n"],
                         temp_c,
                         ["```\n"],

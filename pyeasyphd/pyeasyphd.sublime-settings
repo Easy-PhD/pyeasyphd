@@ -16,6 +16,8 @@
     "add_anchor_for_beauty_dict": false,
     // true, false
     "add_anchor_for_complex_dict": false,
+    // "\n" or "\n\n"
+    "details_to_bib_separator": "\n",
 
     // for md file
     // pyeasyphd/main/python_run_md.py
@@ -35,6 +37,8 @@
     "display_basic_beauty_complex_references_in_md": "beauty",
     // true, false
     "add_anchor_in_md": false,
+    // "\n" or "\n\n"
+    // "details_to_bib_separator": "\n",
 
     // for tex file
     // pyeasyphd/main/python_run_tex.py

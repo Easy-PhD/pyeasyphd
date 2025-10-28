@@ -68,6 +68,7 @@ def run_article_md_daily_notes(
         "add_anchor_for_basic_dict": True,  # default is False
         "add_anchor_for_beauty_dict": False,  # default is False
         "add_anchor_for_complex_dict": False,  # default is False
+        "details_to_bib_separator": "\n\n",  # defulat is "\n"
         "final_output_main_md_name": "main.md",
         "delete_temp_generate_md": True,
         "add_reference_in_md": True,
