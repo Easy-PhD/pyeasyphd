@@ -6,11 +6,7 @@ from ._base import build_base_options, expand_paths
 
 
 def run_replace_to_standard_cite_keys(
-    full_tex_md: str,
-    full_bib: str,
-    path_output: str,
-    path_conf_j_jsons: str,
-    options: Optional[dict] = None,
+    full_tex_md: str, full_bib: str, path_output: str, path_conf_j_jsons: str, options: Optional[dict] = None
 ) -> None:
     """
     Replace citation keys in LaTeX documents with standardized versions.

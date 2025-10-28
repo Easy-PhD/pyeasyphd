@@ -15,7 +15,7 @@ __all__ = [
     "run_compare_bib_with_zotero",
     "run_format_bib_to_save_by_entry_type",
     "run_format_bib_to_abbr_zotero_save",
-    "run_replace_to_standard_cite_keys"
+    "run_replace_to_standard_cite_keys",
 ]
 
 from .run_article_md import run_article_md_daily_notes

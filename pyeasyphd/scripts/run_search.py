@@ -10,12 +10,7 @@ from ._base import build_base_options, build_search_options, expand_path, expand
 
 
 def run_search_for_screen(
-    acronym: str,
-    year: int,
-    title: str,
-    path_spidered_bibs: str,
-    path_spidering_bibs: str,
-    path_conf_j_jsons: str,
+    acronym: str, year: int, title: str, path_spidered_bibs: str, path_spidering_bibs: str, path_conf_j_jsons: str
 ) -> None:
     """
     Run search for screen display with specific conference/journal parameters.
@@ -51,7 +46,7 @@ def run_search_for_screen(
             print_on_screen=True,
             search_year_list=search_year_list,  # Empty list for all years, otherwise specific year
             keywords_type="Temp",
-            keywords_list_list=[[title]]  # Use title as search keyword
+            keywords_list_list=[[title]],  # Use title as search keyword
         ),
     }
 
@@ -70,7 +65,7 @@ def run_search_for_files(
     path_conf_j_jsons: str,
     search_in_spidered_bibs: bool = False,
     search_in_spidering_bibs: bool = True,
-    options: Optional[dict] = None
+    options: Optional[dict] = None,
 ) -> None:
     """
     Run search and save results to files with custom keywords.
@@ -100,14 +95,14 @@ def run_search_for_files(
     options_ = {
         **build_base_options(
             include_publisher_list=[],  # No specific publishers to include
-            include_abbr_list=[],       # No specific conference/journal abbreviations to include
+            include_abbr_list=[],  # No specific conference/journal abbreviations to include
             exclude_publisher_list=["arXiv"],  # Exclude arXiv publications from search
-            exclude_abbr_list=[],       # No specific conference/journal abbreviations to exclude
+            exclude_abbr_list=[],  # No specific conference/journal abbreviations to exclude
             path_conf_j_jsons=path_conf_j_jsons,  # Path to conference/journal metadata
         ),
         **build_search_options(
-            print_on_screen=False,      # Disable screen output (results go to files only)
-            search_year_list=[],        # Empty list means search all years (no year filtering)
+            print_on_screen=False,  # Disable screen output (results go to files only)
+            search_year_list=[],  # Empty list means search all years (no year filtering)
             keywords_type=keywords_type,  # Use provided keyword category for result organization
             keywords_list_list=keywords_list_list,  # Use provided nested keyword lists for searching
         ),
@@ -121,8 +116,8 @@ def run_search_for_files(
         path_main_output,
         path_spidered_bibs,
         path_spidering_bibs,
-        search_in_spidered_bibs,   # Flag to control spidered bibliography search
-        search_in_spidering_bibs   # Flag to control spidering bibliography search
+        search_in_spidered_bibs,  # Flag to control spidered bibliography search
+        search_in_spidering_bibs,  # Flag to control spidering bibliography search
     )
 
     return None
@@ -172,9 +167,7 @@ def _execute_searches(
     return None
 
 
-def run_compare_after_search(
-    zotero_bib: str, keywords_type: str, path_main_output: str, path_conf_j_jsons: str
-):
+def run_compare_after_search(zotero_bib: str, keywords_type: str, path_main_output: str, path_conf_j_jsons: str):
     """
     Compare search results with Zotero bibliography and generate comparison report.
 

@@ -117,9 +117,7 @@ def generate_from_bibs_and_write(
                             path_abbr = os.path.join(root, files[0])
 
                 # Generate and process library
-                library = generate_library_by_filters(
-                    path_abbr, issue_or_month_flag, year_flag, new_options
-                )
+                library = generate_library_by_filters(path_abbr, issue_or_month_flag, year_flag, new_options)
 
                 # Generate md, tex, pdf, html
                 html_body = generate_html_from_bib_data(abbr, library, pp, new_options)

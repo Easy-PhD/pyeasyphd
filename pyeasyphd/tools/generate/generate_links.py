@@ -320,7 +320,7 @@ class PaperLinksGenerator(object):
                 for abbr in keyword_publisher_abbr[keyword][publisher]:
                     lines = []
                     for ff in folder_flags:
-                        ll = os.path.join(folder_name, cj.title(), ff, publisher.lower(), abbr, f'{abbr}.html')
+                        ll = os.path.join(folder_name, cj.title(), ff, publisher.lower(), abbr, f"{abbr}.html")
                         if os.path.exists(os.path.join(self.data_base_path, ll)):
                             lines.append(f"[Link]({ll})")
                         else:

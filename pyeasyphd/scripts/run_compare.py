@@ -44,11 +44,7 @@ def run_compare_bib_with_local(
 
 
 def run_compare_bib_with_zotero(
-    options: dict,
-    need_compare_bib: str,
-    zotero_bib: str,
-    path_output: str,
-    path_conf_j_jsons: str,
+    options: dict, need_compare_bib: str, zotero_bib: str, path_output: str, path_conf_j_jsons: str
 ) -> None:
     """
     Compare a target bibliography file with Zotero bibliography data and generate comparison results.
@@ -67,9 +63,7 @@ def run_compare_bib_with_zotero(
         None: Results are written to files in the specified output directory
     """
     # Expand and normalize file paths
-    need_compare_bib, zotero_bib, path_output = expand_paths(
-        need_compare_bib, zotero_bib, path_output
-    )
+    need_compare_bib, zotero_bib, path_output = expand_paths(need_compare_bib, zotero_bib, path_output)
 
     # Update options
     options_ = build_base_options([], [], ["arXiv"], [], path_conf_j_jsons)

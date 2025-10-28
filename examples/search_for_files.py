@@ -36,10 +36,7 @@ if __name__ == "__main__":
     ]
 
     keywords_type = "PS"
-    keywords_list_list = [
-        ["reversible jump markov chain monte carlo"],
-        ["reversible jump MCMC"],
-    ]
+    keywords_list_list = [["reversible jump markov chain monte carlo"], ["reversible jump MCMC"]]
 
     # Configurations
     search_in_spidered_bibs = False
@@ -61,7 +58,7 @@ if __name__ == "__main__":
         path_conf_j_jsons,
         search_in_spidered_bibs,
         search_in_spidered_bibs,
-        options
+        options,
     )
 
     # compare

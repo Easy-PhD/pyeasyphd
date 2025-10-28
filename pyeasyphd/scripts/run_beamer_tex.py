@@ -9,7 +9,7 @@ def run_beamer_tex_weekly_reports(
     path_output_file: str,
     bib_path_or_file: str,
     path_conf_j_jsons: str,
-    options: dict
+    options: dict,
 ) -> None:
     """
     Process academic article files (TeX, and bibliography) with automated Git version control.
@@ -37,13 +37,11 @@ def run_beamer_tex_weekly_reports(
     _options = {
         "full_json_c": os.path.expanduser(os.path.join(path_conf_j_jsons, "conferences.json")),
         "full_json_j": os.path.expanduser(os.path.join(path_conf_j_jsons, "journals.json")),
-
         # figure options
         "includegraphics_figs_directory": "",
         "shutil_includegraphics_figs": True,
         "includegraphics_figs_in_relative_path": True,
         "figure_folder_name": "figs",  # "" or "figs" or "main"
-
         # bib options
         "abbr_index_article_for_abbr": 1,  # 0, 1, 2
         "abbr_index_inproceedings_for_abbr": 0,  # 0, 1, 2
@@ -54,24 +52,20 @@ def run_beamer_tex_weekly_reports(
         "bib_for_zotero_name": "zotero.bib",
         "bib_for_save_name": "save.bib",
         "display_google_connected_scite": ["google", "connected", "scite"],
-
         "bib_folder_name": "bibs",  # "" or "bib" or "bibs" or "main"
         "delete_original_bib_in_output_folder": False,
         "bib_path_or_file": os.path.expanduser(bib_path_or_file),
-
         # tex options
         "handly_preamble": True,
         "final_output_main_tex_name": "main.tex",
         "run_latex": False,
         "delete_run_latex_cache": False,
-
         "input_texs_directory": "",
         "shutil_input_texs": False,  # default is True
         "input_texs_in_relative_path": True,
         "tex_folder_name": "texs",  # "" or "tex" or "texs" or "main"
         "delete_original_tex_in_output_folder": True,  # default is False
         "generate_tex": True,
-
         # html options
         "generate_html": False,
     }
