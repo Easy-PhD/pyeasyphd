@@ -259,7 +259,16 @@ class PythonRunMd(BasicInput):
             bib_in_md = []
             if self.add_bib_in_md:
                 temp_c = combine_content_in_list([key_url_http_bib_dict[k][2] for k in key_in_md])
-                bib_in_md = combine_content_in_list([["<details>\n```\n"], temp_c, ["```\n</details>\n"]])
+                bib_in_md = combine_content_in_list(
+                    [
+                        ["## Bibliography\n\n"],
+                        ["<details>\n<summary>Bibliography</summary>\n\n"],
+                        ["```\n"],
+                        temp_c,
+                        ["```\n"],
+                        ["</details>\n"]
+                    ]
+                )
 
             # Generate basic/beauty/complex markdown content
             if dct := eval(f"key_{self.display_basic_beauty_complex_references_in_md}_dict"):
