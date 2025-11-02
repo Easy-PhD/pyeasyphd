@@ -50,9 +50,9 @@ def generate_html_from_bib_data(
         # convert_library_to_library.py
         # middlewares_library_to_library.py
         "function_common_again": False,
-        "function_common_again_abbr": False,
-        "function_common_again_zotero": False,
-        "function_common_again_save": False,
+        "function_common_again_for_abbr": False,
+        "function_common_again_for_zotero": False,
+        "function_common_again_for_save": False,
         "abbr_index_article_for_abbr": 2,
         "abbr_index_inproceedings_for_abbr": 2,
         #
