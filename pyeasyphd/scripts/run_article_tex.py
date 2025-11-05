@@ -14,6 +14,9 @@ def run_article_tex_submit(
     bib_path_or_file: str,
     path_conf_j_jsons: str,
     options: dict,
+    auto_git: bool = False,
+    remote: str = "origin",
+    branch: str = "master",
 ) -> None:
     """Process academic article files (TeX, and bibliography) with automated Git version control.
 
@@ -77,7 +80,7 @@ def run_article_tex_submit(
 
     committer = GitAutoCommitter(path_output_file)
 
-    if not committer.auto_check(remote="origin", branch="master"):
+    if auto_git and (not committer.auto_check(remote=remote, branch=branch)):
         print("Remote != Local, please manually pull")
 
     else:
@@ -86,10 +89,10 @@ def run_article_tex_submit(
 
         PyRunBibMdTex(path_output_file, ".tex", "paper", _options).run_files(file_list, "", "current")
 
-        if committer.has_changes():
+        if auto_git and committer.has_changes():
             # Auto commit
             committer.auto_commit()
             # Auto push
-            committer.auto_push(remote="origin", branch="master")
+            committer.auto_push(remote=remote, branch=branch)
 
     return None
