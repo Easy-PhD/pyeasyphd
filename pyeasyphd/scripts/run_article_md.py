@@ -44,9 +44,9 @@ def run_article_md_daily_notes(
         "add_link_to_fields_for_abbr": ["title"],  # None, or ["title", "journal", "booktitle"]
         "maximum_authors_for_abbr": 0,  # 0, 1, 2, ...
         "add_index_to_entries": False,
-        "bib_for_abbr_name": "abbr.bib",
-        "bib_for_zotero_name": "zotero.bib",
-        "bib_for_save_name": "save.bib",
+        "bib_name_for_abbr": "abbr.bib",
+        "bib_name_for_zotero": "zotero.bib",
+        "bib_name_for_save": "save.bib",
         "bib_folder_name": "bibs",  # "" or "bib" or "bibs" or "main"
         "delete_original_bib_in_output_folder": True,  # default is False
         "bib_path_or_file": expand_path(bib_path_or_file),
