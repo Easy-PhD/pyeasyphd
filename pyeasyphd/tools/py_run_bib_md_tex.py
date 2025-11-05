@@ -216,6 +216,12 @@ class PyRunBibMdTex(BasicInput):
             abbr_library, zotero_library, save_library = self._python_bib.parse_to_multi_standard_library(
                 original_bib_data, key_in_md_tex
             )
+
+            # Update entries
+            abbr_library = self._update_library_by_entry_keys(abbr_library, key_in_md_tex)
+            zotero_library = self._update_library_by_entry_keys(zotero_library, key_in_md_tex)
+            save_library = self._update_library_by_entry_keys(save_library, key_in_md_tex)
+
             key_in_md_tex = sorted(abbr_library.entries_dict.keys(), key=key_in_md_tex.index)
 
             # Write bibliography files
@@ -270,6 +276,12 @@ class PyRunBibMdTex(BasicInput):
                 self._cleanup_file(file)
 
         return data_list_md, data_list_tex
+
+    @staticmethod
+    def _update_library_by_entry_keys(library: Library, keys: list[str]):
+        remove_entries = [entry for entry in library.entries if entry.key not in keys]
+        library.remove(remove_entries)
+        return library
 
     @staticmethod
     def search_subfile_names(data_list: list[str], postfixes: list[str]) -> list[str]:
