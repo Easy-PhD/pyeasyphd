@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List
+from typing import Any
 
 
 def expand_path(path: str) -> str:
@@ -13,14 +13,13 @@ def expand_paths(*paths):
 
 
 def build_base_options(
-    include_publisher_list: List[str],
-    include_abbr_list: List[str],
-    exclude_publisher_list: List[str],
-    exclude_abbr_list: List[str],
+    include_publisher_list: list[str],
+    include_abbr_list: list[str],
+    exclude_publisher_list: list[str],
+    exclude_abbr_list: list[str],
     path_conf_j_jsons: str,
-) -> Dict[str, Any]:
-    """
-    Build options dictionary with common configuration.
+) -> dict[str, Any]:
+    """Build options dictionary with common configuration.
 
     Args:
         include_publisher_list: List of publishers to include
@@ -45,10 +44,9 @@ def build_base_options(
 
 
 def build_search_options(
-    print_on_screen: bool, search_year_list: List[str], keywords_type: str, keywords_list_list: List[List[str]]
-) -> Dict[str, Any]:
-    """
-    Build search options dictionary with common configuration.
+    print_on_screen: bool, search_year_list: list[str], keywords_type: str, keywords_list_list: list[list[str]]
+) -> dict[str, Any]:
+    """Build search options dictionary with common configuration.
 
     Args:
         print_on_screen: Whether to display results on screen

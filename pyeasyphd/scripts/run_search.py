@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pyadvtools import transform_to_data_list
 from pybibtexer.tools import compare_bibs_with_zotero
@@ -12,8 +12,7 @@ from ._base import build_base_options, build_search_options, expand_path, expand
 def run_search_for_screen(
     acronym: str, year: int, title: str, path_spidered_bibs: str, path_spidering_bibs: str, path_conf_j_jsons: str
 ) -> None:
-    """
-    Run search for screen display with specific conference/journal parameters.
+    """Run search for screen display with specific conference/journal parameters.
 
     Args:
         acronym: Conference/journal acronym to search for
@@ -58,17 +57,16 @@ def run_search_for_screen(
 
 def run_search_for_files(
     keywords_type: str,
-    keywords_list_list: List[List[str]],
+    keywords_list_list: list[list[str]],
     path_main_output: str,
     path_spidered_bibs: str,
     path_spidering_bibs: str,
     path_conf_j_jsons: str,
     search_in_spidered_bibs: bool = False,
     search_in_spidering_bibs: bool = True,
-    options: Optional[dict] = None,
+    options: dict | None = None,
 ) -> None:
-    """
-    Run search and save results to files with custom keywords.
+    """Run search and save results to files with custom keywords.
 
     Args:
         keywords_type: Category name for the search keywords (used for organizing results)
@@ -124,15 +122,14 @@ def run_search_for_files(
 
 
 def _execute_searches(
-    options: Dict[str, Any],
+    options: dict[str, Any],
     path_main_output: str,
     path_spidered_bibs: str,
     path_spidering_bibs: str,
     search_in_spidered_bibs: bool = False,
     search_in_spidering_bibs: bool = True,
 ) -> None:
-    """
-    Execute searches across different bibliography sources.
+    """Execute searches across different bibliography sources.
 
     Args:
         options: Search configuration options
@@ -168,8 +165,7 @@ def _execute_searches(
 
 
 def run_compare_after_search(zotero_bib: str, keywords_type: str, path_main_output: str, path_conf_j_jsons: str):
-    """
-    Compare search results with Zotero bibliography and generate comparison report.
+    """Compare search results with Zotero bibliography and generate comparison report.
 
     Args:
         zotero_bib: Path to Zotero bibliography file
@@ -207,8 +203,7 @@ def run_compare_after_search(zotero_bib: str, keywords_type: str, path_main_outp
 
 
 def _generate_data_list(path_output: str, folder_name: str, keywords_type: str) -> list[str]:
-    """
-    Extract bibliography data content from files in specified folder structure.
+    """Extract bibliography data content from files in specified folder structure.
 
     Args:
         path_output: Base output path for search results
@@ -232,8 +227,7 @@ def _generate_data_list(path_output: str, folder_name: str, keywords_type: str) 
 
 
 def _download_bib_from_local(path_output: str, keywords_type: str) -> list[str]:
-    """
-    Collect bibliography data content from all local search result directories.
+    """Collect bibliography data content from all local search result directories.
 
     Args:
         path_output: Base output path containing search results

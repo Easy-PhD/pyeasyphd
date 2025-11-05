@@ -2,6 +2,8 @@ import os
 
 from pyeasyphd.tools import PyRunBibMdTex
 
+from ._base import expand_path
+
 
 def run_beamer_tex_weekly_reports(
     path_input_file: str,
@@ -11,8 +13,7 @@ def run_beamer_tex_weekly_reports(
     path_conf_j_jsons: str,
     options: dict,
 ) -> None:
-    """
-    Process academic article files (TeX, and bibliography) with automated Git version control.
+    """Process academic article files (TeX, and bibliography) with automated Git version control.
 
     This function handles the conversion and processing of academic article files including TeX documents, and
     bibliography management with automatic Git commit and push capabilities.
@@ -30,13 +31,13 @@ def run_beamer_tex_weekly_reports(
     Returns:
         None
     """
-    path_input_file = os.path.expandvars(os.path.expanduser(path_input_file))
-    path_output_file = os.path.expandvars(os.path.expanduser(path_output_file))
+    path_input_file = expand_path(path_input_file)
+    path_output_file = expand_path(path_output_file)
 
     # Initialize default options with detailed descriptions
     _options = {
-        "full_json_c": os.path.expanduser(os.path.join(path_conf_j_jsons, "conferences.json")),
-        "full_json_j": os.path.expanduser(os.path.join(path_conf_j_jsons, "journals.json")),
+        "full_json_c": expand_path(os.path.join(path_conf_j_jsons, "conferences.json")),
+        "full_json_j": expand_path(os.path.join(path_conf_j_jsons, "journals.json")),
         # figure options
         "includegraphics_figs_directory": "",
         "shutil_includegraphics_figs": True,
@@ -54,7 +55,7 @@ def run_beamer_tex_weekly_reports(
         "display_google_connected_scite": ["google", "connected", "scite"],
         "bib_folder_name": "bibs",  # "" or "bib" or "bibs" or "main"
         "delete_original_bib_in_output_folder": False,
-        "bib_path_or_file": os.path.expanduser(bib_path_or_file),
+        "bib_path_or_file": expand_path(bib_path_or_file),
         # tex options
         "handly_preamble": True,
         "final_output_main_tex_name": "main.tex",

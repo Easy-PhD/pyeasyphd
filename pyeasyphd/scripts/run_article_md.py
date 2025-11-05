@@ -2,6 +2,8 @@ import os
 
 from pyeasyphd.tools import PyRunBibMdTex
 
+from ._base import expand_path
+
 
 def run_article_md_daily_notes(
     path_input_file: str,
@@ -11,8 +13,7 @@ def run_article_md_daily_notes(
     path_conf_j_jsons: str,
     options: dict,
 ) -> None:
-    """
-    Run article markdown daily notes processing pipeline.
+    """Run article markdown daily notes processing pipeline.
 
     Args:
         path_input_file (str): Path to input files directory
@@ -25,13 +26,13 @@ def run_article_md_daily_notes(
     Returns:
         None
     """
-    path_input_file = os.path.expandvars(os.path.expanduser(path_input_file))
-    path_output_file = os.path.expandvars(os.path.expanduser(path_output_file))
+    path_input_file = expand_path(path_input_file)
+    path_output_file = expand_path(path_output_file)
 
     # Initialize default options with detailed descriptions
     _options = {
-        "full_json_c": os.path.expanduser(os.path.join(path_conf_j_jsons, "conferences.json")),
-        "full_json_j": os.path.expanduser(os.path.join(path_conf_j_jsons, "journals.json")),
+        "full_json_c": expand_path(os.path.join(path_conf_j_jsons, "conferences.json")),
+        "full_json_j": expand_path(os.path.join(path_conf_j_jsons, "journals.json")),
         # figure options
         "includegraphics_figs_directory": "",
         "shutil_includegraphics_figs": False,
@@ -48,7 +49,7 @@ def run_article_md_daily_notes(
         "bib_for_save_name": "save.bib",
         "bib_folder_name": "bibs",  # "" or "bib" or "bibs" or "main"
         "delete_original_bib_in_output_folder": True,  # default is False
-        "bib_path_or_file": os.path.expanduser(bib_path_or_file),
+        "bib_path_or_file": expand_path(bib_path_or_file),
         # tex options
         "handly_preamble": False,
         "final_output_main_tex_name": "main.tex",

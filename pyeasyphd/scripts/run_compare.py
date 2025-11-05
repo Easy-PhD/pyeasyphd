@@ -11,8 +11,7 @@ def run_compare_bib_with_local(
     path_spidering_bibs: str,
     path_conf_j_jsons: str,
 ) -> None:
-    """
-    Compare a target bibliography file with local bibliography collections and generate comparison results.
+    """Compare a target bibliography file with local bibliography collections and generate comparison results.
 
     This function performs a comprehensive comparison between a specified bibliography file and
     existing local bibliography collections. Results are saved to the specified output directory.
@@ -46,8 +45,7 @@ def run_compare_bib_with_local(
 def run_compare_bib_with_zotero(
     options: dict, need_compare_bib: str, zotero_bib: str, path_output: str, path_conf_j_jsons: str
 ) -> None:
-    """
-    Compare a target bibliography file with Zotero bibliography data and generate comparison results.
+    """Compare a target bibliography file with Zotero bibliography data and generate comparison results.
 
     This function performs comparison between a specified bibliography file and Zotero bibliography data,
     identifying matches, differences, and potential conflicts between the two sources.

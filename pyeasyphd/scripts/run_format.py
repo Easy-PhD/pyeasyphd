@@ -8,8 +8,7 @@ from ._base import build_base_options, expand_paths
 def run_format_bib_to_save_by_entry_type(
     options: dict, need_format_bib: str, path_output: str, path_conf_j_jsons: str
 ) -> None:
-    """
-    Format a bibliography file by organizing entries according to their entry types and save the results.
+    """Format a bibliography file by organizing entries according to their entry types and save the results.
 
     This function processes a bibliography file and reorganizes the entries based on their
     bibliographic entry types (e.g., article, conference, book, etc.), creating separate
@@ -37,8 +36,7 @@ def run_format_bib_to_save_by_entry_type(
 def run_format_bib_to_abbr_zotero_save(
     options: dict, need_format_bib: str, path_output: str, path_conf_j_jsons: str
 ) -> None:
-    """
-    Format a bibliography file into three different modes: abbreviated, Zotero-compatible, and cleaned source.
+    """Format a bibliography file into three different modes: abbreviated, Zotero-compatible, and cleaned source.
 
     This function processes a bibliography file and generates three formatted versions:
     1. Abbreviated version: Journal/conference names are abbreviated according to standard rules
