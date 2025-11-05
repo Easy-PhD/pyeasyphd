@@ -217,6 +217,7 @@ class PyRunBibMdTex(BasicInput):
                 original_bib_data, key_in_md_tex
             )
 
+            # Only for existing references
             key_in_md_tex = sorted(abbr_library.entries_dict.keys(), key=key_in_md_tex.index)
 
             # Write bibliography files
