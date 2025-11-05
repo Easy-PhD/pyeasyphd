@@ -65,8 +65,7 @@ def operate_on_generate_html(html_name: str) -> None:
 
 
 def is_last_week_of_month():
-    """
-    Check if today's date falls in the last week of the current month.
+    """Check if today's date falls in the last week of the current month.
 
     Returns:
         bool: True if today is in the last week of the month, False otherwise.

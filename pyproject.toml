@@ -50,6 +50,7 @@ extend-select = [
     "A",   # flake8-builtins
     "C4",  # flake8-comprehensions
     "RUF", # Ruff-specific rules
+    "BLE", # flake8-blind-except
 ]
 
 ignore = [
@@ -60,12 +61,16 @@ ignore = [
     "ANN202",  # Missing return type of private function
     "ANN204",  # Missing return type annotation for special method `__init__`
     "ANN205",  # Missing return type annotation for staticmethod
+    "D101",  # Missing docstring in public class
     "D102",  # Missing docstring in public method
     "D103",  # Missing docstring in public function
+    "D104",  # Missing docstring in public package
     "D107",  # Missing docstring in `__init__`
+    "D100",  # Missing docstring in public module
     "D204",  # 1 blank line required after class docstring
     "D417",  # Missing argument description in the docstring
     "RUF002",  # Docstring contains ambiguous `–` (EN-DASH)
+    "RUF022",  # `__all__` is not sorted
 ]
 
 [tool.ruff.lint.pydocstyle]

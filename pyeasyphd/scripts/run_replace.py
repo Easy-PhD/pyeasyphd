@@ -12,7 +12,7 @@ def run_replace_to_standard_cite_keys(
     configuration standards, then outputs the results to the specified location.
 
     Args:
-        options: Dictionary of configuration options for citation processing
+        options: dictionary of configuration options for citation processing
         full_tex_md: Path to TeX or Markdown file containing citations
         full_bib: Path to the BibTeX bibliography file
         path_output: Output directory path for processed files

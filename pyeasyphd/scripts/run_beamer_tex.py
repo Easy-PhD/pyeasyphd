@@ -22,7 +22,7 @@ def run_beamer_tex_weekly_reports(
 
     Args:
         path_input_file (str): Path to input files directory
-        input_file_names (list[str]): List of input file names
+        input_file_names (list[str]): list of input file names
         path_output_file (str): Path to output directory
         bib_path_or_file (str): Path to bibliography file or directory
         path_conf_j_jsons (str): Path to conferences and journals JSON files directory

@@ -2,7 +2,7 @@ import copy
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from pyadvtools import generate_nested_dict, read_list, standard_path, write_list
 from pybibtexer.tools.experiments_base import generate_standard_publisher_abbr_options_dict
@@ -14,7 +14,7 @@ from .search_core import SearchResultsCore
 from .utils import extract_information, temp_html_style
 
 
-class Searchkeywords(object):
+class Searchkeywords:
     """Search keywords in bibliography data.
 
     Args:
@@ -26,16 +26,16 @@ class Searchkeywords(object):
         path_storage (str): Path to storage directory.
         path_output (str): Path to output directory.
         options (dict): Configuration options.
-        search_year_list (List[str]): List of years to search. Defaults to [].
+        search_year_list (list[str]): list of years to search. Defaults to [].
     """
 
-    def __init__(self, path_storage: str, path_output: str, options: Dict[str, Any]) -> None:
+    def __init__(self, path_storage: str, path_output: str, options: dict[str, Any]) -> None:
         """Initialize Searchkeywords with storage and output paths.
 
         Args:
             path_storage (str): Path to storage directory.
             path_output (str): Path to output directory.
-            options (Dict[str, Any]): Configuration options.
+            options (dict[str, Any]): Configuration options.
         """
         self.path_storage = standard_path(path_storage)
         self.path_output = standard_path(path_output)
@@ -97,7 +97,7 @@ class Searchkeywords(object):
 
     def _extract_files(
         self, publisher_abbr_dict: dict, ext: str = "html"
-    ) -> Dict[str, Dict[str, Dict[str, Dict[str, List[str]]]]]:
+    ) -> dict[str, dict[str, dict[str, dict[str, list[str]]]]]:
         data_dict = {}
         for publisher in publisher_abbr_dict:
             for abbr in publisher_abbr_dict[publisher]:

@@ -3,7 +3,6 @@ import os
 import re
 import subprocess
 import time
-from typing import Dict, List, Optional, Tuple
 
 from pyadvtools import (
     combine_content_in_list,
@@ -19,7 +18,7 @@ from .basic_input import BasicInput
 
 
 class PandocMdTo(BasicInput):
-    """Pandoc markdown to various formats (md, tex, html, pdf).
+    r"""Pandoc markdown to various formats (md, tex, html, pdf).
 
     Args:
         options (dict): Configuration options.
@@ -63,8 +62,8 @@ class PandocMdTo(BasicInput):
         self.details_to_bib_separator: str = options.get("details_to_bib_separator", "\n")
 
     def pandoc_md_to_md(
-        self, path_bib: str, path_md_one: str, path_md_two: str, name_md_one: Optional[str], name_md_two: Optional[str]
-    ) -> List[str]:
+        self, path_bib: str, path_md_one: str, path_md_two: str, name_md_one: str | None, name_md_two: str | None
+    ) -> list[str]:
         """Convert markdown to markdown using pandoc.
 
         Args:
@@ -75,13 +74,13 @@ class PandocMdTo(BasicInput):
             name_md_two (Optional[str]): Name of destination markdown file.
 
         Returns:
-            List[str]: List of processed markdown content lines.
+            list[str]: list of processed markdown content lines.
         """
         full_one = path_md_one if name_md_one is None else os.path.join(path_md_one, name_md_one)
         full_two = path_md_two if name_md_two is None else os.path.join(path_md_two, name_md_two)
         return self._pandoc_md_to_md(full_one, full_two, path_bib)
 
-    def _pandoc_md_to_md(self, full_md_one: str, full_md_two: str, path_bib: str) -> List[str]:
+    def _pandoc_md_to_md(self, full_md_one: str, full_md_two: str, path_bib: str) -> list[str]:
         """Internal method to convert markdown to markdown using pandoc.
 
         Args:
@@ -90,7 +89,7 @@ class PandocMdTo(BasicInput):
             path_bib (str): Path to bibliography file.
 
         Returns:
-            List[str]: List of processed markdown content lines.
+            list[str]: list of processed markdown content lines.
         """
         if not os.path.exists(path_two := os.path.dirname(full_md_two)):
             os.makedirs(path_two)
@@ -120,7 +119,7 @@ class PandocMdTo(BasicInput):
         return self._standardize_markdown_content(full_md_two)
 
     @staticmethod
-    def _standardize_markdown_content(full_md: str) -> List[str]:
+    def _standardize_markdown_content(full_md: str) -> list[str]:
         regex = re.compile(r"(\s*>*\s*[-+*]+)\s\s\s(.*)")
         for i in range(len(data_list := read_list(full_md, "r"))):
             if mch := regex.match(data_list[i]):
@@ -129,13 +128,13 @@ class PandocMdTo(BasicInput):
 
     # for pandoc markdown files to tex files
     def pandoc_md_to_tex(
-        self, template_name: str, path_md: str, path_tex: str, name_md: Optional[str], name_tex: Optional[str]
-    ) -> List[str]:
+        self, template_name: str, path_md: str, path_tex: str, name_md: str | None, name_tex: str | None
+    ) -> list[str]:
         full_one = path_md if name_md is None else os.path.join(path_md, name_md)
         full_two = path_tex if name_tex is None else os.path.join(path_tex, name_tex)
         return self._pandoc_md_to_tex(full_one, full_two, template_name)
 
-    def _pandoc_md_to_tex(self, full_md: str, full_tex: str, template_name: str) -> List[str]:
+    def _pandoc_md_to_tex(self, full_md: str, full_tex: str, template_name: str) -> list[str]:
         """Pandoc."""
         if not os.path.exists(path_tex := os.path.dirname(full_tex)):
             os.makedirs(path_tex)
@@ -156,7 +155,7 @@ class PandocMdTo(BasicInput):
 
         return self._substitute_in_tex_from_md(read_list(full_tex, "r", None))
 
-    def _substitute_in_tex_from_md(self, data_list: List[str]) -> List[str]:
+    def _substitute_in_tex_from_md(self, data_list: list[str]) -> list[str]:
         old_str_list = [r"{\[}@", r"{\[}-@", r"{\[}", r"{\]}", r"\\_"]
         new_str_list = [rf"\\{self.cite_flag_in_tex}" + "{", rf"\\{self.cite_flag_in_tex}" + "{", "{", "}", "_"]
         old_str_list.extend([r"\\footnote<.->{", r";", r"@"])
@@ -165,7 +164,7 @@ class PandocMdTo(BasicInput):
 
     # for pandoc markdown files to html files
     def pandoc_md_to_html(
-        self, path_md: str, path_html: str, name_md: Optional[str], name_html: Optional[str], operate: bool = False
+        self, path_md: str, path_html: str, name_md: str | None, name_html: str | None, operate: bool = False
     ) -> str:
         full_one = path_md if name_md is None else os.path.join(path_md, name_md)
         full_two = path_html if name_html is None else os.path.join(path_html, name_html)
@@ -192,7 +191,7 @@ class PandocMdTo(BasicInput):
         return ""
 
     # for pandoc markdown files to pdf files
-    def pandoc_md_to_pdf(self, path_md: str, path_pdf: str, name_md: Optional[str], name_pdf: Optional[str]) -> str:
+    def pandoc_md_to_pdf(self, path_md: str, path_pdf: str, name_md: str | None, name_pdf: str | None) -> str:
         full_one = path_md if name_md is None else os.path.join(path_md, name_md)
         full_two = path_pdf if name_pdf is None else os.path.join(path_pdf, name_pdf)
         return self._pandoc_md_to_pdf(full_one, full_two)
@@ -222,8 +221,8 @@ class PandocMdTo(BasicInput):
     # --------- --------- --------- --------- --------- --------- --------- --------- --------- #
     # md
     def generate_key_data_dict(
-        self, pandoc_md_data_list: List[str], key_url_http_bib_dict: Dict[str, List[List[str]]]
-    ) -> Tuple[Dict[str, List[str]], Dict[str, List[str]], Dict[str, List[str]]]:
+        self, pandoc_md_data_list: list[str], key_url_http_bib_dict: dict[str, list[list[str]]]
+    ) -> tuple[dict[str, list[str]], dict[str, list[str]], dict[str, list[str]]]:
         """Generate."""
         key_reference_dict = self._generate_citation_key_reference_dict_from_pandoc_md(pandoc_md_data_list)
         (key_basic_dict, key_beauty_dict, key_complex_dict) = self._generate_basic_beauty_complex_dict(
@@ -232,8 +231,8 @@ class PandocMdTo(BasicInput):
         return key_basic_dict, key_beauty_dict, key_complex_dict
 
     def _generate_citation_key_reference_dict_from_pandoc_md(
-        self, pandoc_md_data_list: List[str]
-    ) -> Dict[str, List[str]]:
+        self, pandoc_md_data_list: list[str]
+    ) -> dict[str, list[str]]:
         """Generate."""
         pandoc_md_data_list = self.__append_pandoc_md_reference_part(pandoc_md_data_list)
 
@@ -269,7 +268,7 @@ class PandocMdTo(BasicInput):
             key_reference_dict.update({citation_key: delete_empty_lines_last_occur_add_new_line(content)})
         return key_reference_dict
 
-    def __append_pandoc_md_reference_part(self, pandoc_md_data_list: List[str]) -> List[str]:
+    def __append_pandoc_md_reference_part(self, pandoc_md_data_list: list[str]) -> list[str]:
         """Append the line which starts with '::: {#'."""
         line_index, len_data = 0, len(pandoc_md_data_list)
         if self.markdown_name == "pandoc-markdown":
@@ -296,15 +295,15 @@ class PandocMdTo(BasicInput):
         return delete_empty_lines_last_occur_add_new_line(new_list)
 
     def _generate_basic_beauty_complex_dict(
-        self, key_url_http_bib_dict: Dict[str, List[List[str]]], key_reference_dict: Dict[str, list]
-    ) -> Tuple[Dict[str, List[str]], Dict[str, List[str]], Dict[str, List[str]]]:
+        self, key_url_http_bib_dict: dict[str, list[list[str]]], key_reference_dict: dict[str, list]
+    ) -> tuple[dict[str, list[str]], dict[str, list[str]], dict[str, list[str]]]:
         """Generate."""
         header_list = [f"<details>{self.details_to_bib_separator}", "```\n"]
         tail_list = ["```\n", "</details>\n"]
 
-        key_basic_dict: Dict[str, List[str]] = {}
-        key_beauty_dict: Dict[str, List[str]] = {}
-        key_complex_dict: Dict[str, List[str]] = {}
+        key_basic_dict: dict[str, list[str]] = {}
+        key_beauty_dict: dict[str, list[str]] = {}
+        key_complex_dict: dict[str, list[str]] = {}
 
         key_list_http = list(key_url_http_bib_dict.keys())
         key_list_md = list(key_reference_dict.keys())
@@ -313,10 +312,10 @@ class PandocMdTo(BasicInput):
             return key_basic_dict, key_beauty_dict, key_complex_dict
 
         for k in key_list_http:
-            a: List[str] = copy.deepcopy(key_reference_dict[k])
-            b: List[str] = copy.deepcopy(key_reference_dict[k])
-            aa: List[str] = key_url_http_bib_dict[k][0]
-            bb: List[str] = key_url_http_bib_dict[k][1]
+            a: list[str] = copy.deepcopy(key_reference_dict[k])
+            b: list[str] = copy.deepcopy(key_reference_dict[k])
+            aa: list[str] = key_url_http_bib_dict[k][0]
+            bb: list[str] = key_url_http_bib_dict[k][1]
 
             # add url
             if self.add_url_for_basic_dict:
@@ -326,9 +325,9 @@ class PandocMdTo(BasicInput):
 
             # add anchor
             if self.add_anchor_for_basic_dict:
-                a = [f'<a id="{k.lower()}"></a>\n'] + a
+                a = [f'<a id="{k.lower()}"></a>\n', *a]
             if self.add_anchor_for_beauty_dict or self.add_anchor_for_complex_dict:
-                b = [f'<a id="{k.lower()}"></a>\n'] + b
+                b = [f'<a id="{k.lower()}"></a>\n', *b]
 
             if self.display_one_line_reference_note:
                 a = ["".join(a).replace("\n", " ").strip() + "\n"]
@@ -356,7 +355,7 @@ class PandocMdTo(BasicInput):
         return None
 
     @staticmethod
-    def _generate_tex_content(file_prefix: str, add_tex_name: str, add_bib_name: str) -> Tuple[List[str], List[str]]:
+    def _generate_tex_content(file_prefix: str, add_tex_name: str, add_bib_name: str) -> tuple[list[str], list[str]]:
         if len(file_prefix) == 0:
             file_prefix = "file_prefix"
 

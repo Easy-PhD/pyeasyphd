@@ -2,7 +2,7 @@ import os
 import re
 import shutil
 import subprocess
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pyadvtools import delete_files, insert_list_in_list, read_list, write_list
 
@@ -13,7 +13,7 @@ class PythonRunTex(BasicInput):
     """Python LaTeX processing class.
 
     Args:
-        options (Dict[str, Any]): Configuration options.
+        options (dict[str, Any]): Configuration options.
 
     Attributes:
         run_latex (bool): Whether to run LaTeX compilation. Defaults to False.
@@ -21,11 +21,11 @@ class PythonRunTex(BasicInput):
         delete_run_latex_cache (bool): Whether to delete LaTeX cache files. Defaults to True.
     """
 
-    def __init__(self, options: Dict[str, Any]) -> None:
+    def __init__(self, options: dict[str, Any]) -> None:
         """Initialize PythonRunTex with configuration options.
 
         Args:
-            options (Dict[str, Any]): Configuration options.
+            options (dict[str, Any]): Configuration options.
         """
         super().__init__(options)
 
@@ -34,11 +34,11 @@ class PythonRunTex(BasicInput):
         self.run_latex: bool = options.get("run_latex", False)
         self.pdflatex_xelatex: str = options.get("pdflatex_xelatex", "xelatex")  # pdflatex, xelatex
         self.delete_run_latex_cache: bool = options.get("delete_run_latex_cache", True)
-        self.latex_clean_file_types: Optional[List[str]] = options.get("latex_clean_file_types", None)
+        self.latex_clean_file_types: list[str] | None = options.get("latex_clean_file_types", None)
 
     def generate_standard_tex_data_list(
         self,
-        data_list_body: List[str],
+        data_list_body: list[str],
         output_tex_name: str,
         path_output: str,
         figure_folder_name: str = "figs",
@@ -46,21 +46,21 @@ class PythonRunTex(BasicInput):
         bib_folder_name: str = "bib",
         bib_name: str = "abbr.bib",
         template_name: str = "article",
-    ) -> List[str]:
+    ) -> list[str]:
         """Generate standard LaTeX data list with proper formatting.
 
         Args:
-            data_list_body (List[str]): List of body content strings.
+            data_list_body (list[str]): list of body content strings.
             output_tex_name (str): Name of output LaTeX file.
             path_output (str): Path to output directory.
-            figure_folder_name (str, optional): Name of figures folder. Defaults to "figs".
-            tex_folder_name (str, optional): Name of LaTeX folder. Defaults to "tex".
-            bib_folder_name (str, optional): Name of bibliography folder. Defaults to "bib".
-            bib_name (str, optional): Name of bibliography file. Defaults to "abbr.bib".
-            template_name (str, optional): Name of template to use. Defaults to "article".
+            figure_folder_name (str): Name of figures folder. Defaults to "figs".
+            tex_folder_name (str): Name of LaTeX folder. Defaults to "tex".
+            bib_folder_name (str): Name of bibliography folder. Defaults to "bib".
+            bib_name (str): Name of bibliography file. Defaults to "abbr.bib".
+            template_name (str): Name of template to use. Defaults to "article".
 
         Returns:
-            List[str]: List of processed LaTeX content strings.
+            list[str]: list of processed LaTeX content strings.
         """
         # for figures
         for i in range(len(data_list_body)):
@@ -78,7 +78,7 @@ class PythonRunTex(BasicInput):
 
     def _special_operate_tex(
         self,
-        data_list_body: List[str],
+        data_list_body: list[str],
         template_name: str,
         output_tex_name: str,
         path_output: str,
@@ -89,7 +89,7 @@ class PythonRunTex(BasicInput):
         """Perform special operations on LaTeX files.
 
         Args:
-            data_list_body (List[str]): List of body content strings.
+            data_list_body (list[str]): list of body content strings.
             template_name (str): Name of template to use.
             output_tex_name (str): Name of output LaTeX file.
             path_output (str): Path to output directory.
@@ -163,7 +163,7 @@ class PythonRunTex(BasicInput):
         if self.run_latex:
             if shutil.which("latexmk"):
                 os.chdir(path_output)
-                cmd = "latexmk -{} {}".format(self.pdflatex_xelatex, main_name)
+                cmd = f"latexmk -{self.pdflatex_xelatex} {main_name}"
                 try:
                     subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
                 except subprocess.CalledProcessError as e:

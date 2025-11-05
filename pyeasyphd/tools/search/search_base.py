@@ -1,6 +1,5 @@
 import copy
 import re
-from typing import Dict, List, Tuple
 
 from pybibtexer.bib.bibtexparser import Library
 from pybibtexer.main import PythonRunBib, PythonWriters
@@ -9,16 +8,16 @@ from ...main import BasicInput
 from .search_writers import WriteInitialResult, WriteSeparateResult
 
 
-def search_keywords_core(keywords_list_list: List[List[str]], library: Library, field: str) -> Tuple[Library, Library]:
+def search_keywords_core(keywords_list_list: list[list[str]], library: Library, field: str) -> tuple[Library, Library]:
     """Search keywords in specified field such as title, abstract, or keywords.
 
     Args:
-        keywords_list_list (List[List[str]]): List of keyword lists to search for.
+        keywords_list_list (list[list[str]]): list of keyword lists to search for.
         library (Library): Bibliography library to search.
         field (str): Field to search in (e.g., 'title', 'abstract', 'keywords').
 
     Returns:
-        Tuple[Library, Library]: Tuple containing (matching_library, non_matching_library).
+        tuple[Library, Library]: Tuple containing (matching_library, non_matching_library).
     """
     search_library = []
     no_search_library = []
@@ -31,10 +30,10 @@ def search_keywords_core(keywords_list_list: List[List[str]], library: Library, 
             content = re.sub("}", "", content)
 
             # All keywords from keyword_list_list[0] should be found in bib
-            flag = all([re.search(keyword, content, flags=re.I) for keyword in keywords_list_list[0]])
+            flag = all(re.search(keyword, content, flags=re.I) for keyword in keywords_list_list[0])
             if flag and (len(keywords_list_list) == 2):
                 # Any keywords from keyword_list_list[1] found in bib will results in False flag.
-                flag = not any([re.search(keyword, content, flags=re.I) for keyword in keywords_list_list[1]])
+                flag = not any(re.search(keyword, content, flags=re.I) for keyword in keywords_list_list[1])
 
         if flag:
             search_library.append(entry)
@@ -76,32 +75,32 @@ class SearchInitialResult(BasicInput):
 
     def main(
         self,
-        search_field_list: List[str],
+        search_field_list: list[str],
         path_initial: str,
         library: Library,
         keywords_type: str,
-        keywords_list_list: List[List[str]],
+        keywords_list_list: list[list[str]],
         combine_keywords: str,
         output_prefix: str,
         path_separate: str,
-    ) -> Tuple[List[str], Dict[str, List[List[str]]], Dict[str, int], Library]:
+    ) -> tuple[list[str], dict[str, list[list[str]]], dict[str, int], Library]:
         """Main search method for processing search results.
 
         Args:
-            search_field_list (List[str]): List of fields to search.
+            search_field_list (list[str]): list of fields to search.
             path_initial (str): Path to initial directory.
             library (Library): Bibliography library to search.
             keywords_type (str): Type of keywords being searched.
-            keywords_list_list (List[List[str]]): List of keyword lists.
+            keywords_list_list (list[list[str]]): list of keyword lists.
             combine_keywords (str): Combined keywords string.
             output_prefix (str): Prefix for output files.
             path_separate (str): Path to separate directory.
 
         Returns:
-            Tuple[List[str], Dict[str, List[List[str]]], Dict[str, int], Library]: Tuple containing error messages, field data, field numbers, and remaining library.
+            tuple[list[str], dict[str, list[list[str]]], dict[str, int], Library]: Tuple containing error messages, field data, field numbers, and remaining library.
         """
         error_pandoc_md_md, field_data_dict, no_search_library = [], {}, library
-        field_number_dict: Dict[str, int] = {}
+        field_number_dict: dict[str, int] = {}
 
         for field in search_field_list:
             if len(no_search_library.entries) == 0:

@@ -1,6 +1,5 @@
 import copy
 import os
-from typing import Dict, List, Tuple
 
 from pyadvtools import combine_content_in_list, read_list, write_list
 from pybibtexer.bib.bibtexparser import Library
@@ -42,7 +41,7 @@ class WriteInitialResult(BasicInput):
         library_for_abbr: Library,
         library_for_zotero: Library,
         library_for_save: Library,
-    ) -> Tuple[List[List[str]], List[str]]:
+    ) -> tuple[list[list[str]], list[str]]:
         """Main method to write initial results.
 
         Args:
@@ -56,7 +55,7 @@ class WriteInitialResult(BasicInput):
             library_for_save (Library): Save bibliography library.
 
         Returns:
-            Tuple[List[List[str]], List[str]]: Tuple containing data and error messages.
+            tuple[list[list[str]], list[str]]: Tuple containing data and error messages.
         """
         error_pandoc_md_md = []
 
@@ -93,9 +92,9 @@ class WriteInitialResult(BasicInput):
 
         # mian part
         # generate some md output data
-        data_basic_md: List[str] = []
-        data_beauty_md: List[str] = []
-        data_complex_md: List[str] = []
+        data_basic_md: list[str] = []
+        data_beauty_md: list[str] = []
+        data_complex_md: list[str] = []
         if data_list_pandoc_md:
             data_basic_md, data_beauty_md, data_complex_md = self.generate_basic_beauty_complex_md(
                 header, cite_keys, data_list_pandoc_md, library_for_zotero
@@ -105,28 +104,28 @@ class WriteInitialResult(BasicInput):
 
         # write basic beauty complex md files
         basic_beauty_complex = ["-basic", "-beauty", "-complex"]
-        for d, name in zip([data_basic_md, data_beauty_md, data_complex_md], basic_beauty_complex):
-            write_list(d, "{}{}.md".format(file_prefix, name), "w", path_write)
+        for d, name in zip([data_basic_md, data_beauty_md, data_complex_md], basic_beauty_complex, strict=True):
+            write_list(d, f"{file_prefix}{name}.md", "w", path_write)
 
         # save all (tex, md, bib) files
-        x = [f"{i}.{j}" for i, j in zip(mid_list, post_list)]
+        x = [f"{i}.{j}" for i, j in zip(mid_list, post_list, strict=True)]
         x.extend([f"{i}.md" for i in basic_beauty_complex])
         data_temp = [[os.path.join(path_write, file_prefix + i)] for i in x]
         return data_temp, error_pandoc_md_md
 
     def generate_basic_beauty_complex_md(
-        self, header: str, cite_key_list: List[str], data_list_pandoc_md: List[str], library_for_zotero: Library
-    ) -> Tuple[List[str], List[str], List[str]]:
+        self, header: str, cite_key_list: list[str], data_list_pandoc_md: list[str], library_for_zotero: Library
+    ) -> tuple[list[str], list[str], list[str]]:
         """Generate basic, beauty, and complex markdown content.
 
         Args:
             header (str): Header string for the content.
-            cite_key_list (List[str]): List of citation keys.
-            data_list_pandoc_md (List[str]): List of pandoc markdown data.
+            cite_key_list (list[str]): list of citation keys.
+            data_list_pandoc_md (list[str]): list of pandoc markdown data.
             library_for_zotero (Library): Zotero bibliography library.
 
         Returns:
-            Tuple[List[str], List[str], List[str]]: Tuple containing basic, beauty, and complex markdown content.
+            tuple[list[str], list[str], list[str]]: Tuple containing basic, beauty, and complex markdown content.
         """
         data_basic_md, data_beauty_md, data_complex_md = [], [], []
 
@@ -152,14 +151,14 @@ class WriteInitialResult(BasicInput):
         return data_basic_md, data_beauty_md, data_complex_md
 
     @staticmethod
-    def _convert_to_special_list(data_list: List[str]) -> List[str]:
+    def _convert_to_special_list(data_list: list[str]) -> list[str]:
         """Convert data list to special formatted list.
 
         Args:
-            data_list (List[str]): List of data strings.
+            data_list (list[str]): list of data strings.
 
         Returns:
-            List[str]: Formatted list with proper indentation.
+            list[str]: Formatted list with proper indentation.
         """
         if len(data_list) > 0:
             data_list[0] = "- " + data_list[0]
@@ -169,18 +168,18 @@ class WriteInitialResult(BasicInput):
         return data_list
 
     def generate_content_tex_md(
-        self, cite_key_list: List[str], output_prefix: str, field: str, combine_keywords: str
-    ) -> Tuple[List[str], List[str], str]:
+        self, cite_key_list: list[str], output_prefix: str, field: str, combine_keywords: str
+    ) -> tuple[list[str], list[str], str]:
         """Generate LaTeX and markdown content.
 
         Args:
-            cite_key_list (List[str]): List of citation keys.
+            cite_key_list (list[str]): list of citation keys.
             output_prefix (str): Prefix for output files.
             field (str): Field being searched.
             combine_keywords (str): Combined keywords string.
 
         Returns:
-            Tuple[List[str], List[str], str]: Tuple containing LaTeX content, markdown content, and header.
+            tuple[list[str], list[str], str]: Tuple containing LaTeX content, markdown content, and header.
         """
         c_k_f_t = combine_keywords_for_title(combine_keywords)
 
@@ -198,7 +197,7 @@ class WriteInitialResult(BasicInput):
         return data_list_tex, data_list_md, md_header
 
 
-class WriteSeparateResult(object):
+class WriteSeparateResult:
     """Write separate result for different keyword types."""
 
     def __init__(self) -> None:
@@ -207,12 +206,12 @@ class WriteSeparateResult(object):
         self._level_title_tex = "section"
 
     def main(
-        self, data_temp: List[List[str]], field: str, keywords_type: str, combine_keywords: str, path_separate: str
+        self, data_temp: list[list[str]], field: str, keywords_type: str, combine_keywords: str, path_separate: str
     ) -> None:
         """Main method to write separate results.
 
         Args:
-            data_temp (List[List[str]]): List of data lists for different file types.
+            data_temp (list[list[str]]): list of data lists for different file types.
             field (str): Field being processed.
             keywords_type (str): Type of keywords.
             combine_keywords (str): Combined keywords string.
@@ -243,7 +242,7 @@ class WriteSeparateResult(object):
         return None
 
 
-class WriteAbbrCombinedResults(object):
+class WriteAbbrCombinedResults:
     """Write combined results for abbreviations (such as `TEVC`, `PNAS`).
 
     Args:
@@ -277,18 +276,18 @@ class WriteAbbrCombinedResults(object):
         self._pandoc_md_to = PandocMdTo(options)
 
     def main(
-        self, search_field_list, keywords_type: str, field_data_dict: Dict[str, List[List[str]]], path_combine: str
-    ) -> Tuple[List[str], List[str]]:
+        self, search_field_list, keywords_type: str, field_data_dict: dict[str, list[list[str]]], path_combine: str
+    ) -> tuple[list[str], list[str]]:
         """Main method to write combined results for abbreviations.
 
         Args:
-            search_field_list: List of search fields.
+            search_field_list: list of search fields.
             keywords_type (str): Type of keywords.
-            field_data_dict (Dict[str, List[List[str]]]): Dictionary containing field data.
+            field_data_dict (dict[str, list[list[str]]]): dictionary containing field data.
             path_combine (str): Path to combine directory.
 
         Returns:
-            Tuple[List[str], List[str]]: Tuple containing error messages for PDF and HTML conversion.
+            tuple[list[str], list[str]]: Tuple containing error messages for PDF and HTML conversion.
         """
         path_subsection = os.path.join(path_combine, "tex-subsection")
         path_md = os.path.join(path_combine, "md")

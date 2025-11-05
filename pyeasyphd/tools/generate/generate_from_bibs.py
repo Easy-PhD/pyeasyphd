@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Any, Dict, List, Union
+from typing import Any
 
 from pyadvtools import standard_path, write_list
 from pybibtexer.tools.experiments_base import generate_standard_publisher_abbr_options_dict
@@ -15,9 +15,9 @@ def preparation(
     path_output: str,
     output_basename: str,
     pub_type: str,
-    issue_or_month_flag: Union[str, List[str]] = "current_issue",
-    year_flag: Union[str, List[str]] = "current_year",
-    options: Dict[str, Any] = {},
+    issue_or_month_flag: str | list[str] = "current_issue",
+    year_flag: str | list[str] = "current_year",
+    options: dict[str, Any] | None = None,
 ):
     """Prepare paths and flags for data generation.
 
@@ -26,9 +26,9 @@ def preparation(
         path_output (str): Path to output directory.
         output_basename (str): Base name for output files.
         pub_type (str): Type of publication.
-        issue_or_month_flag (Union[str, List[str]], optional): Issue or month flag. Defaults to "current_issue".
-        year_flag (Union[str, List[str]], optional): Year flag. Defaults to "current_year".
-        options (Dict[str, Any], optional): Additional options. Defaults to {}.
+        issue_or_month_flag (str | list[str], optional): Issue or month flag. Defaults to "current_issue".
+        year_flag (str | list[str], optional): Year flag. Defaults to "current_year".
+        options (dict[str, Any], optional): Additional options. Defaults to {}.
 
     Examples:
         |              | current_issue | current_month | all_months |
@@ -40,8 +40,11 @@ def preparation(
         given_years = ["2020", "2025"]
 
     Returns:
-        Tuple[str, str, bool]: Returns (path_root, path_output, combine_flag).
+        tuple[str, str, bool]: Returns (path_root, path_output, combine_flag).
     """
+    if options is None:
+        options = {}
+
     # default settings
     path_storage = standard_path(path_storage)
     path_output = standard_path(path_output)
@@ -50,8 +53,8 @@ def preparation(
     absolute_or_relative_path = options.get("absolute_or_relative_path", "absolute_path")
 
     # Create path components
-    yy = "-".join(year_flag) if isinstance(year_flag, List) else year_flag
-    im = "-".join(issue_or_month_flag) if isinstance(issue_or_month_flag, List) else issue_or_month_flag
+    yy = "-".join(year_flag) if isinstance(year_flag, list) else year_flag
+    im = "-".join(issue_or_month_flag) if isinstance(issue_or_month_flag, list) else issue_or_month_flag
 
     if options.get("early_access", False):
         base_path = os.path.join(output_basename, f"{pub_type.title()}_Early_Access", f"{yy}_{im}")
@@ -77,9 +80,9 @@ def generate_from_bibs_and_write(
     output_basename: str,
     pub_type: str,
     generate_or_combine: str,
-    year_flag: Union[str, List[str]] = "current_year",
-    issue_or_month_flag: Union[str, List[str]] = "current_issue",
-    options: Dict[str, Any] = {},
+    year_flag: str | list[str] = "current_year",
+    issue_or_month_flag: str | list[str] = "current_issue",
+    options: dict[str, Any] | None = None,
 ) -> None:
     """Generate or combine data from bibliographies.
 
@@ -89,10 +92,13 @@ def generate_from_bibs_and_write(
         output_basename (str): Base name for output files.
         pub_type (str): Type of publication.
         generate_or_combine (str): Either "generate_data" or "combine_data".
-        year_flag (Union[str, List[str]], optional): Flag for year selection. Defaults to "current_year".
-        issue_or_month_flag (Union[str, List[str]], optional): Flag for issue/month selection. Defaults to "current_issue".
-        options (Dict[str, Any], optional): Additional options. Defaults to {}.
+        year_flag (str | list[str], optional): Flag for year selection. Defaults to "current_year".
+        issue_or_month_flag (str | list[str], optional): Flag for issue/month selection. Defaults to "current_issue".
+        options (dict[str, Any], optional): Additional options. Defaults to {}.
     """
+    if options is None:
+        options = {}
+
     path_root, path_output, combine_flag = preparation(
         path_storage, path_output, output_basename, pub_type, issue_or_month_flag, year_flag, options
     )
@@ -122,7 +128,7 @@ def generate_from_bibs_and_write(
                 # Generate md, tex, pdf, html
                 html_body = generate_html_from_bib_data(abbr, library, pp, new_options)
                 if combine_flag and html_body:
-                    publisher_html_body.extend(html_body + ["\n"])
+                    publisher_html_body.extend([*html_body, "\n"])
 
             # Combine for publisher
             if publisher_html_body:

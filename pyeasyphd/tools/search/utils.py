@@ -1,23 +1,22 @@
 import os
 import re
-from typing import Dict, List, Tuple, Union
 
 from pyadvtools import IterateSortDict, is_list_contain_list_contain_str, is_list_contain_str, write_list
 
 
-def switch_keywords_list(xx: Union[List[str], List[List[str]]]) -> Tuple[List[List[str]], str]:
+def switch_keywords_list(xx: list[str] | list[list[str]]) -> tuple[list[list[str]], str]:
     """Switch keyword list format and generate combined keywords string.
 
     Args:
-        xx (Union[List[str], List[List[str]]]): Input keyword list or nested keyword list.
+        xx (list[str] | list[list[str]]): Input keyword list or nested keyword list.
             Examples: ["evolutionary", "algorithm"] or [["evolution"], ["evolutionary"]]
 
     Returns:
-        Tuple[List[List[str]], str]: Tuple containing:
+        tuple[list[list[str]], str]: Tuple containing:
             - List of keyword lists with regex word boundaries
             - Combined keywords string for file naming
     """
-    yyy: List[List[str]] = [[]]
+    yyy: list[list[str]] = [[]]
 
     if is_list_contain_str(xx):
         yyy = [[rf"\b{x}\b" for x in xx]]
@@ -119,14 +118,14 @@ def keywords_type_for_title(keywords_type: str) -> str:
     return keywords_type.strip()
 
 
-def extract_information(old_dict: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, int]]]]], path_output: str) -> None:
+def extract_information(old_dict: dict[str, dict[str, dict[str, dict[str, dict[str, int]]]]], path_output: str) -> None:
     """Extract and organize search information into markdown tables.
 
     Args:
-        old_dict (Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, int]]]]]): Nested dictionary containing search results.
+        old_dict (dict[str, dict[str, dict[str, dict[str, dict[str, int]]]]]): Nested dictionary containing search results.
         path_output (str): Output directory path for generated markdown files.
     """
-    new_dict: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, int]]]]] = {}
+    new_dict: dict[str, dict[str, dict[str, dict[str, dict[str, int]]]]] = {}
 
     for abbr in old_dict:
         for entry_type in old_dict[abbr]:
@@ -149,10 +148,10 @@ def extract_information(old_dict: Dict[str, Dict[str, Dict[str, Dict[str, Dict[s
             data_list = []
             for keyword_type in new_dict[entry_type][field]:
                 for keyword in new_dict[entry_type][field][keyword_type]:
-                    abbr_list = sorted(list(new_dict[entry_type][field][keyword_type][keyword].keys()))
+                    abbr_list = sorted(new_dict[entry_type][field][keyword_type][keyword].keys())
                     num_list = [new_dict[entry_type][field][keyword_type][keyword][abbr] for abbr in abbr_list]
 
-                    a = f'|Keywords Types|Keywords|{"|".join([abbr for abbr in abbr_list])}|\n'
+                    a = f'|Keywords Types|Keywords|{"|".join(list(abbr_list))}|\n'
                     if a not in data_list:
                         data_list.append(a)
 

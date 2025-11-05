@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List, Union
+from typing import Any
 
 from pyadvtools import write_list
 from pybibtexer.bib.bibtexparser import Library
@@ -12,34 +12,37 @@ def generate_html_content(html_body, abbr_standard):
     """Create complete HTML document from body content.
 
     Args:
-        html_body: List of HTML body content lines.
+        html_body: list of HTML body content lines.
         abbr_standard (str): Standard abbreviation for the document.
 
     Returns:
-        List[str]: Complete HTML document as list of lines.
+        list[str]: Complete HTML document as list of lines.
     """
-    return [html_head.format(abbr_standard), html_style, "\n"] + html_body + [html_tail]
+    return [html_head.format(abbr_standard), html_style, "\n", *html_body, *html_tail]
 
 
 def generate_html_from_bib_data(
     abbr_standard: str,
-    original_bib_data: Union[List[str], str, Library],
+    original_bib_data: list[str] | str | Library,
     path_output: str,
-    options: Dict[str, Any] = {},
-) -> List[str]:
+    options: dict[str, Any] | None = None,
+) -> list[str]:
     """Generate HTML from bibliography data.
 
     Args:
         abbr_standard (str): Standard abbreviation for the publication.
-        original_bib_data (Union[List[str], str, Library]): Bibliography data in various formats.
+        original_bib_data (list[str] | str | Library): Bibliography data in various formats.
         path_output (str): Path to output directory.
-        options (Dict[str, Any], optional): Additional processing options. Defaults to {}.
+        options (dict[str, Any], optional): Additional processing options. Defaults to {}.
         full_json_c (str, optional): Path to conferences JSON file. Defaults to "".
         full_json_j (str, optional): Path to journals JSON file. Defaults to "".
 
     Returns:
-        List[str]: List of HTML body content lines.
+        list[str]: list of HTML body content lines.
     """
+    if options is None:
+        options = {}
+
     # Set processing options
     processing_options: dict = {
         # convert_str_to_library
@@ -79,11 +82,12 @@ def generate_html_from_bib_data(
 
     # Create complete HTML document if entries exist
     if len(html_body) > 0:
-        html_body = (
-            [f'<h2 id="{abbr_standard.lower()}">{abbr_standard} - {len(zotero_library.entries)}</h2>\n', "<ul>\n"]
-            + html_body
-            + ["</ul>\n"]
-        )
+        html_body = [
+            f'<h2 id="{abbr_standard.lower()}">{abbr_standard} - {len(zotero_library.entries)}</h2>\n',
+            "<ul>\n",
+            *html_body,
+            "</ul>\n",
+        ]
 
         html_content = generate_html_content(html_body, abbr_standard)
         output_dir = os.path.join(path_output, abbr_standard)
@@ -100,7 +104,7 @@ def _format_entry_to_html(entry, abbr, data_list):
     Args:
         entry: Bibliography entry dictionary.
         abbr (str): Publication abbreviation.
-        data_list: List of formatted bibliography data.
+        data_list: list of formatted bibliography data.
 
     Returns:
         str: HTML formatted entry string.

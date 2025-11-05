@@ -1,7 +1,7 @@
 import os
 import re
 import shutil
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any
 
 from pyadvtools import combine_content_in_list, read_list, standard_path, write_list
 from pybibtexer.bib.bibtexparser import Library
@@ -18,7 +18,11 @@ class PyRunBibMdTex(BasicInput):
     """
 
     def __init__(
-        self, path_output: str, tex_md_flag: str = ".md", template_name: str = "paper", options: Dict[str, Any] = {}
+        self,
+        path_output: str,
+        tex_md_flag: str = ".md",
+        template_name: str = "paper",
+        options: dict[str, Any] | None = None,
     ) -> None:
         """Initialize the PyRunBibMdTex instance.
 
@@ -26,11 +30,14 @@ class PyRunBibMdTex(BasicInput):
             path_output (str): Output directory path for processed files.
             tex_md_flag (str, optional): Flag indicating whether to process as LaTeX (".tex") or Markdown (".md"). Defaults to ".md".
             template_name (str, optional): Template type to use ("paper" or "beamer"). Defaults to "paper".
-            options (Dict[str, Any], optional): Additional configuration options. Defaults to {}.
+            options (dict[str, Any], optional): Additional configuration options. Defaults to {}.
 
         Raises:
             AssertionError: If tex_md_flag is not ".tex" or ".md" or if template_name is not "paper" or "beamer".
         """
+        if options is None:
+            options = {}
+
         super().__init__(options)
 
         self.tex_md_flag = re.sub(r"\.+", ".", "." + tex_md_flag)
@@ -85,21 +92,21 @@ class PyRunBibMdTex(BasicInput):
         self._python_tex = PythonRunTex(self.options)
 
     def run_files(
-        self, file_list_md_tex: List[str], output_prefix: str = "", output_level: str = "next"
-    ) -> Tuple[List[str], List[str]]:
+        self, file_list_md_tex: list[str], output_prefix: str = "", output_level: str = "next"
+    ) -> tuple[list[str], list[str]]:
         """Process a list of Markdown or LaTeX files.
 
         Args:
-            file_list_md_tex (List[str]): List of input file paths (Markdown or LaTeX).
+            file_list_md_tex (list[str]): list of input file paths (Markdown or LaTeX).
             output_prefix (str, optional): Prefix for output files. Defaults to "".
             output_level (str, optional): Output directory level ("previous", "current", or "next"). Defaults to "next".
 
         Returns:
-            Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
+            tuple[list[str], list[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         file_list_md_tex = [f for f in file_list_md_tex if f.endswith(self.tex_md_flag)]
         data_list_list = [read_list(standard_path(f), "r") for f in file_list_md_tex]
-        if all([len(data_list) == 0 for data_list in data_list_list]):
+        if all(len(data_list) == 0 for data_list in data_list_list):
             return [], []
 
         file_base_name = os.path.splitext(os.path.basename(file_list_md_tex[0]))[0]
@@ -115,20 +122,20 @@ class PyRunBibMdTex(BasicInput):
     def python_run_bib_md_tex(
         self,
         output_prefix: str,
-        data_list_md_tex: List[str],
-        original_bib_data: Union[List[str], str, Library],
+        data_list_md_tex: list[str],
+        original_bib_data: list[str] | str | Library,
         output_level: str = "next",
-    ) -> Tuple[List[str], List[str]]:
+    ) -> tuple[list[str], list[str]]:
         """Process BibTeX, Markdown and LaTeX content.
 
         Args:
             output_prefix (str): Prefix for output files.
-            data_list_md_tex (List[str]): List of content lines (Markdown or LaTeX).
-            original_bib_data (Union[List[str], str, Library]): BibTeX data in various formats.
+            data_list_md_tex (list[str]): list of content lines (Markdown or LaTeX).
+            original_bib_data (list[str] | str | Library): BibTeX data in various formats.
             output_level (str, optional): Output directory level ("previous", "current", or "next"). Defaults to "next".
 
         Returns:
-            Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
+            tuple[list[str], list[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         # Basic file names
         output_tex, output_md = output_prefix + ".tex", output_prefix + ".md"
@@ -163,19 +170,19 @@ class PyRunBibMdTex(BasicInput):
         self,
         output_md: str,
         output_tex: str,
-        data_list_md_tex: List[str],
-        original_bib_data: Union[List[str], str, Library],
-    ) -> Tuple[List[str], List[str]]:
+        data_list_md_tex: list[str],
+        original_bib_data: list[str] | str | Library,
+    ) -> tuple[list[str], list[str]]:
         """Process BibTeX, Markdown and LaTeX content.
 
         Args:
             output_md (str): Output Markdown filename.
             output_tex (str): Output LaTeX filename.
-            data_list_md_tex (List[str]): List of content lines (Markdown or LaTeX).
-            original_bib_data (Union[List[str], str, Library]): BibTeX data in various formats.
+            data_list_md_tex (list[str]): list of content lines (Markdown or LaTeX).
+            original_bib_data (list[str] | str | Library): BibTeX data in various formats.
 
         Returns:
-            Tuple[List[str], List[str]]: Tuple containing processed Markdown content and LaTeX content.
+            tuple[list[str], list[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
         # Copy figures if enabled
         if self.shutil_includegraphics_figs:
@@ -209,7 +216,7 @@ class PyRunBibMdTex(BasicInput):
             abbr_library, zotero_library, save_library = self._python_bib.parse_to_multi_standard_library(
                 original_bib_data, key_in_md_tex
             )
-            key_in_md_tex = sorted(list(abbr_library.entries_dict.keys()), key=key_in_md_tex.index)
+            key_in_md_tex = sorted(abbr_library.entries_dict.keys(), key=key_in_md_tex.index)
 
             # Write bibliography files
             _path_output = os.path.join(self.path_output, self.bib_folder_name)
@@ -265,17 +272,17 @@ class PyRunBibMdTex(BasicInput):
         return data_list_md, data_list_tex
 
     @staticmethod
-    def search_subfile_names(data_list: List[str], postfixes: List[str]) -> List[str]:
+    def search_subfile_names(data_list: list[str], postfixes: list[str]) -> list[str]:
         """Search for figure filenames in content.
 
         Args:
-            data_list (List[str]): List of content lines to search.
-            figure_postfixes (Optional[List[str]], optional): List of figure file extensions to look for. Defaults to None.
+            data_list (list[str]): list of content lines to search.
+            figure_postfixes (Optional[list[str]], optional): list of figure file extensions to look for. Defaults to None.
 
         Returns:
-            List[str]: List of found figure filenames.
+            list[str]: list of found figure filenames.
         """
-        regex = re.compile(rf'[\w\-]+\.(?:{"|".join(postfixes)})', re.I)
+        regex = re.compile(rf"[\w\-]+\.(?:{'|'.join(postfixes)})", re.I)
         figure_names = []
         for line in data_list:
             figure_names.extend(regex.findall(line))
@@ -283,7 +290,7 @@ class PyRunBibMdTex(BasicInput):
 
     @staticmethod
     def shutil_copy_files(
-        path_file: str, file_names: List[str], path_output: str, output_folder_name: str, relative_path: bool
+        path_file: str, file_names: list[str], path_output: str, output_folder_name: str, relative_path: bool
     ) -> None:
         """Copy specified files from source directory to output directory.
 
@@ -292,7 +299,7 @@ class PyRunBibMdTex(BasicInput):
 
         Args:
             path_file: Source directory path to search for files.
-            file_names: List of filenames to copy.
+            file_names: list of filenames to copy.
             path_output: Destination directory path.
             output_folder_name: Name of the subfolder in output directory (used when relative_path=False).
             relative_path: If True, preserves relative path structure; if False, uses flat structure.
@@ -341,15 +348,15 @@ class PyRunBibMdTex(BasicInput):
         return None
 
     @staticmethod
-    def search_cite_keys(data_list: List[str], tex_md_flag: str = ".tex") -> List[str]:
+    def search_cite_keys(data_list: list[str], tex_md_flag: str = ".tex") -> list[str]:
         r"""Extract citation keys from content according to their places.
 
         Args:
-            data_list (List[str]): List of content lines to search.
+            data_list (list[str]): list of content lines to search.
             tex_md_flag (str, optional): Flag indicating content format (".tex" or ".md"). Defaults to ".tex".
 
         Returns:
-            List[str]: List of found citation keys.
+            list[str]: list of found citation keys.
 
         Note:
             For LaTeX, searches for \\cite, \\citep, \\citet patterns.

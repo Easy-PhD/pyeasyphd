@@ -3,7 +3,7 @@ import os
 import re
 import shutil
 import time
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from pyadvtools import combine_content_in_list, delete_empty_lines_last_occur_add_new_line, read_list, write_list
 from pybibtexer.bib.core import ConvertStrToLibrary
@@ -14,8 +14,7 @@ from .pandoc_md_to import PandocMdTo
 
 
 def batch_convert_citations(text):
-    """
-    Process all citations in the text, including multiple citations in one bracket.
+    r"""Process all citations in the text, including multiple citations in one bracket.
 
     Example: [@ref1; @ref2] -> <sup>[@ref1](#ref1)</sup><sup>[@ref2](#ref2)</sup>
     """
@@ -43,10 +42,10 @@ def batch_convert_citations(text):
 
 
 class PythonRunMd(BasicInput):
-    """Python markdown processing class.
+    r"""Python markdown processing class.
 
     Args:
-        options (Dict[str, Any]): Configuration options.
+        options (dict[str, Any]): Configuration options.
 
     Attributes:
         delete_temp_generate_md (bool): Whether to delete temporary generated markdown files. Defaults to True.
@@ -59,11 +58,11 @@ class PythonRunMd(BasicInput):
         details_to_bib_separator (str): Separator between <details> and bibliography content. Defaults to "\n".
     """
 
-    def __init__(self, options: Dict[str, Any]) -> None:
+    def __init__(self, options: dict[str, Any]) -> None:
         """Initialize PythonRunMd with configuration options.
 
         Args:
-            options (Dict[str, Any]): Configuration options.
+            options (dict[str, Any]): Configuration options.
         """
         super().__init__(options)
 
@@ -92,28 +91,28 @@ class PythonRunMd(BasicInput):
     def special_operate_for_md(
         self,
         path_output: str,
-        data_list_md: List[str],
+        data_list_md: list[str],
         output_md_name: str,
         full_bib_for_abbr: str,
         full_bib_for_zotero: str,
         template_name: str = "article",
         generate_html: bool = False,
         generate_tex: bool = True,
-    ) -> Tuple[List[str], List[str]]:
+    ) -> tuple[list[str], list[str]]:
         """Perform special operations on markdown files.
 
         Args:
             path_output (str): Path to output directory.
-            data_list_md (List[str]): List of markdown content lines.
+            data_list_md (list[str]): list of markdown content lines.
             output_md_name (str): Name of output markdown file.
             full_bib_for_abbr (str): Path to abbreviated bibliography file.
             full_bib_for_zotero (str): Path to Zotero bibliography file.
-            template_name (str, optional): Name of template to use. Defaults to "article".
-            generate_html (bool, optional): Whether to generate HTML. Defaults to False.
-            generate_tex (bool, optional): Whether to generate LaTeX. Defaults to True.
+            template_name (str): Name of template to use. Defaults to "article".
+            generate_html (bool): Whether to generate HTML. Defaults to False.
+            generate_tex (bool): Whether to generate LaTeX. Defaults to True.
 
         Returns:
-            Tuple[List[str], List[str]]: Tuple containing processed markdown and LaTeX content.
+            tuple[list[str], list[str]]: Tuple containing processed markdown and LaTeX content.
         """
         path_temp = os.path.join(path_output, "{}".format(time.strftime("%Y_%m_%d_%H_%M_%S")))
         if not os.path.exists(path_temp):
@@ -165,7 +164,7 @@ class PythonRunMd(BasicInput):
 
     def _special_operate_for_md(
         self, output_md_name: str, path_temp: str, full_bib_for_abbr: str, full_bib_for_zotero: str
-    ) -> List[str]:
+    ) -> list[str]:
         """Perform special operations for markdown processing.
 
         Args:
@@ -175,7 +174,7 @@ class PythonRunMd(BasicInput):
             full_bib_for_zotero (str): Path to Zotero bibliography file.
 
         Returns:
-            List[str]: List of processed markdown content lines.
+            list[str]: list of processed markdown content lines.
         """
         # pandoc markdown to markdown
         n1 = "1_pandoc" + ".md"
@@ -278,16 +277,16 @@ class PythonRunMd(BasicInput):
         return content_md
 
     @staticmethod
-    def _special_format(temp_list: List[str], space_one: str, space_two: str) -> List[str]:
+    def _special_format(temp_list: list[str], space_one: str, space_two: str) -> list[str]:
         """Apply special formatting for alignment.
 
         Args:
-            temp_list (List[str]): List of strings to format.
+            temp_list (list[str]): list of strings to format.
             space_one (str): First space string.
             space_two (str): Second space string.
 
         Returns:
-            List[str]: Formatted list of strings.
+            list[str]: Formatted list of strings.
         """
         for j in range(len(temp_list) - 1):
             if temp_list[j][-1] == "\n":
@@ -296,23 +295,23 @@ class PythonRunMd(BasicInput):
 
     def _generate_content_md(
         self,
-        key_basic_beauty_complex_dict: Dict[str, List[str]],
-        key_in_md_tex: List[str],
-        main_part: List[str],
-        last_part: List[str],
-        bib_in_md: List[str],
-    ) -> List[str]:
+        key_basic_beauty_complex_dict: dict[str, list[str]],
+        key_in_md_tex: list[str],
+        main_part: list[str],
+        last_part: list[str],
+        bib_in_md: list[str],
+    ) -> list[str]:
         """Generate markdown content from various components.
 
         Args:
-            key_basic_beauty_complex_dict (Dict[str, List[str]]): Dictionary of formatted references.
-            key_in_md_tex (List[str]): List of citation keys in markdown/LaTeX.
-            main_part (List[str]): Main content part.
-            last_part (List[str]): Last content part.
-            bib_in_md (List[str]): Bibliography content for markdown.
+            key_basic_beauty_complex_dict (dict[str, list[str]]): dictionary of formatted references.
+            key_in_md_tex (list[str]): list of citation keys in markdown/LaTeX.
+            main_part (list[str]): Main content part.
+            last_part (list[str]): Last content part.
+            bib_in_md (list[str]): Bibliography content for markdown.
 
         Returns:
-            List[str]: Generated markdown content.
+            list[str]: Generated markdown content.
         """
         temp_b = []
         if self.add_reference_in_md:

@@ -22,10 +22,10 @@ def build_base_options(
     """Build options dictionary with common configuration.
 
     Args:
-        include_publisher_list: List of publishers to include
-        include_abbr_list: List of conference/journal abbreviations to include
-        exclude_publisher_list: List of publishers to exclude
-        exclude_abbr_list: List of conference/journal abbreviations to exclude
+        include_publisher_list: list of publishers to include
+        include_abbr_list: list of conference/journal abbreviations to include
+        exclude_publisher_list: list of publishers to exclude
+        exclude_abbr_list: list of conference/journal abbreviations to exclude
         path_conf_j_jsons: Base path for conferences/journals JSON files
 
     Returns:
@@ -50,7 +50,7 @@ def build_search_options(
 
     Args:
         print_on_screen: Whether to display results on screen
-        search_year_list: List of years to filter search results
+        search_year_list: list of years to filter search results
         keywords_type: Category name for search keywords
         keywords_list_list: Nested list of search keywords
 

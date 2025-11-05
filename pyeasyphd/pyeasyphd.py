@@ -12,7 +12,7 @@ def delete_files(path_storage: str, extensions) -> None:
 
     Args:
         path_storage (str): Path to the storage directory.
-        extensions: List of file extensions to delete.
+        extensions: list of file extensions to delete.
     """
     for name in os.listdir(path_storage):
         for ext in extensions:

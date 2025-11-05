@@ -1,11 +1,11 @@
-from typing import Any, Dict
+from typing import Any
 
 
-def obtain_search_keywords() -> Dict[str, Any]:
+def obtain_search_keywords() -> dict[str, Any]:
     """Obtain search keywords dictionary.
 
     Returns:
-        Dict[str, Any]: Dictionary containing categorized search keywords.
+        dict[str, Any]: dictionary containing categorized search keywords.
     """
     _h_ = "(?:| |-)"  # hyphen
 

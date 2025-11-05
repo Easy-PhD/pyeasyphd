@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict
+from typing import Any
 
 from pyadvtools import read_list
 from pybibtexer.main import BasicInput as BasicInputInPyBibtexer
@@ -9,28 +9,28 @@ class BasicInput(BasicInputInPyBibtexer):
     """Basic input class for handling bibliography and template configurations.
 
     Args:
-        options (Dict[str, Any]): Configuration options.
+        options (dict[str, Any]): Configuration options.
 
     Attributes:
         full_csl_style_pandoc (str): Full path to CSL style for pandoc.
         full_tex_article_template_pandoc (str): Full path to tex article template for pandoc.
         full_tex_beamer_template_pandoc (str): Full path to tex beamer template for pandoc.
-        article_template_tex (List[str]): Article template for LaTeX.
-        article_template_header_tex (List[str]): Article template header for LaTeX.
-        article_template_tail_tex (List[str]): Article template tail for LaTeX.
-        beamer_template_header_tex (List[str]): Beamer template header for LaTeX.
-        beamer_template_tail_tex (List[str]): Beamer template tail for LaTeX.
-        math_commands_tex (List[str]): LaTeX math commands.
-        usepackages_tex (List[str]): LaTeX usepackages.
+        article_template_tex (list[str]): Article template for LaTeX.
+        article_template_header_tex (list[str]): Article template header for LaTeX.
+        article_template_tail_tex (list[str]): Article template tail for LaTeX.
+        beamer_template_header_tex (list[str]): Beamer template header for LaTeX.
+        beamer_template_tail_tex (list[str]): Beamer template tail for LaTeX.
+        math_commands_tex (list[str]): LaTeX math commands.
+        usepackages_tex (list[str]): LaTeX usepackages.
         handly_preamble (bool): Whether to handle preamble manually.
-        options (Dict[str, Any]): Configuration options.
+        options (dict[str, Any]): Configuration options.
     """
 
-    def __init__(self, options: Dict[str, Any]) -> None:
+    def __init__(self, options: dict[str, Any]) -> None:
         """Initialize BasicInput with configuration options.
 
         Args:
-            options (Dict[str, Any]): Configuration options dictionary.
+            options (dict[str, Any]): Configuration options dictionary.
         """
         super().__init__(options)
 
@@ -43,11 +43,11 @@ class BasicInput(BasicInputInPyBibtexer):
 
         self.options = options
 
-    def _initialize_pandoc_md_to(self, options: Dict[str, Any]) -> None:
+    def _initialize_pandoc_md_to(self, options: dict[str, Any]) -> None:
         """Initialize pandoc markdown to other formats configuration.
 
         Args:
-            options (Dict[str, Any]): Configuration options.
+            options (dict[str, Any]): Configuration options.
         """
         csl_name = options.get("csl_name", "apa-no-ampersand")
         if not isinstance(csl_name, str):
@@ -61,11 +61,11 @@ class BasicInput(BasicInputInPyBibtexer):
 
         self.article_template_tex = self._try_read_list("tex", "Article.tex")
 
-    def _initialize_python_run_tex(self, options: Dict[str, Any]) -> None:
+    def _initialize_python_run_tex(self, options: dict[str, Any]) -> None:
         """Initialize Python LaTeX processing configuration.
 
         Args:
-            options (Dict[str, Any]): Configuration options.
+            options (dict[str, Any]): Configuration options.
         """
         self.article_template_header_tex = self._try_read_list("tex", "Article_Header.tex")
         self.article_template_tail_tex = self._try_read_list("tex", "Article_Tail.tex")
@@ -89,7 +89,7 @@ class BasicInput(BasicInputInPyBibtexer):
             file_name (str): Name of the file to read.
 
         Returns:
-            List[str]: List of lines from the file, or empty list if file cannot be read.
+            list[str]: list of lines from the file, or empty list if file cannot be read.
         """
         path_file = os.path.join(self._path_templates, folder_name, file_name)
 

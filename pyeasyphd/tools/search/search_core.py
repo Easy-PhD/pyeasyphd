@@ -2,7 +2,7 @@ import copy
 import os
 import re
 import shutil
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from pyadvtools import (
     IterateCombineExtendDict,
@@ -39,8 +39,8 @@ class SearchResultsCore(BasicInput):
         path_separate (str): Path to separate directory.
         j_conf_abbr (str): Abbreviation of journal or conference.
         is_standard_bib_file_name (bool): Whether the bib file name follows standard format.
-        keywords_type_list (List[str]): List of keyword types to search.
-        keywords_dict (dict): Dictionary of keywords for searching.
+        keywords_type_list (list[str]): list of keyword types to search.
+        keywords_dict (dict): dictionary of keywords for searching.
         delete_redundant_files (bool): Whether to delete redundant files after processing.
         generate_basic_md (bool): Whether to generate basic markdown files.
         generate_beauty_md (bool): Whether to generate beautiful markdown files.
@@ -52,7 +52,7 @@ class SearchResultsCore(BasicInput):
     """
 
     def __init__(
-        self, path_storage: str, path_output: str, path_separate: str, j_conf_abbr: str, options: Dict[str, Any]
+        self, path_storage: str, path_output: str, path_separate: str, j_conf_abbr: str, options: dict[str, Any]
     ) -> None:
         """Initialize SearchResultsCore with paths and configuration.
 
@@ -61,7 +61,7 @@ class SearchResultsCore(BasicInput):
             path_output (str): Path to output directory for generated files.
             path_separate (str): Path to separate directory for individual results.
             j_conf_abbr (str): Abbreviation of journal or conference.
-            options (Dict[str, Any]): Configuration options.
+            options (dict[str, Any]): Configuration options.
         """
         super().__init__(options)
         self.path_storage: str = standard_path(path_storage)
@@ -106,36 +106,41 @@ class SearchResultsCore(BasicInput):
         # for bib
         self._python_bib = PythonRunBib(options)
 
-    def optimize(self, search_year_list: List[str] = []) -> Dict[str, Dict[str, Dict[str, Dict[str, int]]]]:
+    def optimize(self, search_year_list: list[str] = []) -> dict[str, dict[str, dict[str, dict[str, int]]]]:
         """Optimize search results for given years.
 
         Args:
-            search_year_list (List[str], optional): List of years to search. Defaults to [].
+            search_year_list (list[str], optional): list of years to search. Defaults to [].
 
         Returns:
-            Dict[str, Dict[str, Dict[str, Dict[str, int]]]]: Nested dictionary containing search results.
+            dict[str, dict[str, dict[str, dict[str, int]]]]: Nested dictionary containing search results.
         """
-        search_year_list = list(set([str(i) for i in search_year_list]))
+        search_year_list = list({str(i) for i in search_year_list})
 
         data_list = self._obtain_full_files_data(self.path_storage, "bib", search_year_list)
 
         entry_type_keyword_type_keyword_field_number_dict = self.optimize_core(data_list, search_year_list)
         return entry_type_keyword_type_keyword_field_number_dict
 
-    def _obtain_full_files_data(self, path_storage: str, extension: str, search_year_list: List[str] = []) -> List[str]:
+    def _obtain_full_files_data(
+        self, path_storage: str, extension: str, search_year_list: list[str] | None = None
+    ) -> list[str]:
         """Obtain data from all files with specified extension in storage path.
 
         Args:
             path_storage (str): Path to storage directory.
             extension (str): File extension to search for.
-            search_year_list (List[str], optional): List of years to filter by. Defaults to [].
+            search_year_list (list[str], optional): list of years to filter by. Defaults to [].
 
         Returns:
-            List[str]: Combined content from all matching files.
+            list[str]: Combined content from all matching files.
         """
+        if search_year_list is None:
+            search_year_list = []
+
         regex = None
         if self.is_standard_bib_file_name and search_year_list:
-            regex = re.compile(f'({"|".join(search_year_list)})')
+            regex = re.compile(f"({'|'.join(search_year_list)})")
 
         file_list = []
         for root, _, files in os.walk(path_storage, topdown=True):
@@ -148,24 +153,23 @@ class SearchResultsCore(BasicInput):
 
         return combine_content_in_list([read_list(f, "r") for f in sort_int_str(file_list)], None)
 
-    def optimize_core(self, data_list: List[str], search_year_list) -> Dict[str, Dict[str, Dict[str, Dict[str, int]]]]:
+    def optimize_core(self, data_list: list[str], search_year_list) -> dict[str, dict[str, dict[str, dict[str, int]]]]:
         """Core optimization logic for processing bibliography data.
 
         Args:
-            data_list (List[str]): List of bibliography data strings.
-            search_year_list: List of years to search.
+            data_list (list[str]): list of bibliography data strings.
+            search_year_list: list of years to search.
 
         Returns:
-            Dict[str, Dict[str, Dict[str, Dict[str, int]]]]: Nested dictionary containing search results.
+            dict[str, dict[str, dict[str, dict[str, int]]]]: Nested dictionary containing search results.
         """
         print("\n" + "*" * 9 + f" Search in {self.j_conf_abbr} " + "*" * 9)
 
         entry_type_year_volume_number_month_entry_dict = self._python_bib.parse_to_nested_entries_dict(data_list)
 
         # generate standard bib and output
-        entry_type_keyword_type_keyword_field_number_dict: Dict[str, Dict[str, Dict[str, Dict[str, int]]]] = {}
+        entry_type_keyword_type_keyword_field_number_dict: dict[str, dict[str, dict[str, dict[str, int]]]] = {}
         for entry_type in entry_type_year_volume_number_month_entry_dict:
-
             # obtain search years
             year_list = list(entry_type_year_volume_number_month_entry_dict[entry_type].keys())
             if search_year_list:
@@ -222,7 +226,7 @@ class SearchResultsCore(BasicInput):
             p_combine (str): Path to combine directory.
 
         Returns:
-            dict: Dictionary containing keyword field numbers.
+            dict: dictionary containing keyword field numbers.
         """
         no_search_library = library
 
@@ -251,7 +255,7 @@ class SearchResultsCore(BasicInput):
             p_combine (str): Path to combine directory.
 
         Returns:
-            dict: Dictionary containing keyword field numbers.
+            dict: dictionary containing keyword field numbers.
         """
         no_search_library = library
 
@@ -262,18 +266,18 @@ class SearchResultsCore(BasicInput):
 
     def core_optimize(
         self,
-        search_field_list: List[str],
+        search_field_list: list[str],
         keywords_type,
         library: Library,
         output_prefix: str,
         p_origin: str,
         p_separate: str,
         p_combine: str,
-    ) -> Tuple[Dict[str, Dict[str, int]], Library]:
+    ) -> tuple[dict[str, dict[str, int]], Library]:
         """Core optimization method for processing search results.
 
         Args:
-            search_field_list (List[str]): List of fields to search.
+            search_field_list (list[str]): list of fields to search.
             keywords_type: Type of keywords to search.
             library (Library): Bibliography library to search.
             output_prefix (str): Prefix for output files.
@@ -282,15 +286,14 @@ class SearchResultsCore(BasicInput):
             p_combine (str): Path to combine directory.
 
         Returns:
-            Tuple[Dict[str, Dict[str, int]], Library]: Tuple containing keyword field numbers and remaining library.
+            tuple[dict[str, dict[str, int]], Library]: Tuple containing keyword field numbers and remaining library.
         """
-        error_pandoc_md_md: List[str] = []
-        save_field_data_dict: Dict[str, List[List[str]]] = {}
-        keyword_field_number_dict: Dict[str, Dict[str, int]] = {}
+        error_pandoc_md_md: list[str] = []
+        save_field_data_dict: dict[str, list[list[str]]] = {}
+        keyword_field_number_dict: dict[str, dict[str, int]] = {}
 
         no_search_library = library
         for keywords_list in self.keywords_dict[keywords_type]:
-
             print(f"{output_prefix}-{keywords_type}-search-{keywords_list}")
             keywords_list_list, combine_keyword = switch_keywords_list(keywords_list)
 
