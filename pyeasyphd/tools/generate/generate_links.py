@@ -151,7 +151,7 @@ class PaperLinksGenerator:
             if not os.path.exists(file_path):
                 return {}
 
-            with open(file_path, encoding="utf-8") as file:
+            with open(file_path, encoding="utf-8", newline="\n") as file:
                 return json.load(file)
 
         except Exception as e:
@@ -275,7 +275,7 @@ class PaperLinksGenerator:
         os.makedirs(output_dir, exist_ok=True)
 
         output_file = os.path.join(output_dir, file_name)
-        with open(output_file, "w") as f:
+        with open(output_file, "w", newline="\n") as f:
             f.writelines(content)
         print(f"Generated: {output_file}")
 
