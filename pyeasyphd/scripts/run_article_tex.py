@@ -50,6 +50,7 @@ def run_article_tex_submit(
         "figure_folder_name": "figs",  # "" or "figs" or "main"
         # bib options
         "is_standardize_bib": False,  # default is True
+        "function_common_again": False,  # default is True
         "abbr_index_article_for_abbr": 1,  # 0, 1, 2
         "abbr_index_inproceedings_for_abbr": 0,  # 0, 1, 2
         "add_link_to_fields_for_abbr": None,  # None, or ["title", "journal", "booktitle"]
