@@ -3,7 +3,7 @@ import os
 from local_config import local_options
 from pyadvtools import delete_python_cache
 
-from pyeasyphd.scripts import run_compare_bib_with_local
+from pyeasyphd.scripts import run_compare_bib_with_local, run_format_bib_to_abbr_zotero_save
 
 if __name__ == "__main__":
     path_output = local_options["path_output"]
@@ -22,6 +22,16 @@ if __name__ == "__main__":
 
     run_compare_bib_with_local(
         options, need_compare_bib, path_output, path_spidered_bibs, path_spidering_bibs, path_conf_j_jsons
+    )
+
+    name = "in_local_entries"
+    options.update({
+        "bib_name_for_abbr": f"{name}_abbr.bib",
+        "bib_name_for_zotero": f"{name}_zotero.bib",
+        "bib_name_for_save": f"{name}_save.bib",
+    })
+    run_format_bib_to_abbr_zotero_save(
+        options, os.path.join(path_output, f"{name}.bib"), path_output, path_conf_j_jsons
     )
 
     # delete caches
