@@ -126,7 +126,6 @@ class Searchkeywords:
             basename = file.split(".")[0]
             for entry_type in data_dict[file]:
                 for publisher in data_dict[file][entry_type]:
-
                     print(f"Generate {ext} for `{publisher}-{entry_type}-{basename}`")
                     data_list = []
                     for abbr in data_dict[file][entry_type][publisher]:

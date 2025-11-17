@@ -169,7 +169,6 @@ def _obtain_month_flag_library(
     new_dict = {}
     for entry_type in nested_entries:
         for year in nested_entries[entry_type]:
-
             for volume in nested_entries[entry_type][year]:
                 for number in nested_entries[entry_type][year][volume]:
                     for month in nested_entries[entry_type][year][volume][number]:

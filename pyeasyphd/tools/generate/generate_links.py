@@ -377,7 +377,6 @@ class PaperLinksGenerator:
 
         for publisher in json_data:
             for abbr in json_data[publisher][cj.lower()]:
-
                 keywords_dict = json_data[publisher][cj.lower()][abbr].get("keywords_dict", {})
 
                 # Clean and sort keywords

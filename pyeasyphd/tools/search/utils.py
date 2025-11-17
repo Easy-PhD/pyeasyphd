@@ -151,16 +151,16 @@ def extract_information(old_dict: dict[str, dict[str, dict[str, dict[str, dict[s
                     abbr_list = sorted(new_dict[entry_type][field][keyword_type][keyword].keys())
                     num_list = [new_dict[entry_type][field][keyword_type][keyword][abbr] for abbr in abbr_list]
 
-                    a = f'|Keywords Types|Keywords|{"|".join(list(abbr_list))}|\n'
+                    a = f"|Keywords Types|Keywords|{'|'.join(list(abbr_list))}|\n"
                     if a not in data_list:
                         data_list.append(a)
 
-                    b = f'|-|-|{"|".join(["-" for _ in abbr_list])}|\n'
+                    b = f"|-|-|{'|'.join(['-' for _ in abbr_list])}|\n"
                     if b not in data_list:
                         data_list.append(b)
 
                     keyword = combine_keywords_for_file_name(keyword)
-                    data_list.append(f'|{keyword_type}|{keyword}|{"|".join([str(n) for n in num_list])}|\n')
+                    data_list.append(f"|{keyword_type}|{keyword}|{'|'.join([str(n) for n in num_list])}|\n")
 
             write_list(data_list, f"{field}-keywords_count.md", "w", os.path.join(path_output, entry_type), False)
 

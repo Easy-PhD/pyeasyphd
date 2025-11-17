@@ -148,7 +148,7 @@ class PythonRunMd(BasicInput):
         # for generating html file from md file
         if data_list_md and generate_html:
             self._pandoc_md_to.pandoc_md_to_html(
-                path_output, path_output, main_name, f'{main_name.split(".md")[0]}.html', True
+                path_output, path_output, main_name, f"{main_name.split('.md')[0]}.html", True
             )
 
         # pandoc md to latex

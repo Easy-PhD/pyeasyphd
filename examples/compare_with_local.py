@@ -25,11 +25,13 @@ if __name__ == "__main__":
     )
 
     name = "in_local_entries"
-    options.update({
-        "bib_name_for_abbr": f"{name}_abbr.bib",
-        "bib_name_for_zotero": f"{name}_zotero.bib",
-        "bib_name_for_save": f"{name}_save.bib",
-    })
+    options.update(
+        {
+            "bib_name_for_abbr": f"{name}_abbr.bib",
+            "bib_name_for_zotero": f"{name}_zotero.bib",
+            "bib_name_for_save": f"{name}_save.bib",
+        }
+    )
     run_format_bib_to_abbr_zotero_save(
         options, os.path.join(path_output, f"{name}.bib"), path_output, path_conf_j_jsons
     )
