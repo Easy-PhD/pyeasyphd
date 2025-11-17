@@ -10,7 +10,7 @@ local_options = {
     "path_spidering_bibs": update_path(""),
     "path_conf_j_jsons": update_path(""),
     "path_output": update_path(""),
-    "zotero_bib": update_path(""),  # "MyLibrary.bib" exported from Zotero
+    "zotero_bib": update_path(""),  # "BibTex.bib" exported from Zotero
     "path_weekly_docs": update_path(""),
     "path_monthly_docs": update_path(""),
     "path_yearly_docs": update_path(""),

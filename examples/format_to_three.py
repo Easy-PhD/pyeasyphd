@@ -1,7 +1,4 @@
-import os
-
 from local_config import local_options
-from pyadvtools import delete_python_cache
 
 from pyeasyphd.scripts import run_format_bib_to_abbr_zotero_save
 
@@ -13,6 +10,3 @@ if __name__ == "__main__":
     need_format_bib = "/path/to/need_format.bib"
 
     run_format_bib_to_abbr_zotero_save(options, need_format_bib, path_output, path_conf_j_jsons)
-
-    # delete caches
-    delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

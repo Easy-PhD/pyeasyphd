@@ -1,7 +1,4 @@
-import os
-
 from local_config import local_options
-from pyadvtools import delete_python_cache
 
 from pyeasyphd.scripts import run_generate_c_yearly
 
@@ -22,6 +19,3 @@ if __name__ == "__main__":
     run_generate_c_yearly(
         options, path_yearly_docs, keywords_category_names, path_spidered_bibs, path_conf_j_jsons, year_list
     )
-
-    # delete caches
-    delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))

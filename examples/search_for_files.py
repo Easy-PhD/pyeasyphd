@@ -1,9 +1,8 @@
 import os
 
 from local_config import local_options
-from pyadvtools import delete_python_cache
 
-from pyeasyphd.scripts import run_compare_after_search, run_search_for_files
+from pyeasyphd.scripts import run_compare_after_search, run_format_bib_to_abbr_zotero_save, run_search_for_files
 
 if __name__ == "__main__":
     path_main_output = local_options["path_output"]
@@ -64,5 +63,7 @@ if __name__ == "__main__":
     # compare
     run_compare_after_search(zotero_bib, keywords_type, path_main_output, path_conf_j_jsons)
 
-    # delete caches
-    delete_python_cache(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    # format
+    need_format_bib = os.path.join(path_main_output, "Compared", "only_in_download.bib")
+    path_output = os.path.join(path_main_output, "Formatted")
+    run_format_bib_to_abbr_zotero_save(options, need_format_bib, path_output, path_conf_j_jsons)
