@@ -46,7 +46,7 @@ def run_article_tex_submit(
         # figure options
         "includegraphics_figs_directory": "",
         "shutil_includegraphics_figs": True,
-        "includegraphics_figs_in_relative_path": False,
+        "includegraphics_figs_in_relative_path": False,  # default is True
         "figure_folder_name": "figs",  # "" or "figs" or "main"
         # bib options
         "is_standardize_bib": False,  # default is True
@@ -69,7 +69,7 @@ def run_article_tex_submit(
         "delete_run_latex_cache": False,
         "input_texs_directory": "",
         "shutil_input_texs": True,
-        "input_texs_in_relative_path": False,
+        "input_texs_in_relative_path": False,  # default is True
         "tex_folder_name": "texs",  # "" or "tex" or "texs" or "main"
         "delete_original_tex_in_output_folder": True,
         "generate_tex": True,
