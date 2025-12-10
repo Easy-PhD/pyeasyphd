@@ -162,7 +162,7 @@ class PyRunBibMdTex(BasicInput):
 
         if not os.path.exists(path_output):
             os.makedirs(path_output)
-        self.path_output = standard_path(path_output)
+        self.path_output_new = standard_path(path_output)
 
         return self._python_run_bib_md_tex(output_md, output_tex, data_list_md_tex, original_bib_data)
 
@@ -190,7 +190,7 @@ class PyRunBibMdTex(BasicInput):
             self.shutil_copy_files(
                 self.includegraphics_figs_directory,
                 figure_names,
-                self.path_output,
+                self.path_output_new,
                 self.fig_folder_name,
                 self.includegraphics_figs_in_relative_path,
             )
@@ -201,7 +201,7 @@ class PyRunBibMdTex(BasicInput):
             self.shutil_copy_files(
                 self.input_texs_directory,
                 input_tex_names,
-                self.path_output,
+                self.path_output_new,
                 self.tex_folder_name,
                 self.input_texs_in_relative_path,
             )
@@ -221,7 +221,7 @@ class PyRunBibMdTex(BasicInput):
             key_in_md_tex = sorted(abbr_library.entries_dict.keys(), key=key_in_md_tex.index)
 
             # Write bibliography files
-            _path_output = os.path.join(self.path_output, self.bib_folder_name)
+            _path_output = os.path.join(self.path_output_new, self.bib_folder_name)
             full_bib_for_abbr, full_bib_for_zotero, full_bib_for_save = (
                 self._python_writer.write_multi_library_to_multi_file(
                     _path_output, abbr_library, zotero_library, save_library, key_in_md_tex
@@ -231,11 +231,11 @@ class PyRunBibMdTex(BasicInput):
         # Process content based on format
         if self.tex_md_flag == ".md":
             # Write original markdown content
-            write_list(data_list_md_tex, output_md, "w", os.path.join(self.path_output, self.md_folder_name), False)
+            write_list(data_list_md_tex, output_md, "w", os.path.join(self.path_output_new, self.md_folder_name), False)
 
             # Generate processed content and write to given files
             data_list_md, data_list_tex = self._python_md.special_operate_for_md(
-                self.path_output,
+                self.path_output_new,
                 data_list_md_tex,
                 output_md,
                 full_bib_for_abbr,
@@ -252,7 +252,7 @@ class PyRunBibMdTex(BasicInput):
             self._python_tex.generate_standard_tex_data_list(
                 data_list_tex,
                 output_tex,
-                self.path_output,
+                self.path_output_new,
                 self.fig_folder_name,
                 self.tex_folder_name,
                 self.bib_folder_name,
@@ -262,10 +262,10 @@ class PyRunBibMdTex(BasicInput):
 
         # Cleanup original files if enabled
         if self.delete_original_md_in_output_folder:
-            self._cleanup_file(os.path.join(self.path_output, self.md_folder_name, output_md))
+            self._cleanup_file(os.path.join(self.path_output_new, self.md_folder_name, output_md))
 
         if self.delete_original_tex_in_output_folder:
-            self._cleanup_file(os.path.join(self.path_output, self.tex_folder_name, output_tex))
+            self._cleanup_file(os.path.join(self.path_output_new, self.tex_folder_name, output_tex))
 
         if self.delete_original_bib_in_output_folder:
             for file in [full_bib_for_abbr, full_bib_for_zotero, full_bib_for_save]:
@@ -393,6 +393,6 @@ class PyRunBibMdTex(BasicInput):
         if os.path.exists(file_path):
             os.remove(file_path)
             dir_path = os.path.dirname(file_path)
-            if dir_path != self.path_output:  # Don't remove the main output directory
+            if dir_path != self.path_output_new:  # Don't remove the main output directory
                 if len([f for f in os.listdir(dir_path) if f != ".DS_Store"]) == 0:
                     shutil.rmtree(dir_path)

@@ -44,9 +44,9 @@ def run_article_tex_submit(
         "full_json_c": expand_path(os.path.join(path_conf_j_jsons, "conferences.json")),
         "full_json_j": expand_path(os.path.join(path_conf_j_jsons, "journals.json")),
         # figure options
-        "includegraphics_figs_directory": os.path.join(path_input_file, "data", "raw"),
+        "includegraphics_figs_directory": "",
         "shutil_includegraphics_figs": True,
-        "includegraphics_figs_in_relative_path": True,
+        "includegraphics_figs_in_relative_path": False,
         "figure_folder_name": "figs",  # "" or "figs" or "main"
         # bib options
         "is_standardize_bib": False,  # default is True
@@ -67,9 +67,9 @@ def run_article_tex_submit(
         "final_output_main_tex_name": "main.tex",
         "run_latex": False,
         "delete_run_latex_cache": False,
-        "input_texs_directory": os.path.join(path_input_file, "data", "raw"),
+        "input_texs_directory": "",
         "shutil_input_texs": True,
-        "input_texs_in_relative_path": True,
+        "input_texs_in_relative_path": False,
         "tex_folder_name": "texs",  # "" or "tex" or "texs" or "main"
         "delete_original_tex_in_output_folder": True,
         "generate_tex": True,
