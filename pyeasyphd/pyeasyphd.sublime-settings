@@ -57,6 +57,8 @@
         ".aux", ".bbl", ".bcf", ".blg", ".fdb_latexmk", ".fls", ".log", ".out", ".run.xml", ".synctex.gz", ".gz",
         ".nav", ".snm", ".toc", ".xdv"
     ],
+    // true, false
+    "replace_duplicate_output_tex_file": false,
 
     // pyeasyphd/tools/python_run_latex_md.py
     // Path to bibliographic data, can be either a directory path or a specific file path

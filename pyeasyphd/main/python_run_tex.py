@@ -10,15 +10,32 @@ from .basic_input import BasicInput
 
 
 class PythonRunTex(BasicInput):
-    """Python LaTeX processing class.
+    """Python LaTeX document processing and compilation class.
+
+    This class extends BasicInput to handle LaTeX-specific operations including
+    document compilation, output management, and temporary file cleanup.
+    It supports multiple LaTeX engines and provides configurable cleanup options.
 
     Args:
-        options (dict[str, Any]): Configuration options.
+        options (dict[str, Any]): Configuration options for LaTeX processing.
 
     Attributes:
-        run_latex (bool): Whether to run LaTeX compilation. Defaults to False.
-        pdflatex_xelatex (str): LaTeX engine to use ('pdflatex' or 'xelatex'). Defaults to "pdflatex".
-        delete_run_latex_cache (bool): Whether to delete LaTeX cache files. Defaults to True.
+        final_output_main_tex_name (str): Name of the main output LaTeX file.
+            Defaults to empty string.
+        run_latex (bool): Flag indicating whether to execute LaTeX compilation.
+            When True, the system will compile the LaTeX document. Defaults to False.
+        pdflatex_xelatex (str): LaTeX engine selection. Valid options are
+            'pdflatex' for standard PDF compilation or 'xelatex' for extended
+            Unicode and font support. Defaults to "xelatex".
+        delete_run_latex_cache (bool): Flag controlling cleanup of temporary
+            LaTeX files after compilation. When True, auxiliary files are removed.
+            Defaults to True.
+        latex_clean_file_types (list[str] | None): List of file extensions to
+            remove during cleanup. If None, a default set is used. Defaults to None.
+        replace_duplicate_output_tex_file (bool): Flag indicating whether to
+            overwrite existing output files with the same name. When True,
+            duplicates are replaced; when False, new names may be generated.
+            Defaults to False.
     """
 
     def __init__(self, options: dict[str, Any]) -> None:
@@ -35,6 +52,7 @@ class PythonRunTex(BasicInput):
         self.pdflatex_xelatex: str = options.get("pdflatex_xelatex", "xelatex")  # pdflatex, xelatex
         self.delete_run_latex_cache: bool = options.get("delete_run_latex_cache", True)
         self.latex_clean_file_types: list[str] | None = options.get("latex_clean_file_types", None)
+        self.replace_duplicate_output_tex_file: bool = options.get("replace_duplicate_output_tex_file", False)
 
     def generate_standard_tex_data_list(
         self,
@@ -116,7 +134,7 @@ class PythonRunTex(BasicInput):
         main_name = self.final_output_main_tex_name
         if len(main_name) == 0:
             main_name = output_tex_name.split(".text")[0] + "_main.tex"
-        if main_name.lower() == output_tex_name.lower():
+        if (not self.replace_duplicate_output_tex_file) and (main_name.lower() == output_tex_name.lower()):
             main_name = main_name.split(".tex")[0] + "_.tex"
         if main_name[-4:] != ".tex":
             main_name = main_name + ".tex"

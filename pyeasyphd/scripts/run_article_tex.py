@@ -67,6 +67,7 @@ def run_article_tex_submit(
         "final_output_main_tex_name": "main.tex",
         "run_latex": False,
         "delete_run_latex_cache": False,
+        "replace_duplicate_output_tex_file": True,  # default is False
         "input_texs_directory": "",
         "shutil_input_texs": True,
         "input_texs_in_relative_path": False,  # default is True

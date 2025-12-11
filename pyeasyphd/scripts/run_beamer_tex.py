@@ -62,6 +62,7 @@ def run_beamer_tex_weekly_reports(
         "final_output_main_tex_name": "main.tex",
         "run_latex": False,
         "delete_run_latex_cache": False,
+        "replace_duplicate_output_tex_file": False,  # default is False
         "input_texs_directory": "",
         "shutil_input_texs": False,  # default is True
         "input_texs_in_relative_path": False,  # default is True
