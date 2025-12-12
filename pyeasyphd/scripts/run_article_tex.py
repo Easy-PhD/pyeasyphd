@@ -81,21 +81,14 @@ def run_article_tex_submit(
     # Update with user-provided options
     _options.update(options)
 
-    committer = GitAutoCommitter(path_output_file)
+    # Create full file paths from input file names
+    file_list = [os.path.join(path_input_file, f) for f in input_file_names]
 
-    if auto_git and (not committer.auto_check(remote=remote, branch=branch)):
-        print("Remote != Local, please manually pull")
+    PyRunBibMdTex(path_output_file, ".tex", "paper", _options).run_files(file_list, "", "current")
 
-    else:
-        # Create full file paths from input file names
-        file_list = [os.path.join(path_input_file, f) for f in input_file_names]
-
-        PyRunBibMdTex(path_output_file, ".tex", "paper", _options).run_files(file_list, "", "current")
-
-        if auto_git and committer.has_changes():
-            # Auto commit
-            committer.auto_commit()
-            # Auto push
-            committer.auto_push(remote=remote, branch=branch)
+    if auto_git:
+        committer = GitAutoCommitter(path_output_file)
+        committer.auto_commit()
+        committer.auto_push(remote=remote, branch=branch)
 
     return None
