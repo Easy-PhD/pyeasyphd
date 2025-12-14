@@ -152,7 +152,7 @@ class PythonRunTex(BasicInput):
                 data_list = insert_list_in_list(data_list, ["\n\\def\\cn{}\n"], r"\\documentclass", "after")
 
             # for bib
-            regex = re.compile(r"\\addbibresource{" + os.path.join(".", "References", "References.bib") + "}")
+            regex = re.compile(r"\\addbibresource{" + os.path.join(".", "bibs", "abbr.bib") + "}")
             for i in range(len(data_list)):
                 mch = regex.search(data_list[i])
                 if not mch:
