@@ -152,15 +152,15 @@ class PythonRunTex(BasicInput):
                 data_list = insert_list_in_list(data_list, ["\n\\def\\cn{}\n"], r"\\documentclass", "after")
 
             # for bib
-            regex = re.compile(r"\\addbibresource{" + os.path.join(".", "bibs", "abbr.bib") + "}")
+            expected = r'\addbibresource{./bibs/abbr.bib}'
             for i in range(len(data_list)):
-                mch = regex.search(data_list[i])
+                mch = expected == data_list[i].rstrip()
                 if not mch:
                     continue
                 if bib_folder_name:
-                    data_list[i] = "\\addbibresource{" + os.path.join(".", bib_folder_name, bib_name) + "}\n"
+                    data_list[i] = "\\addbibresource{" + f"./{bib_folder_name}/{bib_name}" + "}\n"
                 else:
-                    data_list[i] = "\\addbibresource{" + os.path.join(".", bib_name) + "}\n"
+                    data_list[i] = "\\addbibresource{" + f"./{bib_name}" + "}\n"
 
             # body
             if len(data_list_body) != 0:
