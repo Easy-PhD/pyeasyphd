@@ -1,6 +1,6 @@
 [project]
 name = "pyeasyphd"
-version = "0.4.42.1"
+version = "0.4.43"
 description = "pyeasyphd"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
@@ -23,7 +23,7 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "pybibtexer>=0.3.40",
+    "pybibtexer>=0.3.41",
 ]
 
 [project.urls]
