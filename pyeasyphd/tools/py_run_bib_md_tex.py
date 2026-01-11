@@ -106,6 +106,17 @@ class PyRunBibMdTex(BasicInput):
         """
         file_list_md_tex = [f for f in file_list_md_tex if f.endswith(self.tex_md_flag)]
         data_list_list = [read_list(standard_path(f), "r") for f in file_list_md_tex]
+
+        data_list_list = []
+        for f in file_list_md_tex:
+            if f.endswith(self.tex_md_flag):
+                if os.path.isfile(f):
+                    data_list_list.append(read_list(standard_path(f), "r"))
+                else:
+                    pass  # remove
+            else:
+                data_list_list.append([f])
+
         if all(len(data_list) == 0 for data_list in data_list_list):
             return [], []
 

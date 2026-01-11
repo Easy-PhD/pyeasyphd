@@ -2,7 +2,7 @@ import os
 
 from pyeasyphd.tools import PyRunBibMdTex
 
-from ._base import expand_path
+from ._base import expand_path, select_files
 
 
 def run_article_md_daily_notes(
@@ -90,7 +90,7 @@ def run_article_md_daily_notes(
     _options.update(options)
 
     # Create full file paths from input file names
-    file_list = [os.path.join(path_input_file, f) for f in input_file_names]
+    file_list = select_files(path_input_file, input_file_names, ".md")
 
     # Generate output filenames based on input directory name (platform-independent)
     dir_name = os.path.basename(os.path.dirname(file_list[0]))

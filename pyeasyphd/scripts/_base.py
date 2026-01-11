@@ -63,3 +63,18 @@ def build_search_options(
         "keywords_dict": {keywords_type: keywords_list_list},
         "keywords_type_list": [keywords_type],
     }
+
+
+def select_files(path_root: str, names: list[str], ext: str) -> list[str]:
+    file_list = []
+    for n in names:
+        if n.endswith(ext):
+            full_file = os.path.join(expand_path(path_root), n)
+            if os.path.isfile(full_file):
+                file_list.append(full_file)
+            else:
+                pass
+        else:
+            file_list.append(n)
+
+    return file_list

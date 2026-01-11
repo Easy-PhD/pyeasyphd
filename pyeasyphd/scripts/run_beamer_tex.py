@@ -2,7 +2,7 @@ import os
 
 from pyeasyphd.tools import PyRunBibMdTex
 
-from ._base import expand_path
+from ._base import expand_path, select_files
 
 
 def run_beamer_tex_weekly_reports(
@@ -77,7 +77,7 @@ def run_beamer_tex_weekly_reports(
     _options.update(options)
 
     # Create full file paths from input file names
-    file_list = [os.path.join(path_input_file, f) for f in input_file_names]
+    file_list = select_files(path_input_file, input_file_names, ".tex")
 
     PyRunBibMdTex(path_output_file, ".tex", "beamer", _options).run_files(file_list, "", "current")
 
