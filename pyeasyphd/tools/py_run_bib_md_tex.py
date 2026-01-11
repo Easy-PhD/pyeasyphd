@@ -131,7 +131,6 @@ class PyRunBibMdTex(BasicInput):
         if all(len(data_list) == 0 for data_list in data_list_list):
             return [], []
 
-        file_base_name = os.path.splitext(os.path.basename(file_list_md_tex[0]))[0]
         output_prefix = output_prefix if output_prefix else file_base_name
 
         data_list_md_tex = combine_content_in_list(data_list_list, ["\n"])
