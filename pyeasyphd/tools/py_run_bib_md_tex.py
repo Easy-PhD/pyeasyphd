@@ -104,18 +104,29 @@ class PyRunBibMdTex(BasicInput):
         Returns:
             tuple[list[str], list[str]]: Tuple containing processed Markdown content and LaTeX content.
         """
-        file_list_md_tex = [f for f in file_list_md_tex if f.endswith(self.tex_md_flag)]
-        data_list_list = [read_list(standard_path(f), "r") for f in file_list_md_tex]
-
+        # Initialize index for base file name
+        base_index = 0
+        file_base_name = "base"
         data_list_list = []
-        for f in file_list_md_tex:
-            if f.endswith(self.tex_md_flag):
-                if os.path.isfile(f):
-                    data_list_list.append(read_list(standard_path(f), "r"))
+
+        # Process each file in the list
+        for file_path in file_list_md_tex:
+            # Check if file has .tex or .md extension
+            if file_path.endswith(self.tex_md_flag):
+                # Verify file exists
+                if os.path.isfile(file_path):
+                    # First valid file becomes the base name
+                    if base_index == 0:
+                        file_base_name = os.path.splitext(os.path.basename(file_path))[0]
+                        base_index += 1
+
+                    # Read file content as list and add to data collection
+                    data_list_list.append(read_list(standard_path(file_path), "r"))
                 else:
-                    pass  # remove
+                    pass  # Skip non-existent files
             else:
-                data_list_list.append([f])
+                # For non-file entries (e.g., strings), wrap in list
+                data_list_list.append([file_path])
 
         if all(len(data_list) == 0 for data_list in data_list_list):
             return [], []
