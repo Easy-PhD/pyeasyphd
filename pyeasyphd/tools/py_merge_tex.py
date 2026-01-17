@@ -317,9 +317,49 @@ class LaTeXImportMerger:
         return None
 
     def _replace_input_commands(self, content, base_dir):
-        r"""Replaces \\input{} commands with file contents."""
-        # Regex pattern for \\input commands with optional braces.
-        input_pattern = r"\\input\s*(?:\{([^}]+)\}|([^\s\{]+))"
+        r"""Replaces \\input{} commands with file contents, skipping commented-out commands."""
+        # Split content into lines for line-by-line processing
+        lines = content.split('\n')
+        result_lines = []
+
+        for line in lines:
+            # Skip fully commented lines
+            stripped_line = line.lstrip()
+            if stripped_line.startswith('%'):
+                result_lines.append(line)
+                continue
+
+            # Process line, handling inline comments
+            processed_line = self._process_input_line(line, base_dir)
+            result_lines.append(processed_line)
+
+        return '\n'.join(result_lines)
+
+    def _process_input_line(self, line, base_dir):
+        r"""Process a single line for \\input commands, handling inline comments."""
+        # Find comment position if any
+        comment_pos = line.find('%')
+
+        if comment_pos == -1:
+            # No comment in line, process entire line
+            return self._replace_input_in_string(line, base_dir)
+        else:
+            # Has comment, split line
+            code_part = line[:comment_pos]
+            comment_part = line[comment_pos:]
+
+            # Check if there's a \input command before the comment
+            if '\\input' in code_part:
+                # Process the code part
+                processed_code = self._replace_input_in_string(code_part, base_dir)
+                return processed_code + comment_part
+            else:
+                # No \input before comment, return line unchanged
+                return line
+
+    def _replace_input_in_string(self, text, base_dir):
+        r"""Replace \\input commands in a string (assumes no comments in the string)."""
+        input_pattern = r'\\input\s*(?:\{([^}]+)\}|([^\s\{]+))'
 
         def replace_input(match):
             r"""Callback function to replace a single \\input command.
@@ -348,11 +388,51 @@ class LaTeXImportMerger:
 
             return replacement
 
-        return re.sub(input_pattern, replace_input, content)
+        return re.sub(input_pattern, replace_input, text)
 
     def _replace_import_commands(self, content, base_dir):
-        r"""Replaces \\import{path}{file} commands with file contents."""
-        # Regex pattern for \\import{path}{file} commands.
+        r"""Replaces \\import{path}{file} commands with file contents, skipping commented-out commands."""
+        # Split content into lines for line-by-line processing
+        lines = content.split('\n')
+        result_lines = []
+
+        for line in lines:
+            # Skip fully commented lines
+            stripped_line = line.lstrip()
+            if stripped_line.startswith('%'):
+                result_lines.append(line)
+                continue
+
+            # Process line, handling inline comments
+            processed_line = self._process_import_line(line, base_dir)
+            result_lines.append(processed_line)
+
+        return '\n'.join(result_lines)
+
+    def _process_import_line(self, line, base_dir):
+        r"""Process a single line for \\import commands, handling inline comments."""
+        # Find comment position if any
+        comment_pos = line.find('%')
+
+        if comment_pos == -1:
+            # No comment in line, process entire line
+            return self._replace_import_in_string(line, base_dir)
+        else:
+            # Has comment, split line
+            code_part = line[:comment_pos]
+            comment_part = line[comment_pos:]
+
+            # Check if there's a \import command before the comment
+            if '\\import' in code_part:
+                # Process the code part
+                processed_code = self._replace_import_in_string(code_part, base_dir)
+                return processed_code + comment_part
+            else:
+                # No \import before comment, return line unchanged
+                return line
+
+    def _replace_import_in_string(self, text, base_dir):
+        r"""Replace \\import commands in a string (assumes no comments in the string)."""
         import_pattern = r"\\import\s*\{([^}]+)\}\s*\{([^}]+)\}"
 
         def replace_import(match):
@@ -386,11 +466,55 @@ class LaTeXImportMerger:
 
             return replacement
 
-        return re.sub(import_pattern, replace_import, content)
+        return re.sub(import_pattern, replace_import, text)
 
     def _replace_include_commands(self, content, base_dir):
-        r"""Replaces \\include{} and \\includeonly{} commands with file contents."""
-        # Regex pattern for \\include and \\includeonly commands.
+        r"""Replaces \\include{} and \\includeonly{} commands with file contents.
+
+        Note: This method also needs to skip commented-out commands. For consistency,
+        we use the same line-by-line approach as _replace_input_commands.
+        """
+        # Split content into lines for line-by-line processing
+        lines = content.split('\n')
+        result_lines = []
+
+        for line in lines:
+            # Skip fully commented lines
+            stripped_line = line.lstrip()
+            if stripped_line.startswith('%'):
+                result_lines.append(line)
+                continue
+
+            # Process line, handling inline comments
+            processed_line = self._process_include_line(line, base_dir)
+            result_lines.append(processed_line)
+
+        return '\n'.join(result_lines)
+
+    def _process_include_line(self, line, base_dir):
+        r"""Process a single line for \\include commands, handling inline comments."""
+        # Find comment position if any
+        comment_pos = line.find('%')
+
+        if comment_pos == -1:
+            # No comment in line, process entire line
+            return self._replace_include_in_string(line, base_dir)
+        else:
+            # Has comment, split line
+            code_part = line[:comment_pos]
+            comment_part = line[comment_pos:]
+
+            # Check if there's a \include command before the comment
+            if '\\include' in code_part:
+                # Process the code part
+                processed_code = self._replace_include_in_string(code_part, base_dir)
+                return processed_code + comment_part
+            else:
+                # No \include before comment, return line unchanged
+                return line
+
+    def _replace_include_in_string(self, text, base_dir):
+        r"""Replace \\include commands in a string (assumes no comments in the string)."""
         include_pattern = r"\\include(?:only)?\s*\{([^}]+)\}"
 
         def replace_include(match):
@@ -419,7 +543,7 @@ class LaTeXImportMerger:
 
             return replacement
 
-        return re.sub(include_pattern, replace_include, content)
+        return re.sub(include_pattern, replace_include, text)
 
     def _find_file(self, filename, search_dir):
         """Locates a file with various extensions in the specified directory."""
