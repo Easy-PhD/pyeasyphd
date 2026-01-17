@@ -1,13 +1,13 @@
 import os
 
-from pyeasyphd.tools import PyRunBibMdTex
+from pyeasyphd.tools import LaTeXImportMerger, PyRunBibMdTex
 
 from ._base import expand_path, select_files
 
 
 def run_beamer_tex_weekly_reports(
     path_input_file: str,
-    input_file_names: list[str],
+    input_file_names: list[str] | str,
     path_output_file: str,
     bib_path_or_file: str,
     path_conf_j_jsons: str,
@@ -22,7 +22,7 @@ def run_beamer_tex_weekly_reports(
 
     Args:
         path_input_file (str): Path to input files directory
-        input_file_names (list[str]): list of input file names
+        input_file_names (list[str] | str): list of input file names or filename
         path_output_file (str): Path to output directory
         bib_path_or_file (str): Path to bibliography file or directory
         path_conf_j_jsons (str): Path to conferences and journals JSON files directory
@@ -76,8 +76,15 @@ def run_beamer_tex_weekly_reports(
     # Update with user-provided options
     _options.update(options)
 
-    # Create full file paths from input file names
-    file_list = select_files(path_input_file, input_file_names, ".tex")
+    # Create full file list
+    if isinstance(input_file_names, list):
+        file_list = select_files(path_input_file, input_file_names, ".tex")
+    else:
+        merger = LaTeXImportMerger()
+        input_file = os.path.join(path_input_file, input_file_names)
+        merger.find_all_imports(input_file)
+        output_file = merger.merge_latex_file(input_file)
+        file_list = [output_file]
 
     PyRunBibMdTex(path_output_file, ".tex", "beamer", _options).run_files(file_list, "", "current")
 
