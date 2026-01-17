@@ -8,7 +8,7 @@ class LaTeXImportMerger:
 
     def __init__(
         self,
-        verbose: bool = True,
+        verbose: bool = False,
         encoding: str = "utf-8",
         fix_graphics_paths: bool = True,
         graphics_extensions: list[str] | None = None
@@ -38,7 +38,8 @@ class LaTeXImportMerger:
         # Store main output directory for graphics path fixing.
         self.main_output_dir = output_dir
 
-        print(f"Processing main file: {main_file_path}")
+        if self.verbose:
+            print(f"Processing main file: {main_file_path}")
 
         # Clear processed files tracking for new merge operation.
         self.processed_files.clear()
@@ -50,8 +51,9 @@ class LaTeXImportMerger:
         with open(output_file_path, "w", encoding=self.encoding) as f:
             f.write(merged_content)
 
-        print(f"\nMerge completed! Processed {len(self.processed_files)} files")
-        print(f"Output file: {output_file_path}")
+        if self.verbose:
+            print(f"\nMerge completed! Processed {len(self.processed_files)} files")
+            print(f"Output file: {output_file_path}")
 
         return str(output_file_path)
 
@@ -619,11 +621,12 @@ class LaTeXImportMerger:
         _find_in_file(main_file_path, main_file_path.parent, set())
 
         # Display results.
-        print(f"Found {len(files_info)} related files:")
-        for i, (file_path, base_dir, import_type) in enumerate(files_info, 1):
-            rel_path = os.path.relpath(file_path, main_file_path.parent)
-            print(f"  {i:3d}. {rel_path}")
-            print(f"       Base directory: {os.path.relpath(base_dir, main_file_path.parent)}")
-            print(f"       Import method: {import_type}")
+        if self.verbose:
+            print(f"Found {len(files_info)} related files:")
+            for i, (file_path, base_dir, import_type) in enumerate(files_info, 1):
+                rel_path = os.path.relpath(file_path, main_file_path.parent)
+                print(f"  {i:3d}. {rel_path}")
+                print(f"       Base directory: {os.path.relpath(base_dir, main_file_path.parent)}")
+                print(f"       Import method: {import_type}")
 
         return files_info
