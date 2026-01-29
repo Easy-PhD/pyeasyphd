@@ -387,7 +387,12 @@ class PyRunBibMdTex(BasicInput):
         """
         cite_key_list = []
         if tex_md_flag == ".tex":
-            regex_list = [re.compile(r"\\[a-z]*cite[tp]*{\s*([\w\-.,:/\s]*)\s*}")]
+            pattern = re.compile(
+                r"\\(?:[a-z]*cite[tp]*)"   # Command name: cite, citep, citet, etc.
+                r"(?:\s*\[[^\]]*\])*"    # Zero or more optional arguments in brackets
+                r"\s*{\s*([^}]+)\s*}"    # Required reference key in curly braces
+            )
+            regex_list = [pattern]
             cite_key_list.extend(regex_list[0].findall("".join(data_list)))
             cite_key_list = combine_content_in_list([re.split(",", c) for c in cite_key_list])
         elif tex_md_flag == ".md":
