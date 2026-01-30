@@ -125,6 +125,7 @@ def _format_entry_to_html(entry, abbr, data_list):
         url = entry["url"]
 
     # Format entry in APA style
+    pages = pages.replace("--", "–")
     line = _format_entry_to_apa_style(title, year, volume, number, pages, url, abbr)
 
     line = f"<li><details>\n<summary>\n{line.strip()}\n</summary>\n"
