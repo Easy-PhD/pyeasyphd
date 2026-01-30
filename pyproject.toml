@@ -1,6 +1,6 @@
 [project]
 name = "pyeasyphd"
-version = "0.5.0"
+version = "0.5.0.1"
 description = "pyeasyphd"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
