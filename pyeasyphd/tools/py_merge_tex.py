@@ -82,7 +82,7 @@ class LaTeXImportMerger:
 
         # Check for circular dependencies.
         if file_path_str in self.processed_files:
-            print(f"⚠️  Warning: File {file_path} already processed, skipping")
+            print(f"Warning: File {file_path} already processed, skipping")
             return f"% Warning: File {file_path} already included, skipping\n"
 
         self.processed_files.add(file_path_str)
@@ -150,7 +150,7 @@ class LaTeXImportMerger:
 
             if graphics_file is None:
                 warning = f"% Warning: Graphics file not found: {graphics_path}"
-                print(f"⚠️  {warning}")
+                print(f"{warning}")
 
                 # Try common extensions.
                 for ext in self.graphics_extensions:
@@ -184,7 +184,7 @@ class LaTeXImportMerger:
 
                         if not found:
                             # File doesn't exist at that location, warn user.
-                            print(f"⚠️  Graphics file not at expected location: {rel_path}")
+                            print(f"Graphics file not at expected location: {rel_path}")
                             # Fall back to original path with comment.
                             if options:
                                 return (
@@ -203,7 +203,7 @@ class LaTeXImportMerger:
                         return f"\\includegraphics{{{rel_path}}}"
 
                 except ValueError as e:
-                    print(f"❌ Error calculating relative path for {graphics_file}: {e}")
+                    print(f"Error calculating relative path for {graphics_file}: {e}")
                     # Fall back to original path with comment.
                     if options:
                         return (
@@ -242,7 +242,7 @@ class LaTeXImportMerger:
             return Path(rel_path)
         except ValueError as e:
             # On Windows, if paths are on different drives.
-            print(f"⚠️  Cannot calculate relative path between {graphics_file} and {target_dir}: {e}")
+            print(f"Cannot calculate relative path between {graphics_file} and {target_dir}: {e}")
 
             # Alternative: try to find a path that makes sense.
             # Check if graphics file is in a subdirectory of main output dir.
@@ -380,7 +380,7 @@ class LaTeXImportMerger:
 
             if file_path is None:
                 error_msg = f"\n% Error: Input file not found: {filename}\n"
-                print(f"❌ {error_msg.strip()}")
+                print(f"{error_msg.strip()}")
                 return error_msg
 
             # For \\input, nested files use the same base directory.
@@ -458,7 +458,7 @@ class LaTeXImportMerger:
             import_filename = str(Path(import_path) / filename)
             if file_path is None:
                 error_msg = f"\n% Error: Import file not found: {import_filename}\n"
-                print(f"❌ {error_msg.strip()}")
+                print(f"{error_msg.strip()}")
                 return error_msg
 
             # For \\import, nested files use the import directory as base.
@@ -535,7 +535,7 @@ class LaTeXImportMerger:
 
             if file_path is None:
                 error_msg = f"\n% Error: Include file not found: {filename}\n"
-                print(f"❌ {error_msg.strip()}")
+                print(f"{error_msg.strip()}")
                 return error_msg
 
             # \\include maintains the same base directory like \\input.
