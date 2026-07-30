@@ -1,13 +1,14 @@
 from pyeasyphd.scripts.run_article_md import run_article_md_daily_notes
 
 if __name__ == "__main__":
-    path_json = ""
+    path_conf_j_jsons = ""
     zotero_bib = ""
     path_input_file = ""
     path_output_file = ""
     options = {}
 
-    mcmc_filenames = ["MCMC/Introduction.md", "MCMC/Algorithms.md", "MCMC/Metrics.md", "MCMC/Applications.md"]
+    input_file_names = ["Introduction.md", "Algorithms.md", "Metrics.md", "Applications.md"]
 
-    for filenames in [mcmc_filenames]:
-        run_article_md_daily_notes(path_input_file, filenames, path_output_file, zotero_bib, path_json, options)
+    run_article_md_daily_notes(
+        path_input_file, input_file_names, path_output_file, zotero_bib, path_conf_j_jsons, options
+    )
