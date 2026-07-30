@@ -16,7 +16,7 @@ def run_article_tex_submit(
     options: dict,
     auto_git: bool = False,
     remote: str = "origin",
-    branch: str = "master",
+    branch: str = "main",
 ) -> None:
     """Process academic article files (TeX, and bibliography) with automated Git version control.
 
